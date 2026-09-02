@@ -1,4 +1,11 @@
-import { About, CtaBand, Faq, Hero, HowItWorks, Pricing, Subjects, TrustStrip } from "@/components/home/Sections";
+import type { Metadata } from "next";
+import { About, CtaBand, Faq, HOME_FAQS, Hero, HowItWorks, Pricing, Subjects, TrustStrip } from "@/components/home/Sections";
+import { JsonLd } from "@/components/JsonLd";
+import { SEO, faqPage, graph, webPage } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function Home() {
   return (
@@ -11,6 +18,7 @@ export default function Home() {
       <Pricing />
       <Faq />
       <CtaBand />
+      <JsonLd data={graph(webPage("/", SEO.homeTitle, SEO.homeDescription), faqPage(HOME_FAQS))} />
     </>
   );
 }

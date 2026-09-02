@@ -5,6 +5,7 @@ import { findBookingByRef, isGoogleConfigured, meetLinkOf, pricePenceOf, service
 import { isStripeConfigured, stripe } from "@/lib/stripe";
 import { formatDate, formatTime, tzAbbreviation } from "@/lib/time";
 import { MeetLinkPoller } from "@/components/booking/MeetLinkPoller";
+import { Icon } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Booking confirmed", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -81,11 +82,17 @@ export default async function SuccessPage({ searchParams }: PageProps<"/book/suc
   return (
     <div className="container-x py-12 sm:py-16">
       <div className="mx-auto max-w-2xl">
-        <h1 className="font-display font-display-lg text-[length:var(--text-h2)] leading-[1.12] text-pine-900">{title}</h1>
+        <span
+          className={`grid h-14 w-14 place-items-center rounded-full ${details?.pending ? "bg-clay-100 text-clay-700" : "bg-pine-50 text-pine-700"}`}
+          aria-hidden
+        >
+          {details?.pending ? <Icon.Clock width={28} height={28} /> : <Icon.Check width={28} height={28} strokeWidth={2.2} />}
+        </span>
+        <h1 className="font-display font-display-lg mt-5 text-[length:var(--text-h2)] leading-[1.12] text-pine-900">{title}</h1>
 
         {details ? (
           <>
-            <dl className="mt-6 grid gap-4 border-y border-cream-200 py-6 sm:grid-cols-2">
+            <dl className="card mt-6 grid gap-4 p-6 sm:grid-cols-2">
               <div>
                 <dt className="text-[length:var(--text-meta)] text-muted">Session</dt>
                 <dd className="mt-1 font-medium text-ink">{details.serviceName}</dd>
@@ -118,7 +125,7 @@ export default async function SuccessPage({ searchParams }: PageProps<"/book/suc
             </div>
           </>
         ) : (
-          <p className="measure mt-6 border-y border-cream-200 py-6 text-ink-soft">
+          <p className="card measure mt-6 p-6 text-ink-soft">
             {lookupFailed
               ? "We could not load the booking details just now, but if your payment went through you will receive a receipt and a calendar invitation by email."
               : "Your booking reference has been recorded. A calendar invitation will follow by email."}

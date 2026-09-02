@@ -1,35 +1,62 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/config";
 import { siteOrigin } from "@/lib/site-url";
+import { SEO, graph, organisation, tutorPerson, website } from "@/lib/seo";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
 
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
   display: "swap",
+  style: ["normal", "italic"],
   axes: ["opsz", "SOFT"],
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteOrigin()),
   title: {
-    default: `${SITE.name} | GCSE, A-level, UCAT and medical school tutoring`,
+    default: SEO.homeTitle,
     template: `%s | ${SITE.name}`,
   },
-  description:
-    "One-to-one online tutoring in GCSE and A-level Maths, Biology and Chemistry, UCAT preparation and medical school applications, from a final-year UEA medical student. Book and pay online.",
+  description: SEO.homeDescription,
+  applicationName: SITE.name,
+  keywords: [...SEO.keywords],
+  authors: [{ name: SITE.tutorName, url: siteOrigin() }],
+  creator: SITE.tutorName,
+  publisher: SITE.name,
+  category: "education",
+  referrer: "origin-when-cross-origin",
+  formatDetection: { email: false, address: false, telephone: false },
   openGraph: {
     type: "website",
     siteName: SITE.name,
-    title: `${SITE.name}`,
-    description: "Science, maths and medicine tutoring from a final-year medical student. Book a free intro call.",
+    title: SEO.homeTitle,
+    description: SEO.homeDescription,
     locale: "en_GB",
+    url: "/",
   },
-  robots: { index: true, follow: true },
+  twitter: {
+    card: "summary_large_image",
+    title: SEO.homeTitle,
+    description: SEO.homeDescription,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#fdfbf7",
+  colorScheme: "light",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -47,6 +74,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
+        <JsonLd data={graph(organisation(), tutorPerson(), website())} />
       </body>
     </html>
   );

@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-export function MobileMenu({ links }: { links: { href: string; label: string }[] }) {
+type Item = { href: string; label: string };
+
+export function MobileMenu({ links, subjects }: { links: Item[]; subjects: Item[] }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -20,6 +22,8 @@ export function MobileMenu({ links }: { links: { href: string; label: string }[]
       document.removeEventListener("mousedown", onClick);
     };
   }, [open]);
+
+  const close = () => setOpen(false);
 
   return (
     <div ref={ref} className="relative md:hidden">
@@ -41,13 +45,24 @@ export function MobileMenu({ links }: { links: { href: string; label: string }[]
           </svg>
         )}
       </button>
-      <div id="mobile-menu" hidden={!open} className="absolute right-0 mt-2 w-56 rounded-2xl border border-cream-200 bg-white p-2 shadow-lg">
+      <div id="mobile-menu" hidden={!open} className="card absolute right-0 mt-2 w-72 p-2 shadow-[var(--shadow-lift)]">
+        <p className="px-3 pb-1 pt-2 text-[0.7rem] font-semibold uppercase tracking-wide text-muted">Subjects</p>
+        <ul className="grid grid-cols-2 gap-1">
+          {subjects.map((s) => (
+            <li key={s.href}>
+              <Link href={s.href} onClick={close} className="block rounded-xl bg-cream-50 px-3 py-2 text-sm font-medium text-pine-900 hover:bg-cream-100">
+                {s.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className="my-2 border-t border-cream-200" />
         {links.map((l) => (
-          <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className="block rounded-xl px-3 py-2 text-sm font-medium text-ink-soft hover:bg-cream-100">
+          <Link key={l.href} href={l.href} onClick={close} className="block rounded-xl px-3 py-2 text-sm font-medium text-ink-soft hover:bg-cream-100">
             {l.label}
           </Link>
         ))}
-        <Link href="/book" onClick={() => setOpen(false)} className="btn btn-primary mt-2 w-full">
+        <Link href="/book" onClick={close} className="btn btn-primary mt-2 w-full">
           Book a session
         </Link>
       </div>
