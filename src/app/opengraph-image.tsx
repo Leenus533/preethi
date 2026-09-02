@@ -6,10 +6,11 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 const cream = "#fdfbf7";
-const ink = "#1c1b18";
-const inkSoft = "#4b4842";
-const muted = "#6f6a60";
-const line = "#efe6d6";
+const pine900 = "#143330";
+const pine700 = "#1e534b";
+const pine300 = "#7bbbad";
+const clay = "#c96f31";
+const ink = "#4b4842";
 
 export default function OpenGraphImage() {
   return new ImageResponse(
@@ -19,44 +20,87 @@ export default function OpenGraphImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "64px 72px",
           backgroundColor: cream,
-          color: ink,
+          color: pine900,
           fontFamily: "sans-serif",
+          position: "relative",
         }}
       >
-        <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-          <span style={{ fontSize: 26, fontWeight: 600 }}>Preethi Amudhan</span>
-          <span style={{ fontSize: 20, color: muted }}>Tutoring</span>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 980 }}>
-          <div style={{ fontSize: 60, lineHeight: 1.08, fontWeight: 600, letterSpacing: -1.8, display: "flex" }}>
-            GCSE, A-level and medicine tutoring that makes the hard parts click.
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "56px 72px 60px", width: 800 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 10,
+                background: "#1a423c",
+                color: "white",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 28,
+                fontWeight: 700,
+              }}
+            >
+              P
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <span style={{ fontSize: 26, fontWeight: 700, color: pine900 }}>Preethi Amudhan</span>
+              <span style={{ fontSize: 16, color: "#6f6a60", letterSpacing: 1 }}>TUTORING</span>
+            </div>
           </div>
-          <div style={{ fontSize: 24, color: inkSoft, lineHeight: 1.45, maxWidth: 860, display: "flex" }}>
-            Any GCSE or A-level subject, UCAT preparation and medical school applications. Online, one-to-one, from a final-year UEA
-            medical student.
-          </div>
-        </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", borderTop: `1px solid ${line}`, paddingTop: 24 }}>
-          <div style={{ display: "flex", gap: 48 }}>
-            {[
-              ["A-level", "A, A, A"],
-              ["UCAT", "Top 10%"],
-              ["From", "£30 an hour"],
-            ].map(([label, value]) => (
-              <div key={label} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 16, color: muted }}>{label}</span>
-                <span style={{ fontSize: 28, fontWeight: 600, letterSpacing: -0.5 }}>{value}</span>
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            <div style={{ fontSize: 50, lineHeight: 1.08, fontWeight: 700, letterSpacing: -1.2, display: "flex" }}>
+              GCSE, A-level and medicine tutoring that makes the hard parts click.
+            </div>
+            <div style={{ fontSize: 22, color: ink, lineHeight: 1.4 }}>
+              Any GCSE or A-level subject, UCAT preparation and medical school applications. Online, one-to-one, from a final-year UEA
+              medical student.
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: 10 }}>
+            {["A, A, A at A-level", "Top 10% UCAT", "From £30 an hour", "Free intro call"].map((t) => (
+              <div
+                key={t}
+                style={{
+                  display: "flex",
+                  padding: "9px 16px",
+                  borderRadius: 999,
+                  background: "white",
+                  border: "1px solid #e2d5bd",
+                  color: pine700,
+                  fontSize: 17,
+                  fontWeight: 600,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {t}
               </div>
             ))}
           </div>
-          <span style={{ fontSize: 18, color: muted }}>preethi.co.uk</span>
         </div>
+
+        {/* Right-hand study motifs. */}
+        <div style={{ position: "absolute", right: 0, top: 0, width: 420, height: 630, display: "flex" }}>
+          <svg width="420" height="630" viewBox="0 0 420 630" fill="none">
+            <path d="M60 560 Q210 -40 380 560" stroke={pine300} strokeWidth="5" strokeLinecap="round" />
+            <path d="M60 560H400M60 80V560" stroke={pine700} strokeWidth="2.5" />
+            <circle cx="219" cy="262" r="10" fill={clay} />
+            <g transform="translate(250 90)" stroke={pine700} strokeWidth="5" strokeLinejoin="round">
+              <path d="M60 4 108.5 32v56L60 116 11.5 88V32z" />
+              <circle cx="60" cy="60" r="30" strokeWidth="4" />
+            </g>
+            <g transform="translate(78 300)" strokeWidth="5" strokeLinecap="round" fill="none">
+              <path d="M20 0C20 50 80 50 80 100 80 150 20 150 20 200" stroke={pine700} />
+              <path d="M80 0C80 50 20 50 20 100 20 150 80 150 80 200" stroke={clay} />
+              <path d="M22 13.6h56M26 24.8h48M37 38.4h26M37 61.6h26M26 75.2h48M22 86.4h56M22 113.6h56M26 124.8h48M37 138.4h26M37 161.6h26M26 175.2h48M22 186.4h56" stroke={pine300} strokeWidth="3" />
+            </g>
+          </svg>
+        </div>
+
+        <div style={{ position: "absolute", left: 72, bottom: 24, fontSize: 17, color: "#6f6a60", display: "flex" }}>preethi.co.uk</div>
       </div>
     ),
     { ...size },
