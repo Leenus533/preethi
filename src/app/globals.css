@@ -4,12 +4,11 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
 
+  /* Paper and ink. The ground is a warm off-white rather than pure white. */
   --color-cream-50: #fdfbf7;
   --color-cream-100: #f8f3ea;
   --color-cream-200: #efe6d6;
   --color-cream-300: #e2d5bd;
-  --color-cream-400: #b8ad98;
-  --color-line: #8f8779;
 
   --color-pine-50: #eef6f4;
   --color-pine-100: #d6ebe6;
@@ -23,19 +22,37 @@
   --color-pine-900: #143330;
 
   --color-clay-100: #fdebdd;
-  --color-clay-300: #f5bf94;
-  --color-clay-500: #e28a4c;
   --color-clay-600: #c96f31;
   --color-clay-700: #a2561f;
-  --color-clay-800: #86461a;
 
   --color-ink: #1c1b18;
   --color-ink-soft: #4b4842;
   --color-muted: #6f6a60;
+  /* Quiet text that still clears 4.5:1 on both cream and the pine-50 fills. */
+  --color-muted-strong: #6f6a60;
+  /* The one border colour that clears the 3:1 requirement for a UI boundary. */
+  --color-line: #8f8779;
+  --color-danger: #a3271b;
+  --color-danger-surface: #fbeeec;
+
+  /* One type scale, used everywhere. */
+  --text-display: clamp(2.5rem, 1.7rem + 3.2vw, 3.9rem);
+  --text-h2: clamp(1.75rem, 1.45rem + 1.3vw, 2.375rem);
+  --text-h3: 1.375rem;
+  --text-lead: 1.1875rem;
+  --text-meta: 0.8125rem;
+
+  /* One spacing scale. The parent of a stack owns its gaps. */
+  --space-item: 1.25rem;
+  --space-group: 3rem;
+  --space-section: clamp(4rem, 2.75rem + 4.5vw, 6.5rem);
 }
 
 :root {
   color-scheme: light;
+  /* Prose measure. Held under 68 characters for comfortable reading. */
+  --measure: 66ch;
+  --measure-lead: 54ch;
 }
 
 html {
@@ -50,9 +67,20 @@ body {
 }
 
 @layer components {
+  /* Fraunces is an optical-size variable face. Matching opsz to the rendered size
+     stops small headings inheriting the hairline strokes meant for display sizes. */
   .font-display {
     font-family: var(--font-display);
+    font-variation-settings: "opsz" 32, "SOFT" 30;
+    letter-spacing: -0.012em;
+  }
+  .font-display-lg {
+    font-variation-settings: "opsz" 72, "SOFT" 30;
+    letter-spacing: -0.018em;
+  }
+  .font-display-xl {
     font-variation-settings: "opsz" 144, "SOFT" 30;
+    letter-spacing: -0.024em;
   }
 
   .container-x {
@@ -61,10 +89,24 @@ body {
     margin-inline: auto;
     padding-inline: 1.25rem;
   }
-  @media (min-width: 640px) {
-    .container-x {
-      padding-inline: 2rem;
-    }
+
+  /* Sections are separated by a hairline rule and space, not by boxes. */
+  .section {
+    padding-block: var(--space-section);
+    border-top: 1px solid var(--color-cream-200);
+  }
+  .section-grid {
+    display: grid;
+    gap: var(--space-group);
+  }
+  .running-head {
+    font-size: var(--text-meta);
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-muted);
+  }
+  .measure {
+    max-width: var(--measure);
   }
 
   .btn {
@@ -79,59 +121,55 @@ body {
     line-height: 1;
     transition:
       background-color 150ms ease,
-      color 150ms ease,
-      transform 150ms ease,
-      box-shadow 150ms ease;
+      border-color 150ms ease,
+      color 150ms ease;
     white-space: nowrap;
   }
-  .btn:focus-visible {
-    outline: 3px solid var(--color-pine-500);
+  /* A dark ring inside a light halo, so the indicator clears 3:1 on every
+     ground the site uses, light or dark, without needing a per-surface variant. */
+  .btn:focus-visible,
+  .focus-ring:focus-visible {
+    outline: 3px solid var(--color-pine-900);
     outline-offset: 2px;
+    box-shadow: 0 0 0 6px var(--color-cream-50);
   }
   .btn:disabled {
-    opacity: 0.55;
+    opacity: 0.75;
     cursor: not-allowed;
   }
   .btn-primary {
     background: var(--color-pine-700);
     color: #fff;
-    box-shadow: 0 1px 2px rgb(20 51 48 / 0.2);
   }
   .btn-primary:hover:not(:disabled) {
     background: var(--color-pine-800);
-    transform: translateY(-1px);
   }
   .btn-secondary {
     background: transparent;
     color: var(--color-pine-800);
-    border: 1.5px solid var(--color-pine-300);
+    border: 1.5px solid var(--color-pine-500);
   }
   .btn-secondary:hover:not(:disabled) {
     background: var(--color-pine-50);
-    border-color: var(--color-pine-500);
+    border-color: var(--color-pine-700);
   }
-  .btn-accent {
-    background: var(--color-clay-700);
-    color: #fff;
+  /* Used on the dark band. Cream on pine-900 is 13.1:1. */
+  .btn-invert {
+    background: var(--color-cream-50);
+    color: var(--color-pine-900);
   }
-  .btn-accent:hover:not(:disabled) {
-    background: var(--color-clay-800);
-    transform: translateY(-1px);
-  }
-
-  .card {
+  .btn-invert:hover:not(:disabled) {
     background: #fff;
-    border: 1px solid var(--color-cream-200);
-    border-radius: 1.25rem;
-    box-shadow: 0 1px 2px rgb(28 27 24 / 0.04), 0 8px 24px -12px rgb(28 27 24 / 0.12);
+  }
+  .btn-invert:focus-visible {
+    box-shadow: 0 0 0 6px var(--color-pine-100);
   }
 
-  .eyebrow {
-    font-size: 0.78rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--color-pine-600);
+  /* A surface only where something is selected, entered or interacted with. */
+  .panel {
+    background: #fff;
+    border: 1px solid var(--color-cream-300);
+    border-radius: 1rem;
   }
 
   .field {
@@ -142,38 +180,16 @@ body {
     padding: 0.7rem 0.9rem;
     font-size: 0.95rem;
     color: var(--color-ink);
-    transition: border-color 150ms ease, box-shadow 150ms ease;
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease;
   }
   .field:focus {
     outline: none;
-    border-color: var(--color-pine-600);
+    border-color: var(--color-pine-700);
     box-shadow: 0 0 0 3px var(--color-pine-200);
   }
   .field[aria-invalid="true"] {
-    border-color: #c2410c;
-  }
-
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.fade-up {
-  animation: fade-up 400ms ease both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .fade-up {
-    animation: none;
+    border-color: var(--color-danger);
   }
 }

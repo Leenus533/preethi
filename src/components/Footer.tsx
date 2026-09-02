@@ -3,16 +3,16 @@ import { SITE } from "@/lib/config";
 
 export function Footer() {
   return (
-    <footer className="mt-24 border-t border-cream-200 bg-cream-100">
+    <footer className="border-t border-cream-200 bg-cream-100">
       <div className="container-x grid gap-10 py-12 md:grid-cols-3">
         <div>
           <p className="font-display text-xl text-pine-900">{SITE.name}</p>
-          <p className="mt-2 max-w-xs text-sm text-muted">
+          <p className="mt-2 max-w-xs text-sm text-ink-soft">
             One-to-one online tutoring in science, maths and medicine from a final-year medical student at the University of East Anglia.
           </p>
         </div>
         <div className="text-sm">
-          <p className="eyebrow mb-3">Get in touch</p>
+          <p className="mb-3 font-medium text-ink">Get in touch</p>
           <a href={`mailto:${SITE.contactEmail}`} className="block text-pine-800 underline-offset-4 hover:underline">
             {SITE.contactEmail}
           </a>
@@ -21,10 +21,10 @@ export function Footer() {
               {SITE.phone}
             </a>
           )}
-          <p className="mt-1 text-muted">{SITE.location} · sessions online via Google Meet</p>
+          <p className="mt-1 text-ink-soft">{SITE.location} · sessions online via Google Meet</p>
         </div>
         <div className="text-sm">
-          <p className="eyebrow mb-3">Site</p>
+          <p className="mb-3 font-medium text-ink">Site</p>
           <ul className="space-y-1.5">
             <li>
               <Link href="/book" className="text-pine-800 hover:underline underline-offset-4">

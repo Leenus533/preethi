@@ -248,30 +248,29 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
         )}
 
         {step === 1 && (
-          <section aria-labelledby="step1" className="fade-up">
+          <section aria-labelledby="step1">
             <h2 id="step1" ref={headingRef} tabIndex={-1} className="font-display text-2xl text-pine-900 outline-none">What would you like to book?</h2>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <ul className="mt-5 border-t border-cream-200">
               {services.map((s) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => chooseService(s.id)}
-                  className="card group flex flex-col items-start p-5 text-left transition hover:-translate-y-0.5 hover:border-pine-300 focus-visible:outline focus-visible:outline-3 focus-visible:outline-clay-300"
-                >
-                  <span className="flex w-full items-baseline justify-between gap-3">
-                    <span className="font-display text-lg text-pine-900">{s.name}</span>
-                    <span className="shrink-0 text-sm font-semibold text-pine-700">{formatPrice(s.pricePence)}</span>
-                  </span>
-                  <span className="mt-1 text-sm text-muted">{s.tagline}</span>
-                  <span className="mt-3 text-xs font-medium uppercase tracking-wider text-muted">{s.durationMinutes} minutes · online</span>
-                </button>
+                <li key={s.id}>
+                  <button
+                    type="button"
+                    onClick={() => chooseService(s.id)}
+                    className="focus-ring group grid w-full grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 gap-y-1 border-b border-cream-200 py-5 text-left hover:bg-cream-100"
+                  >
+                    <span className="font-display text-lg text-pine-700 underline-offset-4 group-hover:underline">{s.name}</span>
+                    <span className="shrink-0 font-display text-xl tabular-nums text-ink">{formatPrice(s.pricePence)}</span>
+                    <span className="col-start-1 text-sm text-ink-soft">{s.tagline}</span>
+                    <span className="col-start-1 text-[length:var(--text-meta)] text-muted">{s.durationMinutes} minutes · online</span>
+                  </button>
+                </li>
               ))}
-            </div>
+            </ul>
           </section>
         )}
 
         {step === 2 && service && (
-          <section aria-labelledby="step2" className="fade-up">
+          <section aria-labelledby="step2">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <h2 id="step2" ref={headingRef} tabIndex={-1} className="font-display text-2xl text-pine-900 outline-none">Choose a date and time</h2>
               <button type="button" onClick={() => setStep(1)} className="text-sm font-medium text-pine-700 underline underline-offset-4">
@@ -288,7 +287,7 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
             )}
 
             <div className="mt-6 grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-              <div className="card p-4 sm:p-5">
+              <div className="panel p-4 sm:p-5">
                 <div className="flex items-center justify-between">
                   <button type="button" onClick={() => shiftMonth(-1)} disabled={!canGoPrev} aria-label="Previous month" className="btn btn-secondary !px-3 !py-2">
                     ‹
@@ -324,13 +323,13 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
                           setSelectedDay(key);
                           setSelectedSlot(null);
                         }}
-                        className={`relative aspect-square rounded-xl text-sm transition ${
+                        className={`focus-ring relative aspect-square rounded-xl text-sm transition ${
                           selected
                             ? "bg-pine-700 font-semibold text-white"
                             : has
                               ? "bg-pine-50 font-medium text-pine-900 hover:bg-pine-100"
-                              : "text-muted/50 disabled:cursor-not-allowed"
-                        } ${isToday && !selected ? "ring-1 ring-clay-300" : ""}`}
+                              : "text-muted-strong disabled:cursor-not-allowed"
+                        } ${isToday && !selected ? "ring-2 ring-clay-700" : ""}`}
                       >
                         {Number(key.slice(-2))}
                         {has && !selected && <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-pine-500" aria-hidden />}
@@ -348,7 +347,7 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
                 )}
               </div>
 
-              <div className="card p-4 sm:p-5">
+              <div className="panel p-4 sm:p-5">
                 {!selectedDay ? (
                   <p className="text-sm text-muted">Pick a highlighted day to see times.</p>
                 ) : (
@@ -366,8 +365,8 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
                                 setSubmitError(null);
                               }}
                               aria-pressed={sel}
-                              className={`w-full rounded-xl border px-2 py-2 text-sm font-medium transition ${
-                                sel ? "border-pine-700 bg-pine-700 text-white" : "border-cream-300 bg-white text-pine-900 hover:border-pine-400"
+                              className={`focus-ring w-full rounded-xl border px-2 py-2 text-sm font-medium transition ${
+                                sel ? "border-pine-700 bg-pine-700 text-white" : "border-line bg-white text-pine-900 hover:border-pine-700"
                               }`}
                             >
                               {fmtTime(iso, timezone)}
@@ -388,14 +387,14 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
         )}
 
         {step === 3 && service && selectedSlot && (
-          <section aria-labelledby="step3" className="fade-up">
+          <section aria-labelledby="step3">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <h2 id="step3" ref={headingRef} tabIndex={-1} className="font-display text-2xl text-pine-900 outline-none">Your details</h2>
               <button type="button" onClick={() => setStep(2)} className="text-sm font-medium text-pine-700 underline underline-offset-4">
                 Change time
               </button>
             </div>
-            <form onSubmit={submit} noValidate className="card mt-5 grid gap-5 p-5 sm:p-7">
+            <form onSubmit={submit} noValidate className="mt-5 grid gap-5 border-t border-cream-200 pt-6">
               <div className="grid gap-5 sm:grid-cols-2">
                 <Field label="Student's name" error={fieldErrors.name}>
                   <input id="field-name" className="field" autoComplete="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} aria-invalid={Boolean(fieldErrors.name)} required />
@@ -459,8 +458,8 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
       </div>
 
       <aside className="lg:sticky lg:top-24 lg:self-start">
-        <div className="card p-5">
-          <p className="eyebrow">Your booking</p>
+        <div className="panel p-5">
+          <p className="font-medium text-ink">Your booking</p>
           {service ? (
             <>
               <p className="mt-2 font-display text-xl text-pine-900">{service.name}</p>
@@ -499,7 +498,7 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
 function StepHeader({ n, label, active, done }: { n: number; label: string; active: boolean; done: boolean }) {
   return (
     <li className={`flex items-center gap-2 text-sm ${active ? "text-pine-900 font-semibold" : "text-muted"}`}>
-      <span className={`grid h-6 w-6 place-items-center rounded-full text-xs ${done ? "bg-pine-600 text-white" : active ? "bg-pine-100 text-pine-800" : "bg-cream-200 text-muted"}`}>
+      <span className={`grid h-6 w-6 place-items-center rounded-full text-xs ${done ? "bg-pine-600 text-white" : active ? "bg-pine-100 text-pine-800" : "bg-cream-200 text-ink-soft"}`}>
         {done ? <Icon.Check width={14} height={14} /> : n}
       </span>
       {label}

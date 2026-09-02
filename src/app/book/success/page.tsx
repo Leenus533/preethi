@@ -68,7 +68,7 @@ export default async function SuccessPage({ searchParams }: PageProps<"/book/suc
   if (!validRef) {
     return (
       <div className="container-x py-16">
-        <h1 className="font-display text-3xl text-pine-900">We could not find that booking</h1>
+        <h1 className="font-display font-display-lg text-[length:var(--text-h2)] text-pine-900">We could not find that booking</h1>
         <p className="mt-3 text-ink-soft">The link looks incomplete. If you have just paid, check your email for a receipt and calendar invitation, or contact Preethi.</p>
         <Link href="/book" className="btn btn-primary mt-6">Back to booking</Link>
       </div>
@@ -81,28 +81,27 @@ export default async function SuccessPage({ searchParams }: PageProps<"/book/suc
   return (
     <div className="container-x py-12 sm:py-16">
       <div className="mx-auto max-w-2xl">
-        <p className="eyebrow">{details?.pending ? "Almost there" : "Confirmed"}</p>
-        <h1 className="font-display mt-2 text-3xl text-pine-900 sm:text-4xl">{title}</h1>
+        <h1 className="font-display font-display-lg text-[length:var(--text-h2)] leading-[1.12] text-pine-900">{title}</h1>
 
         {details ? (
           <>
-            <dl className="card mt-6 grid gap-4 p-6 sm:grid-cols-2">
+            <dl className="mt-6 grid gap-4 border-y border-cream-200 py-6 sm:grid-cols-2">
               <div>
-                <dt className="text-xs uppercase tracking-wider text-muted">Session</dt>
+                <dt className="text-[length:var(--text-meta)] text-muted">Session</dt>
                 <dd className="mt-1 font-medium text-ink">{details.serviceName}</dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-wider text-muted">Date</dt>
+                <dt className="text-[length:var(--text-meta)] text-muted">Date</dt>
                 <dd className="mt-1 font-medium text-ink">{formatDate(details.start, TIMEZONE)}</dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-wider text-muted">Time</dt>
+                <dt className="text-[length:var(--text-meta)] text-muted">Time</dt>
                 <dd className="mt-1 font-medium text-ink">
                   {formatTime(details.start, TIMEZONE)} to {formatTime(details.end, TIMEZONE)} {tz}
                 </dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-wider text-muted">Payment</dt>
+                <dt className="text-[length:var(--text-meta)] text-muted">Payment</dt>
                 <dd className="mt-1 font-medium text-ink">
                   {details.amountPence === undefined
                     ? ref.startsWith("free_")
@@ -119,14 +118,14 @@ export default async function SuccessPage({ searchParams }: PageProps<"/book/suc
             </div>
           </>
         ) : (
-          <p className="card mt-6 p-6 text-ink-soft">
+          <p className="measure mt-6 border-y border-cream-200 py-6 text-ink-soft">
             {lookupFailed
               ? "We could not load the booking details just now, but if your payment went through you will receive a receipt and a calendar invitation by email."
               : "Your booking reference has been recorded. A calendar invitation will follow by email."}
           </p>
         )}
 
-        <div className="mt-8 space-y-3 text-sm text-ink-soft">
+        <div className="measure mt-8 space-y-3 text-sm text-ink-soft">
           <p>
             <strong className="text-ink">What happens next.</strong> A Google Calendar invitation with the Google Meet link is sent to the email address you gave.
             Accept it and it will sit in your own calendar with reminders. A payment receipt comes separately from Stripe.

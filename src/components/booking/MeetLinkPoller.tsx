@@ -47,7 +47,7 @@ export function MeetLinkPoller({ bookingRef, initialMeetLink, email, contactEmai
 
   if (status.meetLink) {
     return (
-      <div className="rounded-2xl border border-pine-200 bg-pine-50 p-5">
+      <div className="rounded-2xl border border-pine-300 bg-pine-50 p-5">
         <p className="font-semibold text-pine-900">Your Google Meet link is ready</p>
         <a href={status.meetLink} className="btn btn-primary mt-3" target="_blank" rel="noreferrer">
           Open Google Meet
@@ -57,7 +57,7 @@ export function MeetLinkPoller({ bookingRef, initialMeetLink, email, contactEmai
     );
   }
   return (
-    <div className="rounded-2xl border border-cream-200 bg-white p-5 text-sm text-ink-soft">
+    <div role="status" className="rounded-2xl border border-cream-300 bg-white p-5 text-sm text-ink-soft">
       {gaveUp ? (
         <p>
           Your payment went through, but the calendar invitation has not appeared yet. It usually arrives within a few minutes
@@ -68,10 +68,7 @@ export function MeetLinkPoller({ bookingRef, initialMeetLink, email, contactEmai
           quoting reference {bookingRef.slice(0, 12)} and Preethi will confirm the time by hand.
         </p>
       ) : (
-        <p className="flex items-center gap-2">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-pine-500" aria-hidden />
-          Creating your calendar invitation{email ? ` for ${email}` : ""}…
-        </p>
+        <p>Creating your calendar invitation{email ? ` for ${email}` : ""}…</p>
       )}
     </div>
   );

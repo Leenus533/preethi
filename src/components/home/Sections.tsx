@@ -3,19 +3,31 @@ import { SERVICES, SITE, formatPrice } from "@/lib/config";
 import { Icon } from "@/components/ui/icons";
 import { TutorPortrait } from "./TutorPortrait";
 
+/** Section header: a quiet running head in the left column, the claim in the right. */
+function SectionHead({ head, title, children }: { head: string; title: string; children?: React.ReactNode }) {
+  return (
+    <div className="grid gap-3 lg:grid-cols-[10rem_minmax(0,1fr)] lg:gap-x-16">
+      <p className="running-head lg:pt-2">{head}</p>
+      <div>
+        <h2 className="font-display font-display-lg text-[length:var(--text-h2)] leading-[1.12] text-pine-900">{title}</h2>
+        {children && <div className="measure mt-4 text-ink-soft">{children}</div>}
+      </div>
+    </div>
+  );
+}
+
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-x-0 top-0 -z-10 h-[32rem] bg-gradient-to-b from-pine-50 to-transparent" aria-hidden />
+    <section>
       <div className="container-x grid items-center gap-14 py-16 md:py-24 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="fade-up">
-          <p className="eyebrow">Online tutoring · Norwich and across the UK</p>
-          <h1 className="font-display mt-4 text-4xl leading-[1.08] text-pine-900 sm:text-5xl lg:text-[3.6rem]">
+        <div>
+          <h1 className="font-display font-display-xl text-[length:var(--text-display)] leading-[1.04] text-balance text-pine-900">
             Science, maths and medicine tutoring that makes the hard parts click.
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
-            I&rsquo;m Preethi, a final-year medical student at the University of East Anglia. I help GCSE and A-level students turn
-            &ldquo;I don&rsquo;t get it&rdquo; into confident exam answers, and I coach future medics through the UCAT and their applications.
+          <p className="mt-6 max-w-[var(--measure-lead)] text-[length:var(--text-lead)] leading-relaxed text-ink-soft">
+            I&rsquo;m Preethi, a final-year medical student at the University of East Anglia. I teach online from Norwich, helping
+            GCSE and A-level students turn &ldquo;I don&rsquo;t get it&rdquo; into confident exam answers, and coaching future medics
+            through the UCAT and their applications.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link href="/book?service=intro-call" className="btn btn-primary">
@@ -25,7 +37,7 @@ export function Hero() {
               See subjects and prices
             </Link>
           </div>
-          <dl className="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-cream-200 pt-6">
+          <dl className="mt-10 grid max-w-xl grid-cols-3 gap-6 border-t border-cream-200 pt-6">
             {[
               ["A, A, A", "A-level Biology, Chemistry, Maths"],
               ["Top 10%", "UCAT score"],
@@ -33,7 +45,7 @@ export function Hero() {
             ].map(([big, small]) => (
               <div key={big}>
                 <dt className="font-display text-2xl text-pine-800 sm:text-3xl">{big}</dt>
-                <dd className="mt-1 text-xs leading-snug text-muted sm:text-sm">{small}</dd>
+                <dd className="mt-1 text-[length:var(--text-meta)] leading-snug text-muted">{small}</dd>
               </div>
             ))}
           </dl>
@@ -47,22 +59,19 @@ export function Hero() {
 }
 
 const trust = [
-  { icon: Icon.Cap, text: "Final-year Medicine MBBS, University of East Anglia" },
-  { icon: Icon.Shield, text: "Enhanced DBS check held through UEA Medical School" },
-  { icon: Icon.Heart, text: "Sixth-form subject mentor for a full academic year" },
-  { icon: Icon.Video, text: "Online via Google Meet, with a calendar invite sent automatically" },
+  "Final-year Medicine MBBS at the University of East Anglia",
+  "Enhanced DBS check held through UEA Medical School",
+  "A full academic year as a sixth-form subject mentor",
+  "Online over Google Meet, with a calendar invitation sent automatically",
 ];
 
 export function TrustStrip() {
   return (
-    <section aria-label="Credentials" className="border-y border-cream-200 bg-white">
-      <ul className="container-x grid gap-4 py-6 sm:grid-cols-2 lg:grid-cols-4">
-        {trust.map(({ icon: I, text }) => (
-          <li key={text} className="flex items-start gap-3 text-sm text-ink-soft">
-            <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-pine-50 text-pine-700">
-              <I width={17} height={17} />
-            </span>
-            <span>{text}</span>
+    <section aria-label="Credentials" className="border-y border-cream-200">
+      <ul className="container-x grid gap-x-10 gap-y-3 py-6 sm:grid-cols-2 lg:grid-cols-4">
+        {trust.map((text) => (
+          <li key={text} className="text-[0.9375rem] leading-snug text-ink-soft">
+            {text}
           </li>
         ))}
       </ul>
@@ -74,56 +83,52 @@ const subjects = [
   {
     title: "GCSE",
     blurb: "Build the foundations properly and learn how to score the marks on the paper.",
-    chips: ["Maths", "Biology", "Chemistry", "Physics", "Combined Science"],
+    detail: "Maths, Biology, Chemistry, Physics and Combined Science. AQA, Edexcel and OCR.",
     serviceId: "gcse-60",
   },
   {
     title: "A-level",
     blurb: "Topic-by-topic depth, plus the exam technique that separates a B from an A.",
-    chips: ["Biology", "Chemistry", "Maths"],
+    detail: "Biology, Chemistry and Maths, taught by someone who got an A in each.",
     serviceId: "alevel-60",
   },
   {
     title: "UCAT",
     blurb: "Strategy and timing for every section, from someone who scored in the top 10%.",
-    chips: ["Verbal Reasoning", "Decision Making", "Quantitative", "Situational Judgement"],
+    detail: "Verbal Reasoning, Decision Making, Quantitative Reasoning and Situational Judgement.",
     serviceId: "ucat-60",
   },
   {
     title: "Medical school applications",
     blurb: "Personal statement reviews, mock interviews and honest advice on where to apply.",
-    chips: ["Personal statement", "MMI practice", "Panel interviews", "UCAS strategy"],
+    detail: "Personal statements, MMI and panel practice, and the UCAS timeline.",
     serviceId: "medicine-60",
   },
 ];
 
 export function Subjects() {
   return (
-    <section id="subjects" className="container-x scroll-mt-24 py-20">
-      <div className="max-w-2xl">
-        <p className="eyebrow">What I teach</p>
-        <h2 className="font-display mt-3 text-3xl text-pine-900 sm:text-4xl">Subjects and stages</h2>
-        <p className="mt-4 text-ink-soft">
-          Every session is one-to-one and tailored to the student&rsquo;s exam board and target grade. AQA, Edexcel and OCR all covered.
-        </p>
-      </div>
-      <div className="mt-10 grid gap-5 md:grid-cols-2">
-        {subjects.map((s) => (
-          <article key={s.title} className="card flex flex-col p-6 sm:p-7">
-            <h3 className="font-display text-2xl text-pine-900">{s.title}</h3>
-            <p className="mt-2 text-ink-soft">{s.blurb}</p>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {s.chips.map((c) => (
-                <li key={c} className="rounded-full bg-pine-50 px-3 py-1 text-xs font-medium text-pine-800">
-                  {c}
-                </li>
-              ))}
-            </ul>
-            <Link href={`/book?service=${s.serviceId}`} className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-pine-700 hover:text-pine-900">
-              Book {s.title} tutoring <Icon.Arrow width={16} height={16} />
-            </Link>
-          </article>
-        ))}
+    <section id="subjects" className="section scroll-mt-24">
+      <div className="container-x section-grid">
+        <SectionHead head="Subjects" title="One-to-one, built around your exam board">
+          <p>Every session is planned around the student&rsquo;s specification and target grade.</p>
+        </SectionHead>
+        <ol className="border-t border-cream-200 lg:ml-[calc(10rem+4rem)]">
+          {subjects.map((s) => (
+            <li key={s.title}>
+              <Link
+                href={`/book?service=${s.serviceId}`}
+                className="focus-ring group grid gap-x-10 gap-y-1 border-b border-cream-200 py-6 sm:grid-cols-[12rem_minmax(0,1fr)]"
+              >
+                <h3 className="font-display text-[length:var(--text-h3)] text-pine-700 underline-offset-4 group-hover:underline">{s.title}</h3>
+                <div className="measure">
+                  <p className="text-ink-soft">{s.blurb}</p>
+                  <p className="mt-1 text-[length:var(--text-meta)] text-muted">{s.detail}</p>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
@@ -131,17 +136,14 @@ export function Subjects() {
 
 const steps = [
   {
-    icon: Icon.Mail,
     title: "Start with a free intro call",
     text: "Twenty minutes to talk about goals, exam boards and how sessions would work. No pressure, nothing to pay.",
   },
   {
-    icon: Icon.Calendar,
     title: "Pick a time that suits",
     text: "The booking calendar shows live availability. Choose a slot, add a few details and you are done.",
   },
   {
-    icon: Icon.Card,
     title: "Pay securely, get your invite",
     text: "Card payment through Stripe. A Google Calendar invitation with the Meet link lands in your inbox straight away.",
   },
@@ -149,25 +151,18 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="scroll-mt-24 bg-pine-900 py-20 text-white">
-      <div className="container-x">
-        <p className="eyebrow !text-pine-200">How it works</p>
-        <h2 className="font-display mt-3 max-w-xl text-3xl sm:text-4xl">Three steps from first message to first session</h2>
-        <ol className="mt-12 grid gap-8 md:grid-cols-3">
-          {steps.map(({ icon: I, title, text }, i) => (
-            <li key={title} className="relative rounded-3xl border border-white/10 bg-white/5 p-6">
-              <span className="absolute -top-3 left-6 rounded-full bg-clay-700 px-3 py-1 text-xs font-bold text-white">{i + 1}</span>
-              <I width={26} height={26} className="text-pine-200" />
-              <h3 className="mt-4 font-display text-xl">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-pine-100">{text}</p>
+    <section id="how-it-works" className="section scroll-mt-24">
+      <div className="container-x section-grid">
+        <SectionHead head="How it works" title="Three steps from first message to first session" />
+        <ol className="grid gap-8 border-t border-cream-200 pt-10 md:grid-cols-3 lg:ml-[calc(10rem+4rem)]">
+          {steps.map((s, i) => (
+            <li key={s.title}>
+              <span className="font-display text-3xl text-pine-600">{i + 1}</span>
+              <h3 className="mt-2 font-display text-[length:var(--text-h3)] text-pine-900">{s.title}</h3>
+              <p className="mt-2 leading-relaxed text-ink-soft">{s.text}</p>
             </li>
           ))}
         </ol>
-        <div className="mt-10">
-          <Link href="/book" className="btn btn-accent">
-            Book a session
-          </Link>
-        </div>
       </div>
     </section>
   );
@@ -175,37 +170,37 @@ export function HowItWorks() {
 
 export function About() {
   return (
-    <section id="about" className="container-x scroll-mt-24 py-20">
-      <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-        <div>
-          <p className="eyebrow">About Preethi</p>
-          <h2 className="font-display mt-3 text-3xl text-pine-900 sm:text-4xl">A tutor who knows the current specifications, and remembers what was hard</h2>
-        </div>
-        <div className="space-y-5 text-ink-soft leading-relaxed">
-          <p>
-            I went to school in Norwich, took Biology, Chemistry and Maths at Sir Isaac Newton Sixth Form and got an A in each. Before that I
-            picked up grade 9s in GCSE Biology, Chemistry, Physics, Computer Science and Geography. I scored in the top 10% on the UCAT and
-            started Medicine at the University of East Anglia in 2022. I&rsquo;m now in my final year.
-          </p>
-          <p>
-            After my A-levels I spent a year as a student subject mentor at my old sixth form, running one-to-one and group sessions, online
-            and in person, and reporting back to teachers on progress. That is where I learned that most &ldquo;I&rsquo;m just bad at
-            chemistry&rdquo; problems are really one or two missing ideas plus a lack of exam practice, and both are fixable.
-          </p>
-          <p>
-            Alongside my degree I work front-of-house in a private physiotherapy clinic and have spent more than eight years in patient-facing
-            roles, so I&rsquo;m used to explaining complicated things calmly to people of all ages. I hold an Enhanced DBS check through the
-            medical school, and parents are always welcome to sit in on sessions.
-          </p>
-          <ul className="grid gap-3 pt-2 sm:grid-cols-2">
+    <section id="about" className="section scroll-mt-24">
+      <div className="container-x section-grid">
+        <SectionHead head="About Preethi" title="A tutor who knows the current specifications, and remembers what was hard" />
+        <div className="grid gap-[var(--space-item)] lg:ml-[calc(10rem+4rem)]">
+          <div className="measure grid gap-[var(--space-item)] leading-relaxed text-ink-soft">
+            <p>
+              I went to school in Norwich, took Biology, Chemistry and Maths at Sir Isaac Newton Sixth Form and got an A in each.
+              Before that I picked up grade 9s in GCSE Biology, Chemistry, Physics, Computer Science and Geography. I scored in the
+              top 10% on the UCAT and started Medicine at the University of East Anglia in 2022. I&rsquo;m now in my final year.
+            </p>
+            <p>
+              After my A-levels I spent a year as a student subject mentor at my old sixth form, running one-to-one and group
+              sessions, online and in person, and reporting back to teachers on progress. That is where I learned that most
+              &ldquo;I&rsquo;m just bad at chemistry&rdquo; problems are really one or two missing ideas plus a lack of exam
+              practice, and both are fixable.
+            </p>
+            <p>
+              Alongside my degree I work front-of-house in a private physiotherapy clinic and have spent more than eight years in
+              patient-facing roles, so I&rsquo;m used to explaining complicated things calmly to people of all ages. I hold an
+              Enhanced DBS check through the medical school, and parents are always welcome to sit in on sessions.
+            </p>
+          </div>
+          <ul className="grid gap-2 border-t border-cream-200 pt-[var(--space-item)] sm:grid-cols-2">
             {[
               "Sessions planned around your exam board and specification",
               "Clear notes on what to practise before the next session",
               "Exam-style questions worked through together",
               "Honest, current advice on medicine applications",
             ].map((t) => (
-              <li key={t} className="flex items-start gap-2 text-sm">
-                <Icon.Check width={18} height={18} className="mt-0.5 shrink-0 text-pine-600" />
+              <li key={t} className="flex items-start gap-2 text-[0.9375rem] text-ink-soft">
+                <Icon.Check width={17} height={17} className="mt-0.5 shrink-0 text-pine-600" aria-hidden />
                 <span>{t}</span>
               </li>
             ))}
@@ -217,43 +212,38 @@ export function About() {
 }
 
 export function Pricing() {
+  const cheapest = Math.min(...SERVICES.filter((s) => s.pricePence > 0).map((s) => s.pricePence));
   return (
-    <section id="pricing" className="scroll-mt-24 bg-cream-100 py-20">
-      <div className="container-x">
-        <div className="max-w-2xl">
-          <p className="eyebrow">Prices</p>
-          <h2 className="font-display mt-3 text-3xl text-pine-900 sm:text-4xl">Simple pricing, pay as you go</h2>
-          <p className="mt-4 text-ink-soft">
-            No packages, no minimum commitment. Pay per session by card when you book. Reschedule free with {SITE.cancellationNoticeHours} hours&rsquo;
-            notice.
+    <section id="pricing" className="section scroll-mt-24">
+      <div className="container-x section-grid">
+        <SectionHead head="Prices" title={`From ${formatPrice(cheapest)} an hour, paid per session`}>
+          <p>
+            No packages and no minimum commitment. Reschedule free with {SITE.cancellationNoticeHours} hours&rsquo; notice.
           </p>
-        </div>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        </SectionHead>
+        <ul className="border-t border-cream-200 lg:ml-[calc(10rem+4rem)]">
           {SERVICES.map((s) => (
-            <article key={s.id} className={`card relative flex flex-col p-6 ${s.badge ? "ring-2 ring-pine-500" : ""}`}>
-              {s.badge && (
-                <span className="absolute -top-3 left-6 rounded-full bg-pine-700 px-3 py-1 text-xs font-semibold text-white">{s.badge}</span>
-              )}
-              <h3 className="font-display text-xl text-pine-900">{s.name}</h3>
-              <p className="mt-1 text-sm text-muted">{s.tagline}</p>
-              <p className="mt-5 flex items-baseline gap-1.5">
-                <span className="font-display text-4xl text-pine-800">{formatPrice(s.pricePence)}</span>
-                <span className="text-sm text-muted">/ {s.durationMinutes} min</span>
-              </p>
-              <ul className="mt-5 space-y-2 text-sm text-ink-soft">
-                {s.highlights.map((h) => (
-                  <li key={h} className="flex items-start gap-2">
-                    <Icon.Check width={16} height={16} className="mt-0.5 shrink-0 text-pine-600" />
-                    {h}
-                  </li>
-                ))}
-              </ul>
-              <Link href={`/book?service=${s.id}`} className={`btn mt-6 w-full ${s.pricePence === 0 ? "btn-secondary" : "btn-primary"}`}>
+            <li
+              key={s.id}
+              className="grid items-baseline gap-x-8 gap-y-3 border-b border-cream-200 py-6 sm:grid-cols-[minmax(0,1fr)_auto_auto]"
+            >
+              <div className="measure">
+                <h3 className="font-display text-[length:var(--text-h3)] text-pine-900">
+                  {s.name}
+                  {s.badge && <span className="ml-3 align-middle text-[length:var(--text-meta)] font-sans font-medium text-clay-700">{s.badge}</span>}
+                </h3>
+                <p className="mt-1 text-[0.9375rem] text-ink-soft">{s.tagline}</p>
+                <p className="mt-1 text-[length:var(--text-meta)] text-muted">
+                  {s.durationMinutes} minutes · {s.highlights.join(" · ")}
+                </p>
+              </div>
+              <p className="font-display text-3xl tabular-nums text-ink sm:justify-self-end">{formatPrice(s.pricePence)}</p>
+              <Link href={`/book?service=${s.id}`} className={`btn sm:justify-self-end ${s.pricePence === 0 ? "btn-secondary" : "btn-primary"}`}>
                 {s.pricePence === 0 ? "Book free call" : "Book and pay"}
               </Link>
-            </article>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
@@ -292,27 +282,27 @@ const faqs = [
 
 export function Faq() {
   return (
-    <section id="faq" className="container-x scroll-mt-24 py-20">
-      <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-        <div>
-          <p className="eyebrow">Questions</p>
-          <h2 className="font-display mt-3 text-3xl text-pine-900 sm:text-4xl">Frequently asked</h2>
-          <p className="mt-4 text-ink-soft">
+    <section id="faq" className="section scroll-mt-24">
+      <div className="container-x section-grid">
+        <SectionHead head="Questions" title="Questions parents ask before booking">
+          <p>
             Anything else? Email{" "}
-            <a href={`mailto:${SITE.contactEmail}`} className="font-medium text-pine-800 underline underline-offset-4">
+            <a href={`mailto:${SITE.contactEmail}`} className="focus-ring font-medium text-pine-700 underline underline-offset-4">
               {SITE.contactEmail}
             </a>
             .
           </p>
-        </div>
-        <div className="divide-y divide-cream-200 rounded-3xl border border-cream-200 bg-white px-6">
+        </SectionHead>
+        <div className="border-t border-cream-200 lg:ml-[calc(10rem+4rem)]">
           {faqs.map((f) => (
-            <details key={f.q} className="group py-4">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left font-semibold text-pine-900">
+            <details key={f.q} className="group border-b border-cream-200 py-4">
+              <summary className="focus-ring flex cursor-pointer list-none items-center justify-between gap-4 text-left font-medium text-pine-900">
                 {f.q}
-                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-cream-100 text-pine-700 transition group-open:rotate-45">+</span>
+                <span className="shrink-0 text-xl leading-none text-pine-600 transition-transform group-open:rotate-45" aria-hidden>
+                  +
+                </span>
               </summary>
-              <p className="mt-3 text-sm leading-relaxed text-ink-soft">{f.a}</p>
+              <p className="measure mt-3 leading-relaxed text-ink-soft">{f.a}</p>
             </details>
           ))}
         </div>
@@ -323,19 +313,23 @@ export function Faq() {
 
 export function CtaBand() {
   return (
-    <section className="container-x">
-      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-pine-700 to-pine-900 px-8 py-14 text-white sm:px-14">
-        <Icon.Sparkle width={120} height={120} className="absolute -right-6 -top-6 text-white/10" />
-        <p className="eyebrow !text-pine-200">Ready when you are</p>
-        <h2 className="font-display mt-3 max-w-lg text-3xl sm:text-4xl">Start with a free 20-minute intro call</h2>
-        <p className="mt-3 max-w-lg text-pine-100">Pick a time on the live calendar. If it turns out I&rsquo;m not the right fit, you&rsquo;ve lost nothing.</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/book?service=intro-call" className="btn btn-accent">
-            Book the free call
-          </Link>
-          <Link href="/book" className="btn border border-white/30 text-white hover:bg-white/10">
-            Book a paid session
-          </Link>
+    <section className="section !border-t-0">
+      <div className="container-x">
+        <div className="bg-pine-900 px-8 py-14 text-white sm:px-14">
+          <h2 className="font-display font-display-lg max-w-xl text-[length:var(--text-h2)] leading-[1.12]">
+            Start with a free 20-minute intro call
+          </h2>
+          <p className="measure mt-3 text-pine-100">
+            Pick a time on the live calendar. If it turns out I&rsquo;m not the right fit, you&rsquo;ve lost nothing.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/book?service=intro-call" className="btn btn-invert">
+              Book the free call
+            </Link>
+            <Link href="/book" className="btn border border-pine-200 text-white hover:bg-white/10">
+              Book a paid session
+            </Link>
+          </div>
         </div>
       </div>
     </section>
