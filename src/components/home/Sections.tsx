@@ -41,7 +41,7 @@ export function Hero() {
       </div>
 
       <div className="container-x relative grid items-center gap-12 pb-16 pt-12 md:pt-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:pb-24 lg:pt-20">
-        <div className="rise">
+        <div>
           <p className="chip">
             <Icon.Pin width={14} height={14} aria-hidden />
             Online tutoring from Norwich, for students anywhere in the UK
@@ -71,14 +71,14 @@ export function Hero() {
               ["Top 10%", "UCAT score"],
               ["Grade 9", "GCSE Biology, Chemistry, Physics"],
             ].map(([big, small], i) => (
-              <div key={big} className={i === 0 ? "pr-4" : "px-4"}>
-                <dt className="font-display text-2xl text-pine-800 sm:text-3xl">{big}</dt>
+              <div key={big} className={i === 0 ? "pr-3 sm:pr-4" : "px-3 sm:px-4"}>
+                <dt className="font-display whitespace-nowrap text-[1.35rem] text-pine-800 sm:text-3xl">{big}</dt>
                 <dd className="mt-1 text-[length:var(--text-meta)] leading-snug text-muted">{small}</dd>
               </div>
             ))}
           </dl>
         </div>
-        <HeroVisual className="rise rise-2 mx-auto w-full max-w-md lg:max-w-none" />
+        <HeroVisual className="rise mx-auto w-full max-w-md lg:max-w-none" />
       </div>
     </section>
   );
@@ -334,7 +334,7 @@ export function Pricing() {
                     </li>
                   ))}
                 </ul>
-                <Link href={`/book?service=${s.id}`} className={`btn mt-6 w-full ${featured ? "btn-primary" : "btn-secondary"}`}>
+                <Link href={`/book?service=${s.id}`} className={`btn mt-auto w-full pt-[0.85rem] ${featured ? "btn-primary" : "btn-secondary"}`}>
                   Book and pay
                 </Link>
               </li>
@@ -433,7 +433,7 @@ export function CtaBand({ title, text }: { title?: React.ReactNode; text?: strin
             <h2 id="cta-title" className="font-display font-display-lg mt-4 max-w-[20ch] text-[length:var(--text-h2)] leading-[1.1] text-balance">
               {title ?? (
                 <>
-                  Start with a free 20-minute <span className="accent-word !text-clay-300">intro call</span>
+                  Start with a free <span className="whitespace-nowrap">20-minute</span> <span className="accent-word !text-clay-300">intro call</span>
                 </>
               )}
             </h2>

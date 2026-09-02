@@ -10,7 +10,7 @@ export const SEO = {
   /** Shown in <title> on the home page. Under 60 characters. */
   homeTitle: "Online GCSE, A-level, UCAT & Medicine Tutor | Preethi Amudhan",
   homeDescription:
-    "One-to-one online tutoring in GCSE and A-level Maths, Biology and Chemistry, UCAT preparation and medical school applications, from a final-year UEA medical student. From £30 an hour. Book a free intro call.",
+    "One-to-one online tutoring in GCSE and A-level Maths, Biology and Chemistry, UCAT prep and medicine applications from a final-year medical student. From £30/hr.",
   keywords: [
     "online tutor",
     "GCSE tutor",

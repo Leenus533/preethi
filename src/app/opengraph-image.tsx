@@ -27,7 +27,7 @@ export default function OpenGraphImage() {
           position: "relative",
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "64px 72px", width: 780 }}>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "56px 72px 60px", width: 800 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <div
               style={{
@@ -51,30 +51,34 @@ export default function OpenGraphImage() {
             </div>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-            <div style={{ fontSize: 58, lineHeight: 1.05, fontWeight: 700, letterSpacing: -1.5, display: "flex", flexWrap: "wrap" }}>
-              <span>Science, maths and medicine tutoring that makes the hard parts&nbsp;</span>
-              <span style={{ color: clay, fontStyle: "italic", fontWeight: 400 }}>click.</span>
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            <div style={{ fontSize: 50, lineHeight: 1.08, fontWeight: 700, letterSpacing: -1.2, display: "flex", flexDirection: "column" }}>
+              <span>Science, maths and medicine tutoring that makes the hard</span>
+              <span style={{ display: "flex" }}>
+                <span>parts&nbsp;</span>
+                <span style={{ color: clay, fontStyle: "italic", fontWeight: 400 }}>click.</span>
+              </span>
             </div>
-            <div style={{ fontSize: 24, color: ink, lineHeight: 1.4 }}>
+            <div style={{ fontSize: 22, color: ink, lineHeight: 1.4 }}>
               GCSE and A-level Biology, Chemistry and Maths, UCAT preparation and medical school applications. Online, one-to-one, from a
               final-year UEA medical student.
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: 12 }}>
+          <div style={{ display: "flex", gap: 10 }}>
             {["A, A, A at A-level", "Top 10% UCAT", "From £30 an hour", "Free intro call"].map((t) => (
               <div
                 key={t}
                 style={{
                   display: "flex",
-                  padding: "10px 16px",
+                  padding: "9px 16px",
                   borderRadius: 999,
                   background: "white",
                   border: "1px solid #e2d5bd",
                   color: pine700,
-                  fontSize: 18,
+                  fontSize: 17,
                   fontWeight: 600,
+                  whiteSpace: "nowrap",
                 }}
               >
                 {t}
@@ -101,7 +105,7 @@ export default function OpenGraphImage() {
           </svg>
         </div>
 
-        <div style={{ position: "absolute", left: 72, bottom: 28, fontSize: 18, color: "#6f6a60", display: "flex" }}>preethi.co.uk</div>
+        <div style={{ position: "absolute", left: 72, bottom: 24, fontSize: 17, color: "#6f6a60", display: "flex" }}>preethi.co.uk</div>
       </div>
     ),
     { ...size },

@@ -88,7 +88,7 @@ export const SUBJECTS: Subject[] = [
     heading: "Online A-level Biology, Chemistry and Maths tutoring",
     metaTitle: "A-level Biology, Chemistry & Maths Tutor | Preethi Amudhan",
     metaDescription:
-      "One-to-one online A-level tutoring in Biology, Chemistry and Maths from a tutor who got A, A, A and is now a final-year medical student. AQA, Edexcel, OCR. £35 an hour.",
+      "One-to-one online A-level tutoring in Biology, Chemistry and Maths from a tutor who got A, A, A and is now a final-year medic. AQA, Edexcel and OCR. £35/hr.",
     keywords: ["A-level chemistry tutor", "A-level biology tutor online", "A-level maths tutor", "A level tutor Norwich", "online A-level tutoring"],
     serviceId: "alevel-60",
     motif: "helix",
@@ -130,7 +130,7 @@ export const SUBJECTS: Subject[] = [
     heading: "UCAT tutoring from a top 10% scorer",
     metaTitle: "UCAT Tutor Online, Top 10% Scorer | Preethi Amudhan",
     metaDescription:
-      "One-to-one UCAT preparation covering Verbal Reasoning, Decision Making, Quantitative Reasoning and Situational Judgement, from a top 10% scorer now in her final year of Medicine. £40 an hour.",
+      "One-to-one online UCAT tutoring across all four sections, with timed drills and a personal strategy, from a top 10% scorer now a final-year medic. £40/hr.",
     keywords: ["UCAT tutor", "UCAT tutoring online", "UCAT preparation", "UCAT coaching", "UCAT verbal reasoning help", "medicine entrance exam tutor"],
     serviceId: "ucat-60",
     motif: "clock",
@@ -170,9 +170,9 @@ export const SUBJECTS: Subject[] = [
     slug: "medical-school-applications",
     title: "Medical school applications",
     heading: "Medical school application coaching from a final-year medic",
-    metaTitle: "Medical School Application & Interview Coaching | Preethi Amudhan",
+    metaTitle: "Medical School Application Coaching | Preethi Amudhan",
     metaDescription:
-      "Personal statement reviews, MMI and panel interview practice and honest advice on where to apply, from a final-year UEA medical student who went through it recently. £40 an hour, online.",
+      "Personal statement reviews, MMI and panel interview practice and honest advice on where to apply, from a final-year UEA medical student. Online, £40/hr.",
     keywords: ["medical school application help", "medicine personal statement review", "MMI interview practice", "medicine interview coaching", "how to get into medical school UK"],
     serviceId: "medicine-60",
     motif: "stethoscope",

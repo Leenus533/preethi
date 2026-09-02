@@ -4,7 +4,7 @@ import { BookingWizard } from "@/components/booking/BookingWizard";
 import { JsonLd } from "@/components/JsonLd";
 import { graph, webPage } from "@/lib/seo";
 
-const description = "Choose a session, pick a time from Preethi's live calendar and pay securely online. GCSE, A-level, UCAT and medical school coaching, or a free 20-minute intro call.";
+const description = "Pick a session, choose a time from Preethi's live calendar and pay securely online. GCSE, A-level, UCAT and medicine coaching, or a free 20-minute intro call.";
 
 export const metadata: Metadata = {
   title: "Book a tutoring session",

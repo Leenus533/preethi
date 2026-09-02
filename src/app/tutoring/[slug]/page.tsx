@@ -77,7 +77,7 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
           </nav>
 
           <div className="mt-8 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-16">
-            <div className="rise">
+            <div>
               <p className="running-head">{subject.title} tutoring</p>
               <h1
                 id="subject-title"
@@ -96,7 +96,7 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
               </div>
             </div>
 
-            <aside aria-label="Session details" className="card rise rise-2 overflow-hidden">
+            <aside aria-label="Session details" className="card rise overflow-hidden">
               <div className="flex items-center gap-4 border-b border-cream-200 bg-cream-50 p-5">
                 <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-pine-700 text-white shadow-[var(--shadow-soft)]">
                   <M width={24} height={24} aria-hidden />

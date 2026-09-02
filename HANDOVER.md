@@ -95,9 +95,14 @@ All in `src/lib/config.ts`, then `./scripts/deploy.sh`:
 To block time off, just put an ordinary event in her Google Calendar. Anything marked Busy removes
 those slots from the site automatically.
 
-Page copy is in `src/components/home/Sections.tsx`. Two claims are worth Preethi checking before
-you share the site: that she covers AQA, Edexcel and OCR, and the GCSE subject list, which includes
-Physics and Combined Science.
+Home page copy is in `src/components/home/Sections.tsx`; the four subject pages under `/tutoring/`
+are written in `src/lib/subjects.ts`. Two claims are worth Preethi checking before you share the
+site: that she covers AQA, Edexcel and OCR, and the GCSE subject list, which includes Physics and
+Combined Science. The subject pages repeat only facts already on the home page, but she should read
+them once.
 
-If you have a photo of her, save it as `public/preethi.jpg` and redeploy. The hero picks it up
-automatically; right now it shows a monogram card.
+## Photo
+
+The hero no longer shows a photograph; it shows an illustrated study board instead. The photo that
+was briefly used is out of the repository but still in git history (commit `5453cfb`) if you want
+it back later. Adding it again is a small design change, not a file drop.
