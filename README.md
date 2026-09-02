@@ -1,0 +1,79 @@
+# Preethi Amudhan Tutoring
+
+Marketing site plus self-service booking and payment for one-to-one tutoring. Built with Next.js (App Router), Tailwind, Stripe Checkout and the Google Calendar API. Deployed on Vercel.
+
+## How a booking works
+
+1. The student picks a session type and a time on `/book`. Free slots come from `GET /api/availability`, which combines the weekly hours in `src/lib/config.ts` with busy times read live from Preethi's Google Calendar.
+2. `POST /api/checkout` re-validates the slot, writes a **HOLD** event into the calendar (so nobody else can take the slot while the student pays) and creates a Stripe Checkout Session. Free intro calls skip Stripe and are confirmed immediately.
+3. Stripe calls `POST /api/webhooks/stripe`. On `checkout.session.completed` the hold becomes the real booking: the student is added as an attendee, a Google Meet link is generated and Google emails the invitation. On `checkout.session.expired` the hold is deleted. Holds also expire on their own after 35 minutes, so a missed webhook can never block a slot for good.
+4. `/book/success` shows the confirmation and polls `GET /api/booking/[ref]` until the Meet link exists.
+
+There is no database. The calendar is the single source of truth, and every booking carries an unguessable `bookingRef` in the event's private extended properties so webhook retries are idempotent.
+
+## Editing prices, sessions and hours
+
+Everything lives in `src/lib/config.ts`:
+
+- `SERVICES`: name, description, duration and price in pence for each session type. Set `pricePence: 0` for a free session.
+- `AVAILABILITY.weekly`: bookable windows per weekday in London time. Blocking a date is done by putting a normal event in the Google Calendar; anything marked "Busy" removes those slots automatically.
+- `AVAILABILITY.minNoticeHours`, `bufferMinutes`, `maxDaysAhead`, `slotIntervalMinutes`.
+- `SITE`: contact details and cancellation notice period.
+
+Site copy is in `src/components/home/Sections.tsx`. Drop a photo at `public/preethi.jpg` and the hero will use it.
+
+## Environment variables
+
+See `.env.local.example`. Locally, copy it to `.env.local`. On Vercel, set the same names under Project Settings → Environment Variables.
+
+| Variable | Purpose |
+| --- | --- |
+| `STRIPE_SECRET_KEY` | `sk_test_…` while testing, `sk_live_…` to take real money |
+| `STRIPE_WEBHOOK_SECRET` | Signing secret of the webhook endpoint pointing at `/api/webhooks/stripe` |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | OAuth "Desktop app" client from Google Cloud Console (Calendar API enabled) |
+| `GOOGLE_REFRESH_TOKEN` | Produced once by `npm run google:auth` while signed in as Preethi |
+| `GOOGLE_CALENDAR_ID` | `primary`, or the id of a dedicated calendar |
+| `GOOGLE_BUSY_CALENDAR_IDS` | Optional comma-separated extra calendars whose busy times also block slots |
+| `NEXT_PUBLIC_SITE_URL` | Public origin, e.g. `https://preethi.co.uk`, used in Stripe redirect URLs |
+| `SITE_NAME`, `CONTACT_EMAIL`, `SHOW_PHONE` | Content overrides |
+
+Without Google credentials the site still runs but bookings are switched off: the calendar shows the weekly hours only, and both paid and free bookings return a friendly "email Preethi" message. That is deliberate. The calendar is the only record of bookings, so taking money before it is connected would lose the booking. If a webhook ever arrives while the calendar is unreachable, the handler returns 500 so Stripe retries for up to three days.
+
+Abuse limits (all enforced by counting calendar events, so they survive redeploys): at most 6 slots can be held in checkout at once site-wide, one upcoming free intro call per email address, three intro calls per day, plus a per-instance limit of 10 booking attempts per IP per hour and a honeypot field.
+
+## Google Calendar setup (one-off)
+
+1. In [Google Cloud Console](https://console.cloud.google.com/) create a project and enable **Google Calendar API**.
+2. Configure the OAuth consent screen (External, Testing) and add Preethi's Google account as a test user.
+3. Create an OAuth client of type **Desktop app**. Put its id and secret in `.env.local`.
+4. Run `npm run google:auth`, open the printed link in a browser signed in as Preethi, click Allow. The refresh token is written to `.env.local`. Copy it to Vercel.
+5. While the consent screen is in "Testing" mode Google expires refresh tokens after 7 days. Publish the consent screen (no verification is needed for a single-user app) to get non-expiring tokens.
+
+## Stripe setup
+
+1. Add the secret key to the environment.
+2. Create a webhook endpoint for `https://<your-domain>/api/webhooks/stripe` listening to `checkout.session.completed`, `checkout.session.expired`, `checkout.session.async_payment_succeeded` and `checkout.session.async_payment_failed`. Put its signing secret in `STRIPE_WEBHOOK_SECRET`. The deploy script below does this for you.
+3. Test with card `4242 4242 4242 4242`, any future expiry, any CVC.
+4. Optional: in Stripe → Settings → Emails, turn on "Successful payments" so students get receipts; and under Public details set the business name that appears on the checkout page.
+
+## Local development
+
+```bash
+npm install
+npm run dev          # http://localhost:3000
+npm test             # timezone, availability and webhook unit tests
+npm run typecheck
+npm run lint
+```
+
+`GET /api/health?deep=1` reports which integrations are configured and whether the calendar can be reached.
+
+## Deploying to Vercel
+
+`scripts/deploy.sh` links the project, finds the production `*.vercel.app` host, creates the Stripe webhook endpoint for it (recreating it if the local signing secret is missing), pushes every variable from `.env.local` to Vercel and deploys to production. It needs `VERCEL_TOKEN` in `.env.local`, or a logged-in Vercel CLI (`npx vercel login`), whose token it reads from the CLI auth file. Re-run it whenever `.env.local` changes, for example after `npm run google:auth`.
+
+```bash
+./scripts/deploy.sh
+```
+
+Custom domain: `npx vercel domains add preethi.co.uk` then add the DNS records it prints at your registrar.
