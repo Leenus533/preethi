@@ -32,12 +32,18 @@ Everything is done. No further DNS work is needed.
 | Address | Behaviour |
 | --- | --- |
 | `preethi.co.uk` | Serves the tutoring site. This is the canonical address. |
+| `www.preethi.co.uk` | 308-redirects to the apex. |
 | `tuition.preethi.co.uk` | 308-redirects to the apex, so the old address still works. |
 | `preethi-tutoring.vercel.app` | Still works. The Stripe webhook points here, which is deliberate: it keeps working even if the custom domain changes. |
 | `acupuncture.preethi.co.uk` | Untouched, still serving the old acupuncture site. |
 
 The old `preethi-tuition` Vercel project no longer owns any domain, so its brochure site is off the
 public internet. The project itself still exists if you ever want anything from it.
+
+If a browser says the site cannot be reached shortly after a DNS change, it is almost always a
+stale cache rather than a real fault. Cloudflare tells resolvers to remember a "does not exist"
+answer for thirty minutes. Either wait that out, or clear it immediately: in Chrome open
+`chrome://net-internals/#dns` and press Clear host cache, then hard-reload.
 
 Mail is unaffected. The Resend records (`send`, `_dmarc`, `resend._domainkey`) were left exactly as
 they were.
