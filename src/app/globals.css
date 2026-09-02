@@ -2,7 +2,8 @@
 
 @theme {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  /* Headings use the same clean sans as body text, heavier and tighter. No quirky letterforms. */
+  --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 
   /* Paper and ink. The ground is a warm off-white rather than pure white. */
   --color-cream-50: #fdfbf7;
@@ -41,9 +42,9 @@
   --color-danger-surface: #fbeeec;
 
   /* One type scale, used everywhere. */
-  --text-display: clamp(2.625rem, 1.6rem + 3.6vw, 4.25rem);
-  --text-h2: clamp(1.875rem, 1.5rem + 1.4vw, 2.5rem);
-  --text-h3: 1.375rem;
+  --text-display: clamp(2.375rem, 1.5rem + 3.1vw, 3.75rem);
+  --text-h2: clamp(1.75rem, 1.4rem + 1.3vw, 2.25rem);
+  --text-h3: 1.3125rem;
   --text-lead: 1.1875rem;
   --text-meta: 0.8125rem;
 
@@ -82,20 +83,18 @@ body {
 }
 
 @layer components {
-  /* Fraunces is an optical-size variable face. Matching opsz to the rendered size
-     stops small headings inheriting the hairline strokes meant for display sizes. */
+  /* Heading scale: the larger the setting, the tighter the tracking. */
   .font-display {
     font-family: var(--font-display);
-    font-variation-settings: "opsz" 32, "SOFT" 30;
-    letter-spacing: -0.012em;
+    font-weight: 600;
+    letter-spacing: -0.015em;
   }
   .font-display-lg {
-    font-variation-settings: "opsz" 72, "SOFT" 30;
-    letter-spacing: -0.018em;
+    letter-spacing: -0.025em;
   }
   .font-display-xl {
-    font-variation-settings: "opsz" 144, "SOFT" 30;
-    letter-spacing: -0.024em;
+    font-weight: 650;
+    letter-spacing: -0.035em;
   }
   .container-x {
     width: 100%;
@@ -317,8 +316,8 @@ body {
   }
   .prose-site h2 {
     font-family: var(--font-display);
-    font-variation-settings: "opsz" 32, "SOFT" 30;
-    letter-spacing: -0.012em;
+    font-weight: 600;
+    letter-spacing: -0.015em;
     font-size: var(--text-h3);
     line-height: 1.25;
     color: var(--color-pine-900);

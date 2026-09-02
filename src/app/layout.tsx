@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Geist } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/config";
 import { siteOrigin } from "@/lib/site-url";
@@ -9,12 +9,6 @@ import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-  display: "swap",
-  axes: ["opsz", "SOFT"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteOrigin()),
@@ -60,7 +54,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en-GB" className={`${geist.variable} ${fraunces.variable} h-full antialiased`}>
+    <html lang="en-GB" className={`${geist.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <a
           href="#main"
