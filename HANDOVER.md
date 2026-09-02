@@ -1,6 +1,6 @@
 # Live site
 
-**https://preethi-tutoring.vercel.app**  \n(moving to https://tutoring.preethi.co.uk once DNS is set, see below)
+**https://preethi.co.uk**
 
 Everything is deployed and working. Stripe, the webhook and Google Calendar all report healthy at
 `/api/health?deep=1`.
@@ -25,28 +25,26 @@ To take real payments:
 Also worth doing in Stripe: Settings → Public details, so the checkout page shows a sensible
 business name. Right now it says "acupuncture.preethi.co.uk".
 
-## Custom domain: one DNS record left
+## Domains
 
-The site will live at **https://tutoring.preethi.co.uk**, and **preethi.co.uk** is already set to
-308-redirect there. Both are attached to the Vercel project. The only missing piece is DNS.
+Everything is done. No further DNS work is needed.
 
-Your domain uses Cloudflare nameservers (`nile.ns.cloudflare.com`, `candy.ns.cloudflare.com`), so
-in the Cloudflare dashboard add:
+| Address | Behaviour |
+| --- | --- |
+| `preethi.co.uk` | Serves the tutoring site. This is the canonical address. |
+| `tuition.preethi.co.uk` | 308-redirects to the apex, so the old address still works. |
+| `preethi-tutoring.vercel.app` | Still works. The Stripe webhook points here, which is deliberate: it keeps working even if the custom domain changes. |
+| `acupuncture.preethi.co.uk` | Untouched, still serving the old acupuncture site. |
 
-| Type | Name | Value | Proxy |
-| --- | --- | --- | --- |
-| CNAME | `tutoring` | `cname.vercel-dns.com.` | DNS only (grey cloud) |
-| A | `@` | `76.76.21.21` | DNS only (grey cloud) |
+The old `preethi-tuition` Vercel project no longer owns any domain, so its brochure site is off the
+public internet. The project itself still exists if you ever want anything from it.
 
-The CNAME serves the site. The A record makes the bare `preethi.co.uk` reach Vercel so the redirect
-to the subdomain can fire. Turn the orange proxy cloud **off** for both, or Vercel cannot issue the
-TLS certificate.
+Mail is unaffected. The Resend records (`send`, `_dmarc`, `resend._domainkey`) were left exactly as
+they were.
 
-Then run `./scripts/deploy.sh` once more. It checks the live DNS itself and only switches the
-public URL over to the custom domain once that domain genuinely resolves. Until then it keeps using
-the vercel.app address, so a student paying today still lands on a working confirmation page rather
-than a dead one. You do not have to remember the ordering; just re-run the script after the DNS
-records go in.
+To take the acupuncture site down too, remove the `acupuncture` CNAME in Cloudflare, or detach the
+domain from the `preethi` project in Vercel. I left it alone because deleting it is the one action
+that cannot be undone with a click.
 
 ## Keep the Google connection alive
 
@@ -61,6 +59,22 @@ If bookings ever do stop, `/api/health?deep=1` will say so, and `npm run google:
 
 Your test booking is still on the calendar: GCSE tutoring, Thursday 3 September, 18:30. Delete the
 event in Google Calendar when you no longer need it. Deleting it frees the slot again automatically.
+
+## Check the prices before sharing the site
+
+Your previous tuition site advertised different prices from the ones on this site. I used the
+defaults I proposed at the start, not the ones she had published.
+
+| Session | Old site | This site |
+| --- | --- | --- |
+| GCSE | £25/hr | £30/hr |
+| A-level | £30/hr | £35/hr |
+| Medical school prep | £35/hr | £40/hr, split into UCAT and applications |
+
+Tell me which set is right and I will change it in a minute. Two other differences worth Preethi
+confirming: the old site offered A-level Physics, which this one does not, since her own A-levels
+were Biology, Chemistry and Maths. And the old site described her as a fourth-year student, while
+this one says final-year, which matches her CV for the year starting September 2026.
 
 ## Changing prices, hours and copy
 
