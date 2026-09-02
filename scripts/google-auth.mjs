@@ -75,12 +75,23 @@ const code = await new Promise((resolveCode, reject) => {
   const timer = setTimeout(() => reject(new Error("Timed out after 12 hours")), 12 * 60 * 60 * 1000);
   server.on("request", (req, res) => {
     const url = new URL(req.url, redirectUri);
-    if (url.pathname !== "/") { res.writeHead(404); res.end(); return; }
     const err = url.searchParams.get("error");
     const c = url.searchParams.get("code");
+
+    // Anything that is not the Google redirect (a favicon request, someone opening this URL
+    // directly) must not kill the server, or the link becomes single-use by accident.
+    if (!c && !err) {
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(
+        "<h1>Still waiting</h1><p>This page only works as the destination of the Google consent screen. " +
+          "Go back to the terminal, copy the accounts.google.com link, open that, and click Allow.</p>",
+      );
+      return;
+    }
+
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     if (err || !c) {
-      res.end(`<h1>Authorisation failed</h1><p>${err ?? "no code"}</p>`);
+      res.end(`<h1>Authorisation failed</h1><p>${err ?? "no code"}</p><p>Run the script again and retry.</p>`);
       clearTimeout(timer);
       reject(new Error(err ?? "no code returned"));
       return;
