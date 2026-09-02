@@ -91,9 +91,29 @@ if [ -n "${STRIPE_SECRET_KEY:-}" ]; then
   fi
 fi
 
+# --- public site URL -------------------------------------------------------------------------
+# Stripe redirects the student to NEXT_PUBLIC_SITE_URL after paying, so it must be a hostname that
+# actually resolves. Only use the custom domain once its DNS is live; otherwise fall back to the
+# vercel.app host so a booking never lands on a dead page.
+if [[ "${NEXT_PUBLIC_SITE_URL:-}" == *localhost* ]]; then unset NEXT_PUBLIC_SITE_URL; fi
+DOMAIN_READY=no
+if [ -n "${CUSTOM_DOMAIN:-}" ]; then
+  DOMAIN_READY=$(vapi "https://api.vercel.com/v6/domains/$CUSTOM_DOMAIN/config" \
+    | node -e 'const d=JSON.parse(require("fs").readFileSync(0,"utf8"));console.log(d.misconfigured?"no":"yes")')
+fi
+if [ "$DOMAIN_READY" = "yes" ]; then
+  NEXT_PUBLIC_SITE_URL="https://$CUSTOM_DOMAIN"
+  echo "==> Public URL: $NEXT_PUBLIC_SITE_URL (custom domain DNS is live)"
+else
+  NEXT_PUBLIC_SITE_URL="$PROD_URL"
+  if [ -n "${CUSTOM_DOMAIN:-}" ]; then
+    echo "==> Public URL: $PROD_URL (holding off on $CUSTOM_DOMAIN until its DNS resolves)"
+  fi
+fi
+export NEXT_PUBLIC_SITE_URL
+
 # --- environment variables -----------------------------------------------------------------
 echo "==> Syncing environment variables to production"
-if [[ "${NEXT_PUBLIC_SITE_URL:-}" == *localhost* ]]; then unset NEXT_PUBLIC_SITE_URL; fi
 for key in STRIPE_SECRET_KEY STRIPE_WEBHOOK_SECRET GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET GOOGLE_REFRESH_TOKEN \
            GOOGLE_CALENDAR_ID GOOGLE_BUSY_CALENDAR_IDS NEXT_PUBLIC_SITE_URL CUSTOM_DOMAIN SITE_NAME CONTACT_EMAIL SHOW_PHONE; do
   val="${!key:-}"
@@ -105,13 +125,43 @@ done
 
 # --- deploy --------------------------------------------------------------------------------
 echo "==> Deploying to production"
-DEPLOY_URL=$(vc deploy --prod --yes 2>/dev/null | tail -n1)
-echo "    deployment: $DEPLOY_URL"
+DEPLOY_URL=$(vc deploy --prod --yes 2>/dev/null | grep -oE 'https://[a-z0-9.-]+\.vercel\.app' | tail -n1)
+echo "    deployment: ${DEPLOY_URL:-(see output above)}"
 
 # --- custom domain -------------------------------------------------------------------------
+# CUSTOM_DOMAIN is where the site lives. REDIRECT_DOMAINS is an optional comma-separated list of
+# other domains (typically the bare apex) that should 308-redirect to it.
 if [ -n "${CUSTOM_DOMAIN:-}" ]; then
-  echo "==> Attaching custom domain $CUSTOM_DOMAIN (DNS must point at Vercel separately)"
-  vc domains add "$CUSTOM_DOMAIN" "$PROJECT" || true
+  echo "==> Attaching $CUSTOM_DOMAIN"
+  vapi -X POST -H "Content-Type: application/json" \
+    "https://api.vercel.com/v10/projects/$PROJECT_ID/domains$TEAM_QS" \
+    -d "{\"name\":\"$CUSTOM_DOMAIN\"}" \
+    | node -e 'const d=JSON.parse(require("fs").readFileSync(0,"utf8"));const e=d.error;console.log("    "+(!e?d.name+" attached":/already in use/.test(e.message)?"already attached":e.message))'
+
+  for redir in ${REDIRECT_DOMAINS//,/ }; do
+    [ -z "$redir" ] && continue
+    echo "==> Pointing $redir at $CUSTOM_DOMAIN"
+    vapi -X POST -H "Content-Type: application/json" \
+      "https://api.vercel.com/v10/projects/$PROJECT_ID/domains$TEAM_QS" \
+      -d "{\"name\":\"$redir\"}" >/dev/null 2>&1 || true
+    vapi -X PATCH -H "Content-Type: application/json" \
+      "https://api.vercel.com/v9/projects/$PROJECT_ID/domains/$redir$TEAM_QS" \
+      -d "{\"redirect\":\"$CUSTOM_DOMAIN\",\"redirectStatusCode\":308}" \
+      | node -e 'const d=JSON.parse(require("fs").readFileSync(0,"utf8"));console.log("    "+(d.error?d.error.message:"redirects to "+d.redirect))'
+  done
+
+  # Remind the operator what DNS still has to be set at the registrar.
+  vapi "https://api.vercel.com/v6/domains/$CUSTOM_DOMAIN/config" | node -e '
+    const d=JSON.parse(require("fs").readFileSync(0,"utf8"));
+    if (d.misconfigured) {
+      console.log("    DNS NOT SET YET. At your DNS provider add:");
+      const c=(d.recommendedCNAME||[]).map(x=>x.value)[0];
+      const a=(d.recommendedIPv4||[]).map(x=>x.value).flat()[0];
+      console.log("      CNAME  "+process.argv[1]+"  ->  "+(c||"cname.vercel-dns.com."));
+      console.log("      (or an A record to "+(a||"76.76.21.21")+" for a bare apex domain)");
+    } else {
+      console.log("    DNS is configured.");
+    }' "$CUSTOM_DOMAIN"
 fi
 
 echo

@@ -1,6 +1,6 @@
 # Live site
 
-**https://preethi-tutoring.vercel.app**
+**https://preethi-tutoring.vercel.app**  \n(moving to https://tutoring.preethi.co.uk once DNS is set, see below)
 
 Everything is deployed and working. Stripe, the webhook and Google Calendar all report healthy at
 `/api/health?deep=1`.
@@ -25,26 +25,28 @@ To take real payments:
 Also worth doing in Stripe: Settings → Public details, so the checkout page shows a sensible
 business name. Right now it says "acupuncture.preethi.co.uk".
 
-## Custom domain
+## Custom domain: one DNS record left
 
-`preethi.co.uk` is attached to the Vercel project but does not resolve, because it has no DNS
-records. Its nameservers are Cloudflare (`nile.ns.cloudflare.com`, `candy.ns.cloudflare.com`), so
-add one of these in the Cloudflare dashboard:
+The site will live at **https://tutoring.preethi.co.uk**, and **preethi.co.uk** is already set to
+308-redirect there. Both are attached to the Vercel project. The only missing piece is DNS.
 
-| Type | Name | Value |
-| --- | --- | --- |
-| A | `@` | `76.76.21.21` |
-| CNAME | `www` | `cname.vercel-dns.com.` |
+Your domain uses Cloudflare nameservers (`nile.ns.cloudflare.com`, `candy.ns.cloudflare.com`), so
+in the Cloudflare dashboard add:
 
-Set the Cloudflare proxy to **DNS only** (grey cloud), not proxied.
+| Type | Name | Value | Proxy |
+| --- | --- | --- | --- |
+| CNAME | `tutoring` | `cname.vercel-dns.com.` | DNS only (grey cloud) |
+| A | `@` | `76.76.21.21` | DNS only (grey cloud) |
 
-Note the Stripe account is named "acupuncture.preethi.co.uk", so the apex domain may be intended
-for her acupuncture site. If so, use `tutoring.preethi.co.uk` instead: change `CUSTOM_DOMAIN` in
-`.env.local`, add a CNAME for `tutoring` pointing at `cname.vercel-dns.com.`, and re-run the deploy
-script.
+The CNAME serves the site. The A record makes the bare `preethi.co.uk` reach Vercel so the redirect
+to the subdomain can fire. Turn the orange proxy cloud **off** for both, or Vercel cannot issue the
+TLS certificate.
 
-Once DNS resolves, set `NEXT_PUBLIC_SITE_URL=https://<the domain>` in `.env.local` and deploy again,
-so Stripe redirects and page metadata use the real address.
+Then run `./scripts/deploy.sh` once more. It checks the live DNS itself and only switches the
+public URL over to the custom domain once that domain genuinely resolves. Until then it keeps using
+the vercel.app address, so a student paying today still lands on a working confirmation page rather
+than a dead one. You do not have to remember the ordering; just re-run the script after the DNS
+records go in.
 
 ## Keep the Google connection alive
 
