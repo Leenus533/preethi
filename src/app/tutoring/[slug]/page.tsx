@@ -237,11 +237,7 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
       </section>
 
       <CtaBand
-        title={
-          <>
-            Not sure yet? Start with a free <span className="accent-word !text-clay-300">intro call</span>
-          </>
-        }
+        title="Not sure yet? Start with a free intro call"
         text={`Twenty minutes to talk through ${subject.title} goals, exam boards and how sessions would work. Nothing to pay.`}
       />
 

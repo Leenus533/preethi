@@ -10,7 +10,7 @@ export const SEO = {
   /** Shown in <title> on the home page. Under 60 characters. */
   homeTitle: "Online GCSE, A-level, UCAT & Medicine Tutor | Preethi Amudhan",
   homeDescription:
-    "One-to-one online tutoring in GCSE and A-level Maths, Biology and Chemistry, UCAT prep and medicine applications from a final-year medical student. From £30/hr.",
+    "One-to-one online tutoring in any GCSE or A-level subject, UCAT prep and medical school applications from a final-year medical student. From £30/hr.",
   keywords: [
     "online tutor",
     "GCSE tutor",
@@ -60,7 +60,7 @@ export function tutorPerson() {
     worksFor: { "@id": ORG_ID() },
     alumniOf: [{ "@type": "EducationalOrganization", name: "Sir Isaac Newton Sixth Form" }],
     affiliation: { "@type": "CollegeOrUniversity", name: "University of East Anglia" },
-    knowsAbout: ["GCSE Maths", "GCSE Biology", "GCSE Chemistry", "GCSE Physics", "A-level Biology", "A-level Chemistry", "A-level Maths", "UCAT", "Medical school applications"],
+    knowsAbout: ["GCSE", "GCSE Maths", "GCSE Biology", "GCSE Chemistry", "GCSE Physics", "A-level", "A-level Biology", "A-level Chemistry", "A-level Maths", "UCAT", "Medical school applications"],
     address: { "@type": "PostalAddress", addressLocality: "Norwich", addressCountry: "GB" },
   };
 }

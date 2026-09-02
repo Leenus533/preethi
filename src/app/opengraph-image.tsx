@@ -52,16 +52,12 @@ export default function OpenGraphImage() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            <div style={{ fontSize: 50, lineHeight: 1.08, fontWeight: 700, letterSpacing: -1.2, display: "flex", flexDirection: "column" }}>
-              <span>Science, maths and medicine tutoring that makes the hard</span>
-              <span style={{ display: "flex" }}>
-                <span>parts&nbsp;</span>
-                <span style={{ color: clay, fontStyle: "italic", fontWeight: 400 }}>click.</span>
-              </span>
+            <div style={{ fontSize: 50, lineHeight: 1.08, fontWeight: 700, letterSpacing: -1.2, display: "flex" }}>
+              GCSE, A-level and medicine tutoring that makes the hard parts click.
             </div>
             <div style={{ fontSize: 22, color: ink, lineHeight: 1.4 }}>
-              GCSE and A-level Biology, Chemistry and Maths, UCAT preparation and medical school applications. Online, one-to-one, from a
-              final-year UEA medical student.
+              Any GCSE or A-level subject, UCAT preparation and medical school applications. Online, one-to-one, from a final-year UEA
+              medical student.
             </div>
           </div>
 

@@ -40,24 +40,24 @@ export const SERVICES: Service[] = [
     name: "GCSE tutoring",
     shortName: "GCSE",
     level: "gcse",
-    tagline: "Maths, Biology, Chemistry and Physics for grades 7 to 9.",
+    tagline: "Any GCSE subject, aiming for grades 7 to 9. Maths and sciences are specialisms.",
     description:
       "One-to-one sessions built around the student's exam board, with exam technique and past-paper practice woven into every lesson.",
     durationMinutes: 60,
     pricePence: 3000,
-    highlights: ["Maths, Biology, Chemistry, Physics", "AQA, Edexcel and OCR", "Homework and past-paper feedback"],
+    highlights: ["Any subject; Maths and sciences specialist", "AQA, Edexcel and OCR", "Homework and past-paper feedback"],
   },
   {
     id: "alevel-60",
     name: "A-level tutoring",
     shortName: "A-level",
     level: "alevel",
-    tagline: "Biology, Chemistry and Maths, taught by someone who got A, A, A.",
+    tagline: "Any A-level subject. Biology, Chemistry and Maths specialist with A, A, A.",
     description:
       "Deep-dive sessions on the topics that cost students marks, with a focus on how examiners think and how to write full-mark answers.",
     durationMinutes: 60,
     pricePence: 3500,
-    highlights: ["Biology, Chemistry, Maths", "Exam-board specific", "Weekly progress notes"],
+    highlights: ["Any subject; Biology, Chemistry, Maths specialist", "Exam-board specific", "Weekly progress notes"],
     badge: "Most popular",
   },
   {
@@ -121,7 +121,7 @@ export const AVAILABILITY = {
 export const SITE = {
   name: process.env.SITE_NAME || "Preethi Amudhan Tutoring",
   tutorName: "Preethi Amudhan",
-  tagline: "Science, maths and medicine tutoring from a final-year medical student",
+  tagline: "GCSE, A-level, UCAT and medicine tutoring from a final-year medical student",
   contactEmail: process.env.CONTACT_EMAIL || "preethinorwich@gmail.com",
   phone: "07448 609 094",
   showPhone: (process.env.SHOW_PHONE || "no").toLowerCase() === "yes",

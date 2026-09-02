@@ -14,8 +14,8 @@ export function Footer() {
           <p className="font-display font-display-lg text-[2rem] leading-none text-white">Preethi Amudhan</p>
           <p className="mt-1 text-sm font-medium tracking-wide text-pine-200">Tutoring</p>
           <p className="mt-5 max-w-sm text-[0.9375rem] leading-relaxed text-pine-100">
-            One-to-one online tutoring in GCSE and A-level science and maths, UCAT preparation and medical school applications,
-            from a final-year medical student at the University of East Anglia.
+            One-to-one online tutoring in any GCSE or A-level subject, UCAT preparation and medical school applications, from a
+            final-year medical student at the University of East Anglia.
           </p>
           <Link href="/book?service=intro-call" className="btn btn-invert mt-6">
             Book a free intro call <Icon.Arrow width={16} height={16} aria-hidden />

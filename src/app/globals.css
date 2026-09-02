@@ -97,13 +97,6 @@ body {
     font-variation-settings: "opsz" 144, "SOFT" 30;
     letter-spacing: -0.024em;
   }
-  /* An italic accent word inside a display heading. */
-  .accent-word {
-    font-style: italic;
-    font-weight: 400;
-    color: var(--color-clay-700);
-  }
-
   .container-x {
     width: 100%;
     max-width: 74rem;

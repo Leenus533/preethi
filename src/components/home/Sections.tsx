@@ -50,12 +50,12 @@ export function Hero() {
             id="hero-title"
             className="font-display font-display-xl mt-6 text-[length:var(--text-display)] leading-[1.02] text-balance text-pine-900"
           >
-            Science, maths and medicine tutoring that makes the hard parts <span className="accent-word">click</span>.
+            GCSE, A-level and medicine tutoring that makes the hard parts click.
           </h1>
           <p className="mt-6 max-w-[var(--measure-lead)] text-[length:var(--text-lead)] leading-relaxed text-ink-soft">
-            I&rsquo;m Preethi, a final-year medical student at the University of East Anglia. I help GCSE and A-level students
-            turn &ldquo;I don&rsquo;t get it&rdquo; into confident exam answers, and coach future medics through the UCAT and
-            their applications.
+            I&rsquo;m Preethi, a final-year medical student at the University of East Anglia. I help GCSE and A-level students in
+            any subject turn &ldquo;I don&rsquo;t get it&rdquo; into confident exam answers, with maths and the sciences as my
+            specialisms, and coach future medics through the UCAT and their applications.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link href="/book?service=intro-call" className="btn btn-primary">
@@ -113,7 +113,10 @@ export function Subjects() {
     <section id="subjects" aria-labelledby="subjects-title" className="section scroll-mt-24">
       <div className="container-x section-grid">
         <SectionHead head="Subjects" id="subjects-title" title="One-to-one, built around your exam board">
-          <p>Every session is planned around the student&rsquo;s specification and target grade. Pick a subject to see exactly what sessions cover.</p>
+          <p>
+            Any GCSE or A-level subject, plus UCAT and medical school applications. Every session is planned around the student&rsquo;s
+            specification and target grade. Pick a level to see exactly what sessions cover.
+          </p>
         </SectionHead>
         <ul className="grid gap-5 md:grid-cols-2">
           {SUBJECTS.map((s) => {
@@ -352,6 +355,10 @@ export const HOME_FAQS = [
     a: "Online by default, over Google Meet, so students anywhere in the UK can book. If you are in Norwich and would prefer in-person sessions, mention it on the intro call and we can see what works.",
   },
   {
+    q: "Which subjects do you tutor?",
+    a: "Any GCSE or A-level subject. Maths, Biology, Chemistry and Physics are the specialisms, where Preethi's own results are strongest, but if a student needs help in another subject just say so at booking or on the free intro call. UCAT preparation and medical school application coaching are separate sessions.",
+  },
+  {
     q: "Which exam boards do you cover?",
     a: "AQA, Edexcel and OCR for GCSE and A-level. Tell me the board and specification when you book and I will plan around it.",
   },
@@ -433,7 +440,7 @@ export function CtaBand({ title, text }: { title?: React.ReactNode; text?: strin
             <h2 id="cta-title" className="font-display font-display-lg mt-4 max-w-[20ch] text-[length:var(--text-h2)] leading-[1.1] text-balance">
               {title ?? (
                 <>
-                  Start with a free <span className="whitespace-nowrap">20-minute</span> <span className="accent-word !text-clay-300">intro call</span>
+                  Start with a free <span className="whitespace-nowrap">20-minute</span> intro call
                 </>
               )}
             </h2>

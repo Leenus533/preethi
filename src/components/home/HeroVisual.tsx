@@ -30,7 +30,7 @@ export function HeroVisual({ className = "" }: { className?: string }) {
             <path d="M44 6C36 20 26 30 6 34" />
             <path d="M6 34l8-6M6 34l9 3" />
           </svg>
-          <span className="font-display -translate-y-1 whitespace-nowrap text-[1.05rem] italic leading-none text-clay-700">where it clicks</span>
+          <span className="font-display -translate-y-1 whitespace-nowrap text-[1.05rem] leading-none text-clay-700">where it clicks</span>
         </div>
 
         {/* Benzene ring, top-right. */}

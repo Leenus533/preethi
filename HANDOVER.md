@@ -77,10 +77,14 @@ defaults I proposed at the start, not the ones she had published.
 | A-level | £30/hr | £35/hr |
 | Medical school prep | £35/hr | £40/hr, split into UCAT and applications |
 
-Tell me which set is right and I will change it in a minute. Two other differences worth Preethi
-confirming: the old site offered A-level Physics, which this one does not, since her own A-levels
-were Biology, Chemistry and Maths. And the old site described her as a fourth-year student, while
-this one says final-year, which matches her CV for the year starting September 2026.
+Tell me which set is right and I will change it in a minute. One other difference worth Preethi
+confirming: the old site described her as a fourth-year student, while this one says final-year,
+which matches her CV for the year starting September 2026.
+
+The site now offers any GCSE or A-level subject, with Maths and the sciences described as her
+specialisms (the subjects her own results are in). If she wants to narrow that again, the wording
+lives in `src/lib/config.ts` (taglines and highlights) and `src/lib/subjects.ts` (the GCSE and
+A-level pages).
 
 ## Changing prices, hours and copy
 
@@ -96,10 +100,9 @@ To block time off, just put an ordinary event in her Google Calendar. Anything m
 those slots from the site automatically.
 
 Home page copy is in `src/components/home/Sections.tsx`; the four subject pages under `/tutoring/`
-are written in `src/lib/subjects.ts`. Two claims are worth Preethi checking before you share the
-site: that she covers AQA, Edexcel and OCR, and the GCSE subject list, which includes Physics and
-Combined Science. The subject pages repeat only facts already on the home page, but she should read
-them once.
+are written in `src/lib/subjects.ts`. One claim is worth Preethi checking before you share the
+site: that she covers AQA, Edexcel and OCR. The subject pages repeat only facts already on the home
+page, but she should read them once.
 
 ## Photo
 
