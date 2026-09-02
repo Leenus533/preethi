@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { About, CtaBand, Faq, HOME_FAQS, Hero, HowItWorks, Pricing, Subjects, TrustStrip } from "@/components/home/Sections";
+import { About, CtaBand, Faq, HOME_FAQS, Hero, HowItWorks, Subjects, TrustStrip } from "@/components/home/Sections";
 import { JsonLd } from "@/components/JsonLd";
 import { SEO, faqPage, graph, webPage } from "@/lib/seo";
 
@@ -15,7 +15,6 @@ export default function Home() {
       <Subjects />
       <HowItWorks />
       <About />
-      <Pricing />
       <Faq />
       <CtaBand />
       <JsonLd data={graph(webPage("/", SEO.homeTitle, SEO.homeDescription), faqPage(HOME_FAQS))} />

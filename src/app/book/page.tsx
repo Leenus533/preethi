@@ -19,12 +19,10 @@ export default async function BookPage({ searchParams }: PageProps<"/book">) {
   const cancelled = sp.cancelled === "1";
   const cancelledRef = typeof sp.ref === "string" ? sp.ref : undefined;
   return (
-    <div className="relative">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-cream-100/80 to-transparent" aria-hidden />
-      <div className="container-x relative py-10 sm:py-14">
+    <div>
+      <div className="container-x py-10 sm:py-14">
         <div className="mb-8 max-w-2xl">
-          <p className="running-head">Booking</p>
-          <h1 className="font-display font-display-lg mt-3 text-[length:var(--text-h2)] leading-[1.12] text-pine-900">Book a session with Preethi</h1>
+          <h1 className="font-display font-display-lg text-[length:var(--text-h2)] leading-[1.15] text-ink">Book a session with Preethi</h1>
           <p className="measure mt-3 text-[1.0625rem] text-ink-soft">
             Pick a session type, choose a time that suits you, and pay by card. It takes about two minutes.
           </p>

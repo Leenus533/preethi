@@ -2,21 +2,17 @@
 
 @theme {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  /* Headings use the same clean sans as body text, heavier and tighter. No quirky letterforms. */
-  --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 
-  /* Paper and ink. The ground is a warm off-white rather than pure white. */
+  /* One warm near-white ground, one ink, one action colour. */
   --color-cream-50: #fdfbf7;
   --color-cream-100: #f8f3ea;
   --color-cream-200: #efe6d6;
   --color-cream-300: #e2d5bd;
-  --color-cream-400: #cdbc9c;
 
   --color-pine-50: #eef6f4;
   --color-pine-100: #d6ebe6;
   --color-pine-200: #aed6cc;
   --color-pine-300: #7bbbad;
-  --color-pine-400: #4d9c8d;
   --color-pine-500: #2f7f71;
   --color-pine-600: #23665b;
   --color-pine-700: #1e534b;
@@ -24,11 +20,9 @@
   --color-pine-900: #143330;
   --color-pine-950: #0c2321;
 
+  /* Warning tones, used only by the booking flow. */
   --color-clay-100: #fdebdd;
-  --color-clay-200: #f8d3b6;
   --color-clay-300: #f0b58a;
-  --color-clay-500: #e28a4c;
-  --color-clay-600: #c96f31;
   --color-clay-700: #a2561f;
 
   --color-ink: #1c1b18;
@@ -41,33 +35,24 @@
   --color-danger: #a3271b;
   --color-danger-surface: #fbeeec;
 
-  /* One type scale, used everywhere. */
-  --text-display: clamp(2.375rem, 1.5rem + 3.1vw, 3.75rem);
-  --text-h2: clamp(1.75rem, 1.4rem + 1.3vw, 2.25rem);
-  --text-h3: 1.3125rem;
+  /* Type roles. */
+  --text-display: clamp(2.25rem, 1.4rem + 2.8vw, 3.375rem);
+  --text-h2: clamp(1.5rem, 1.25rem + 0.9vw, 1.875rem);
+  --text-h3: 1.1875rem;
   --text-lead: 1.1875rem;
   --text-meta: 0.8125rem;
 
-  /* One spacing scale. The parent of a stack owns its gaps. */
-  --space-item: 1.25rem;
-  --space-group: 3rem;
-  --space-section: clamp(4.5rem, 3rem + 5vw, 7.5rem);
-
-  /* Warm, low shadows. Tinted with ink rather than black so they sit on cream. */
-  --shadow-soft: 0 1px 2px rgb(28 27 24 / 0.04), 0 8px 24px -12px rgb(28 27 24 / 0.12);
-  --shadow-lift: 0 2px 4px rgb(28 27 24 / 0.05), 0 20px 40px -20px rgb(28 27 24 / 0.22);
-  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 12px 32px -16px rgb(20 51 48 / 0.25);
+  /* Spacing. Within a group, between groups, between sections. */
+  --space-item: 1rem;
+  --space-group: 2.5rem;
+  --space-section: clamp(4rem, 2.5rem + 4vw, 6rem);
 }
 
 :root {
   color-scheme: light;
-  /* Prose measure. Held under 68 characters for comfortable reading. */
-  --measure: 66ch;
-  --measure-lead: 54ch;
-}
-
-html {
-  scroll-behavior: smooth;
+  /* Prose measure, held under 68 characters. */
+  --measure: 64ch;
+  --measure-lead: 52ch;
 }
 
 body {
@@ -83,76 +68,56 @@ body {
 }
 
 @layer components {
-  /* Heading scale: the larger the setting, the tighter the tracking. */
+  /* Heading roles. Same family as body text; weight and tracking do the work. */
   .font-display {
-    font-family: var(--font-display);
     font-weight: 600;
     letter-spacing: -0.015em;
   }
   .font-display-lg {
-    letter-spacing: -0.025em;
+    letter-spacing: -0.02em;
   }
   .font-display-xl {
-    font-weight: 650;
-    letter-spacing: -0.035em;
+    letter-spacing: -0.03em;
   }
+
   .container-x {
     width: 100%;
-    max-width: 74rem;
+    max-width: 72rem;
     margin-inline: auto;
     padding-inline: 1.25rem;
   }
   @media (min-width: 640px) {
     .container-x {
-      padding-inline: 1.75rem;
+      padding-inline: 2rem;
     }
   }
 
-  /* Sections are separated by a hairline rule and space, not by boxes. */
+  /* Sections are separated by space and a hairline, never by boxes. */
   .section {
     padding-block: var(--space-section);
     border-top: 1px solid var(--color-cream-200);
   }
-  .section-grid {
+  /* Section header in the left five columns, content in the right seven. */
+  .split {
     display: grid;
     gap: var(--space-group);
   }
-  /* A quiet running head with a short clay rule, marking the start of each section. */
-  .running-head {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    font-size: var(--text-meta);
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: 0.02em;
-    color: var(--color-pine-700);
-  }
-  .running-head::before {
-    content: "";
-    width: 1.25rem;
-    height: 2px;
-    border-radius: 1px;
-    background: var(--color-clay-600);
-    flex: none;
+  @media (min-width: 1024px) {
+    .split {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      column-gap: 4rem;
+    }
   }
   .measure {
     max-width: var(--measure);
   }
 
-  /* Faint dot-grid paper, used behind the hero and the CTA. */
-  .bg-dots {
-    background-image: radial-gradient(circle at 1px 1px, var(--color-cream-300) 1px, transparent 0);
-    background-size: 22px 22px;
+  /* Hairline-separated rows. */
+  .rows > * {
+    border-top: 1px solid var(--color-cream-200);
   }
-  .bg-dots-dark {
-    background-image: radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.14) 1px, transparent 0);
-    background-size: 22px 22px;
-  }
-  /* Fades a pattern out towards the edges so it never competes with text. */
-  .mask-fade {
-    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 30%, transparent 100%);
-    mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 30%, transparent 100%);
+  .rows > *:last-child {
+    border-bottom: 1px solid var(--color-cream-200);
   }
 
   .btn {
@@ -160,17 +125,15 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 9999px;
-    padding: 0.85rem 1.5rem;
-    font-weight: 600;
-    font-size: 0.95rem;
-    line-height: 1;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.125rem;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    line-height: 1.2;
     transition:
-      background-color 150ms ease,
-      border-color 150ms ease,
-      color 150ms ease,
-      box-shadow 150ms ease,
-      transform 150ms ease;
+      background-color 120ms ease,
+      border-color 120ms ease,
+      color 120ms ease;
     white-space: nowrap;
   }
   /* A dark ring inside a light halo, so the indicator clears 3:1 on every
@@ -186,119 +149,81 @@ body {
     cursor: not-allowed;
   }
   .btn-primary {
-    background: var(--color-pine-700);
+    background: var(--color-pine-800);
     color: #fff;
-    box-shadow: 0 1px 0 rgb(255 255 255 / 0.15) inset, var(--shadow-soft);
   }
   .btn-primary:hover:not(:disabled) {
-    background: var(--color-pine-800);
-    box-shadow: var(--shadow-lift);
+    background: var(--color-pine-900);
   }
   .btn-secondary {
     background: transparent;
-    color: var(--color-pine-800);
-    border: 1.5px solid var(--color-pine-500);
+    color: var(--color-pine-900);
+    border: 1px solid var(--color-line);
   }
   .btn-secondary:hover:not(:disabled) {
-    background: var(--color-pine-50);
-    border-color: var(--color-pine-700);
+    background: var(--color-cream-100);
+    border-color: var(--color-ink-soft);
   }
-  /* Used on the dark band. Cream on pine-900 is 13.1:1. */
+  /* Used on the dark band. Cream on pine-950 is 16:1. */
   .btn-invert {
     background: var(--color-cream-50);
-    color: var(--color-pine-900);
+    color: var(--color-pine-950);
   }
   .btn-invert:hover:not(:disabled) {
     background: #fff;
   }
   .btn-invert:focus-visible {
-    box-shadow: 0 0 0 6px var(--color-pine-100);
+    box-shadow: 0 0 0 6px var(--color-pine-800);
   }
   .btn-ghost-dark {
-    border: 1.5px solid var(--color-pine-300);
+    border: 1px solid var(--color-pine-300);
     color: #fff;
   }
   .btn-ghost-dark:hover:not(:disabled) {
-    background: rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 0.08);
     border-color: var(--color-pine-200);
-  }
-  /* The arrow inside a button slides right on hover. */
-  .btn > svg {
-    transition: transform 150ms ease;
-  }
-  .btn:hover:not(:disabled) > svg {
-    transform: translateX(2px);
   }
 
   /* A surface only where something is selected, entered or interacted with. */
   .panel {
     background: #fff;
     border: 1px solid var(--color-cream-300);
-    border-radius: 1rem;
+    border-radius: 0.75rem;
   }
-
-  /* Content cards: white on cream, a hairline and a low warm shadow. */
   .card {
-    position: relative;
     background: #fff;
     border: 1px solid var(--color-cream-300);
-    border-radius: 1.25rem;
-    box-shadow: var(--shadow-soft);
-    transition:
-      border-color 200ms ease,
-      box-shadow 200ms ease,
-      transform 200ms ease;
-  }
-  .card-hover:hover {
-    border-color: var(--color-pine-300);
-    box-shadow: var(--shadow-lift);
-    transform: translateY(-2px);
-  }
-  .card-featured {
-    border-color: var(--color-pine-500);
-    box-shadow: 0 0 0 1px var(--color-pine-500), var(--shadow-lift);
+    border-radius: 0.75rem;
   }
 
-  /* Small label chips. Pine-800 on pine-50 is 8.9:1; clay-700 on clay-100 is 5.2:1. */
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    border-radius: 9999px;
-    padding: 0.3rem 0.75rem;
-    font-size: var(--text-meta);
-    font-weight: 600;
-    line-height: 1.2;
-    background: var(--color-pine-50);
-    color: var(--color-pine-800);
-    border: 1px solid var(--color-pine-100);
-  }
-  .chip-clay {
-    background: var(--color-clay-100);
-    color: var(--color-clay-700);
-    border-color: var(--color-clay-200);
-  }
-
-  /* Reversed surface. Pine-100 on pine-900 is 9.6:1. */
+  /* Reversed band for the closing action. Pine-100 on pine-950 is 12:1. */
   .surface-dark {
-    background:
-      radial-gradient(60% 80% at 100% 0%, rgb(77 156 141 / 0.35), transparent 60%),
-      radial-gradient(50% 60% at 0% 100%, rgb(201 111 49 / 0.22), transparent 60%),
-      linear-gradient(160deg, var(--color-pine-900), var(--color-pine-950));
+    background: var(--color-pine-950);
     color: #fff;
+  }
+
+  .link {
+    color: var(--color-pine-800);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--color-pine-300);
+  }
+  .link:hover {
+    color: var(--color-pine-950);
+    text-decoration-color: currentColor;
   }
 
   .field {
     width: 100%;
     border: 1.5px solid var(--color-line);
     background: #fff;
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     padding: 0.7rem 0.9rem;
     font-size: 0.95rem;
     color: var(--color-ink);
     transition:
-      border-color 150ms ease,
-      box-shadow 150ms ease;
+      border-color 120ms ease,
+      box-shadow 120ms ease;
   }
   .field:focus {
     outline: none;
@@ -315,12 +240,11 @@ body {
     line-height: 1.7;
   }
   .prose-site h2 {
-    font-family: var(--font-display);
     font-weight: 600;
     letter-spacing: -0.015em;
     font-size: var(--text-h3);
-    line-height: 1.25;
-    color: var(--color-pine-900);
+    line-height: 1.3;
+    color: var(--color-ink);
     margin-top: 2.25rem;
   }
   .prose-site h2:first-child {
@@ -347,57 +271,48 @@ body {
     color: var(--color-ink);
     font-weight: 600;
   }
-}
 
-/* Gentle entrance for the hero only. Removed entirely for people who ask for less motion. */
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
+  /* Tables are evidence. Text left, numbers right, cells on a shared first baseline. */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
   }
-  to {
-    opacity: 1;
-    transform: none;
+  .table th,
+  .table td {
+    padding: 0.875rem 0.75rem;
+    text-align: left;
+    vertical-align: baseline;
+    border-top: 1px solid var(--color-cream-200);
   }
-}
-@keyframes drift {
-  from {
-    transform: translateY(0);
+  .table th:first-child,
+  .table td:first-child {
+    padding-left: 0;
   }
-  to {
-    transform: translateY(-6px);
+  .table th:last-child,
+  .table td:last-child {
+    padding-right: 0;
   }
-}
-.rise {
-  animation: rise 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-.rise-2 {
-  animation-delay: 120ms;
-}
-.rise-3 {
-  animation-delay: 240ms;
-}
-.drift {
-  animation: drift 4s ease-in-out infinite alternate;
-}
-.drift-slow {
-  animation-duration: 6s;
-  animation-delay: -2s;
+  .table thead th {
+    font-size: var(--text-meta);
+    font-weight: 500;
+    color: var(--color-muted);
+    border-top: 0;
+    padding-top: 0;
+    vertical-align: bottom;
+  }
+  .table tbody tr:last-child td {
+    border-bottom: 1px solid var(--color-cream-200);
+  }
+  .table .numeric {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .rise,
-  .drift {
-    animation: none;
-  }
-  .card,
-  .card-hover:hover,
   .btn,
-  .btn > svg {
+  .field {
     transition: none;
-    transform: none;
   }
 }
