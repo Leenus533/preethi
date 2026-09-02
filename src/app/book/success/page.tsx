@@ -5,6 +5,7 @@ import { findBookingByRef, isGoogleConfigured, meetLinkOf, pricePenceOf, service
 import { isStripeConfigured, stripe } from "@/lib/stripe";
 import { formatDate, formatTime, tzAbbreviation } from "@/lib/time";
 import { MeetLinkPoller } from "@/components/booking/MeetLinkPoller";
+import { Icon } from "@/components/ui/icons";
 
 export const metadata: Metadata = { title: "Booking confirmed", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -68,7 +69,7 @@ export default async function SuccessPage({ searchParams }: PageProps<"/book/suc
   if (!validRef) {
     return (
       <div className="container-x py-16">
-        <h1 className="font-display font-display-lg text-[length:var(--text-h2)] text-ink">We could not find that booking</h1>
+        <h1 className="font-display font-display-lg text-[length:var(--text-h2)] text-pine-900">We could not find that booking</h1>
         <p className="mt-3 text-ink-soft">The link looks incomplete. If you have just paid, check your email for a receipt and calendar invitation, or contact Preethi.</p>
         <Link href="/book" className="btn btn-primary mt-6">Back to booking</Link>
       </div>
@@ -81,7 +82,13 @@ export default async function SuccessPage({ searchParams }: PageProps<"/book/suc
   return (
     <div className="container-x py-12 sm:py-16">
       <div className="mx-auto max-w-2xl">
-        <h1 className="font-display font-display-lg text-[length:var(--text-h2)] leading-[1.15] text-ink">{title}</h1>
+        <span
+          className={`grid h-14 w-14 place-items-center rounded-full ${details?.pending ? "bg-clay-100 text-clay-700" : "bg-pine-50 text-pine-700"}`}
+          aria-hidden
+        >
+          {details?.pending ? <Icon.Clock width={28} height={28} /> : <Icon.Check width={28} height={28} strokeWidth={2.2} />}
+        </span>
+        <h1 className="font-display font-display-lg mt-5 text-[length:var(--text-h2)] leading-[1.12] text-pine-900">{title}</h1>
 
         {details ? (
           <>

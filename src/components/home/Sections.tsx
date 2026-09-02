@@ -1,206 +1,150 @@
 import Link from "next/link";
-import { SERVICES, SITE, TIMEZONE, formatPrice } from "@/lib/config";
+import { SERVICES, SITE, formatPrice } from "@/lib/config";
 import { SUBJECTS, subjectBookingHref, subjectPath, subjectService } from "@/lib/subjects";
 import { Icon } from "@/components/ui/icons";
-import { NextSlots } from "./NextSlots";
+import { MOTIF } from "@/components/ui/motif";
+import { HeroVisual } from "./HeroVisual";
 
-/** Section header: sentence-case claim plus an optional one-paragraph lede. */
-export function SectionHead({ title, id, children }: { title: React.ReactNode; id?: string; children?: React.ReactNode }) {
+/** Section header: running head, claim, optional lead. */
+export function SectionHead({
+  head,
+  title,
+  id,
+  align = "left",
+  children,
+}: {
+  head: string;
+  title: React.ReactNode;
+  id?: string;
+  align?: "left" | "center";
+  children?: React.ReactNode;
+}) {
+  const centered = align === "center";
   return (
-    <div className="grid gap-4">
-      <h2 id={id} className="font-display font-display-lg max-w-[22ch] text-[length:var(--text-h2)] leading-[1.15] text-balance text-ink">
+    <div className={`grid gap-4 ${centered ? "justify-items-center text-center" : ""}`}>
+      <p className="running-head">{head}</p>
+      <h2 id={id} className="font-display font-display-lg max-w-[24ch] text-[length:var(--text-h2)] leading-[1.1] text-balance text-pine-900">
         {title}
       </h2>
-      {children && <div className="measure text-[1.0625rem] leading-relaxed text-ink-soft">{children}</div>}
+      {children && <div className={`measure text-[1.0625rem] leading-relaxed text-ink-soft ${centered ? "mx-auto" : ""}`}>{children}</div>}
     </div>
   );
 }
 
-const results: [string, string, string][] = [
-  ["A-level", "A, A, A", "Biology, Chemistry and Maths"],
-  ["UCAT", "Top 10%", "Nationally"],
-  ["GCSE", "Grade 9", "Biology, Chemistry and Physics"],
-];
-
 export function Hero() {
-  const intro = SERVICES.find((s) => s.pricePence === 0);
   return (
     <section aria-labelledby="hero-title">
-      <div className="container-x grid gap-12 pb-16 pt-12 lg:grid-cols-12 lg:gap-x-16 lg:pb-20 lg:pt-16">
-        <div className="lg:col-span-7">
-          <h1 id="hero-title" className="font-display font-display-xl max-w-[16ch] text-[length:var(--text-display)] leading-[1.05] text-balance text-ink">
+      <div className="container-x grid items-center gap-12 pb-16 pt-12 md:pt-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:pb-24 lg:pt-20">
+        <div>
+          <p className="chip">
+            <Icon.Pin width={14} height={14} aria-hidden />
+            Online tutoring from Norwich, for students anywhere in the UK
+          </p>
+          <h1
+            id="hero-title"
+            className="font-display font-display-xl mt-6 text-[length:var(--text-display)] leading-[1.02] text-balance text-pine-900"
+          >
             GCSE, A-level and medicine tutoring that makes the hard parts click.
           </h1>
           <p className="mt-6 max-w-[var(--measure-lead)] text-[length:var(--text-lead)] leading-relaxed text-ink-soft">
-            I&rsquo;m Preethi, a final-year medical student at the University of East Anglia, teaching online from Norwich. I help GCSE
-            and A-level students in any subject turn &ldquo;I don&rsquo;t get it&rdquo; into confident exam answers, with maths and the
-            sciences as my specialisms, and coach future medics through the UCAT and their applications.
+            I&rsquo;m Preethi, a final-year medical student at the University of East Anglia. I help GCSE and A-level students in
+            any subject turn &ldquo;I don&rsquo;t get it&rdquo; into confident exam answers, with maths and the sciences as my
+            specialisms, and coach future medics through the UCAT and their applications.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link href="/book?service=intro-call" className="btn btn-primary">
-              Book a free intro call
+              Book a free intro call <Icon.Arrow width={18} height={18} aria-hidden />
             </Link>
-            <Link href="/#subjects" className="btn btn-secondary">
-              Subjects and prices
+            <Link href="/#pricing" className="btn btn-secondary">
+              See subjects and prices
             </Link>
           </div>
-
-          <dl className="mt-12 grid grid-cols-3 gap-6 border-t border-cream-200 pt-6">
-            {results.map(([label, value, detail]) => (
-              <div key={label} className="min-w-0">
-                <dt className="text-[length:var(--text-meta)] text-muted">{label}</dt>
-                <dd className="font-display mt-1 text-2xl leading-none tabular-nums text-ink sm:text-[1.75rem]">{value}</dd>
-                <dd className="mt-1.5 text-sm leading-snug text-ink-soft">{detail}</dd>
+          <dl className="mt-10 grid max-w-xl grid-cols-3 divide-x divide-cream-300 border-t border-cream-300 pt-6">
+            {[
+              ["A, A, A", "A-level Biology, Chemistry, Maths"],
+              ["Top 10%", "UCAT score"],
+              ["Grade 9", "GCSE Biology, Chemistry, Physics"],
+            ].map(([big, small], i) => (
+              <div key={big} className={i === 0 ? "pr-3 sm:pr-4" : "px-3 sm:px-4"}>
+                <dt className="font-display whitespace-nowrap text-[1.35rem] text-pine-800 sm:text-3xl">{big}</dt>
+                <dd className="mt-1 text-[length:var(--text-meta)] leading-snug text-muted">{small}</dd>
               </div>
             ))}
           </dl>
         </div>
-
-        <div className="lg:col-span-5 lg:self-start lg:pt-2">
-          <NextSlots serviceId={intro?.id ?? "intro-call"} timezone={TIMEZONE} />
-        </div>
+        <HeroVisual className="mx-auto w-full max-w-md lg:max-w-none" />
       </div>
     </section>
   );
 }
 
 const trust = [
-  "Final-year Medicine MBBS, University of East Anglia",
-  "Enhanced DBS check through UEA Medical School",
-  "A full academic year as a sixth-form subject mentor",
-  "Online over Google Meet, invitation sent automatically",
+  { icon: Icon.Cap, text: "Final-year Medicine MBBS, University of East Anglia" },
+  { icon: Icon.Shield, text: "Enhanced DBS check held through UEA Medical School" },
+  { icon: Icon.Users, text: "A full academic year as a sixth-form subject mentor" },
+  { icon: Icon.Video, text: "Online over Google Meet, calendar invite sent automatically" },
 ];
 
 export function TrustStrip() {
   return (
-    <section aria-label="Credentials" className="border-y border-cream-200">
-      <ul className="container-x grid gap-x-8 gap-y-3 py-5 text-sm leading-snug text-ink-soft sm:grid-cols-2 lg:grid-cols-4">
-        {trust.map((text) => (
-          <li key={text}>{text}</li>
+    <section aria-label="Credentials" className="border-y border-cream-200 bg-cream-100/70">
+      <ul className="container-x grid gap-x-8 gap-y-4 py-6 sm:grid-cols-2 lg:grid-cols-4">
+        {trust.map(({ icon: I, text }) => (
+          <li key={text} className="flex items-start gap-3 text-[0.9375rem] leading-snug text-ink-soft">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white text-pine-700 shadow-[var(--shadow-soft)] ring-1 ring-cream-300">
+              <I width={17} height={17} aria-hidden />
+            </span>
+            <span className="pt-1">{text}</span>
+          </li>
         ))}
       </ul>
     </section>
   );
 }
 
-type Row = { key: string; name: string; href?: string; covers: string; minutes: number; pricePence: number; bookHref: string };
-
-function rows(): Row[] {
-  const intro = SERVICES.find((s) => s.pricePence === 0);
-  const list: Row[] = [];
-  if (intro) {
-    list.push({ key: intro.id, name: intro.name, covers: intro.tagline, minutes: intro.durationMinutes, pricePence: 0, bookHref: `/book?service=${intro.id}` });
-  }
-  for (const s of SUBJECTS) {
-    const service = subjectService(s);
-    list.push({
-      key: s.slug,
-      name: service.name,
-      href: subjectPath(s),
-      covers: s.detail,
-      minutes: service.durationMinutes,
-      pricePence: service.pricePence,
-      bookHref: subjectBookingHref(s),
-    });
-  }
-  return list;
-}
-
-/** Subjects and prices share one table: the same four sessions should not be listed twice. */
 export function Subjects() {
-  const data = rows();
-  const paid = data.filter((r) => r.pricePence > 0);
-  const cheapest = Math.min(...paid.map((r) => r.pricePence));
   return (
-    <section id="subjects" aria-labelledby="subjects-title" className="section scroll-mt-20">
-      <div className="container-x grid gap-10">
-        <SectionHead
-          id="subjects-title"
-          title={
-            <>
-              Any subject at GCSE or <span className="whitespace-nowrap">A-level</span>, from {formatPrice(cheapest)} an hour
-            </>
-          }
-        >
+    <section id="subjects" aria-labelledby="subjects-title" className="section scroll-mt-24">
+      <div className="container-x section-grid">
+        <SectionHead head="Subjects" id="subjects-title" title="One-to-one, built around your exam board">
           <p>
-            Plus UCAT preparation and medical school application coaching. Every session is one-to-one and planned around the
-            student&rsquo;s exam board and target grade. Maths and the sciences are Preethi&rsquo;s specialisms. Choose a level to read
-            what sessions cover.
+            Any GCSE or A-level subject, plus UCAT and medical school applications. Every session is planned around the student&rsquo;s
+            specification and target grade. Pick a level to see exactly what sessions cover.
           </p>
         </SectionHead>
-
-        <div id="pricing" className="scroll-mt-20">
-          <table className="table hidden md:table">
-            <caption className="sr-only">Sessions, what they cover, length and price</caption>
-            <thead>
-              <tr>
-                <th scope="col">Session</th>
-                <th scope="col">What it covers</th>
-                <th scope="col" className="numeric">
-                  Length
-                </th>
-                <th scope="col" className="numeric">
-                  Price
-                </th>
-                <th scope="col">
-                  <span className="sr-only">Book</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((r) => (
-                <tr key={r.key}>
-                  <th scope="row" className="font-medium text-ink">
-                    {r.href ? (
-                      <Link href={r.href} className="link">
-                        {r.name}
-                      </Link>
-                    ) : (
-                      r.name
-                    )}
-                  </th>
-                  <td className="text-ink-soft">{r.covers}</td>
-                  <td className="numeric whitespace-nowrap text-ink-soft">{r.minutes} min</td>
-                  <td className="numeric whitespace-nowrap font-medium text-ink">{formatPrice(r.pricePence)}</td>
-                  <td className="whitespace-nowrap text-right">
-                    <Link href={r.bookHref} className="link font-medium">
-                      Book
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <ul className="rows md:hidden">
-            {data.map((r) => (
-              <li key={r.key} className="grid gap-1 py-4">
-                <div className="flex items-baseline justify-between gap-4">
-                  {r.href ? (
-                    <Link href={r.href} className="link font-medium text-ink">
-                      {r.name}
-                    </Link>
-                  ) : (
-                    <span className="font-medium text-ink">{r.name}</span>
-                  )}
-                  <span className="whitespace-nowrap tabular-nums text-ink">
-                    {formatPrice(r.pricePence)} <span className="text-muted">/ {r.minutes} min</span>
+        <ul className="grid gap-5 md:grid-cols-2">
+          {SUBJECTS.map((s) => {
+            const M = MOTIF[s.motif];
+            const service = subjectService(s);
+            return (
+              <li key={s.slug} className="card card-hover flex flex-col p-6 sm:p-7">
+                <div className="flex items-start justify-between gap-4">
+                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-pine-50 text-pine-700 ring-1 ring-pine-100">
+                    <M width={24} height={24} aria-hidden />
+                  </span>
+                  <span className="chip">
+                    {formatPrice(service.pricePence)} / {service.durationMinutes} min
                   </span>
                 </div>
-                <p className="text-sm text-ink-soft">{r.covers}</p>
-                <Link href={r.bookHref} className="link mt-1 text-sm font-medium">
-                  Book
-                </Link>
+                <h3 className="font-display mt-5 text-[1.5rem] leading-tight text-pine-900">
+                  <Link href={subjectPath(s)} className="focus-ring rounded-sm underline-offset-4 hover:underline">
+                    {s.title}
+                  </Link>
+                </h3>
+                <p className="mt-2 text-ink-soft">{s.blurb}</p>
+                <p className="mt-1.5 text-[length:var(--text-meta)] text-muted">{s.detail}</p>
+                <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-cream-200 pt-5 text-sm font-semibold">
+                  <Link href={subjectPath(s)} className="focus-ring inline-flex items-center gap-1.5 rounded-sm text-pine-800 hover:text-pine-900">
+                    What sessions cover <Icon.Arrow width={15} height={15} aria-hidden />
+                  </Link>
+                  <Link href={subjectBookingHref(s)} className="focus-ring rounded-sm text-pine-700 underline underline-offset-4 hover:text-pine-900">
+                    Book a session
+                  </Link>
+                </div>
               </li>
-            ))}
-          </ul>
-
-          <p className="measure mt-5 text-sm leading-relaxed text-muted">
-            Prices are per session and include everything. No packages, no minimum commitment. Reschedule free with{" "}
-            {SITE.cancellationNoticeHours} hours&rsquo; notice. Card payment through Stripe; the calendar invitation with the Google Meet
-            link arrives as soon as you pay.
-          </p>
-        </div>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );
@@ -210,37 +154,42 @@ const steps = [
   {
     title: "Start with a free intro call",
     text: "Twenty minutes to talk about goals, exam boards and how sessions would work. No pressure, nothing to pay.",
+    icon: Icon.Users,
   },
   {
     title: "Pick a time that suits",
     text: "The booking calendar shows live availability. Choose a slot, add a few details and you are done.",
+    icon: Icon.Calendar,
   },
   {
     title: "Pay securely, get your invite",
     text: "Card payment through Stripe. A Google Calendar invitation with the Meet link lands in your inbox straight away.",
+    icon: Icon.Video,
   },
 ];
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" aria-labelledby="how-title" className="section scroll-mt-20">
-      <div className="container-x split">
-        <SectionHead id="how-title" title="Three steps from first message to first session" />
-        <ol className="rows md:grid md:grid-cols-3 md:gap-x-8 md:[&>*]:border-b md:[&>*]:border-cream-200">
-          {steps.map((s, i) => (
-            <li key={s.title} className="py-5">
-              <h3 className="font-display grid grid-cols-[1.5rem_minmax(0,1fr)] text-[length:var(--text-h3)] leading-snug text-ink">
-                <span className="font-normal tabular-nums text-muted" aria-hidden>
-                  {i + 1}
+    <section id="how-it-works" aria-labelledby="how-title" className="section scroll-mt-24 bg-cream-100/60">
+      <div className="container-x section-grid">
+        <SectionHead head="How it works" id="how-title" title="Three steps from first message to first session" align="center" />
+        <ol className="relative grid gap-6 md:grid-cols-3 md:gap-8">
+          <span aria-hidden className="absolute left-[16.6%] right-[16.6%] top-9 hidden border-t-2 border-dashed border-pine-200 md:block" />
+          {steps.map((s, i) => {
+            const I = s.icon;
+            return (
+              <li key={s.title} className="card relative flex flex-col items-center p-7 text-center">
+                <span className="relative grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full bg-pine-700 text-white shadow-[var(--shadow-soft)]">
+                  <I width={28} height={28} aria-hidden />
+                  <span className="font-display absolute -right-1 -top-1 grid h-7 w-7 place-items-center rounded-full bg-clay-100 text-[0.95rem] text-clay-700 ring-2 ring-white">
+                    {i + 1}
+                  </span>
                 </span>
-                <span>
-                  <span className="sr-only">Step {i + 1}: </span>
-                  {s.title}
-                </span>
-              </h3>
-              <p className="mt-2 pl-6 leading-relaxed text-ink-soft">{s.text}</p>
-            </li>
-          ))}
+                <h3 className="font-display mt-6 text-[length:var(--text-h3)] text-pine-900">{s.title}</h3>
+                <p className="mt-2 max-w-[30ch] leading-relaxed text-ink-soft">{s.text}</p>
+              </li>
+            );
+          })}
         </ol>
       </div>
     </section>
@@ -249,46 +198,146 @@ export function HowItWorks() {
 
 const facts: [string, string][] = [
   ["Studying", "Medicine MBBS, University of East Anglia, final year"],
-  ["A-levels", "Biology A, Chemistry A, Maths A, Sir Isaac Newton Sixth Form"],
+  ["A-levels", "Biology A, Chemistry A, Maths A"],
   ["GCSEs", "Grade 9 in Biology, Chemistry, Physics, Computer Science and Geography"],
   ["UCAT", "Top 10% nationally"],
-  ["Experience", "A year as a sixth-form subject mentor; eight years in patient-facing roles"],
+  ["Experience", "A year as a sixth-form subject mentor; 8+ years in patient-facing roles"],
   ["Safeguarding", "Enhanced DBS check through UEA Medical School"],
   ["Based in", "Norwich, teaching online across the UK"],
 ];
 
 export function About() {
   return (
-    <section id="about" aria-labelledby="about-title" className="section scroll-mt-20">
-      <div className="container-x split">
-        <SectionHead id="about-title" title="A tutor who knows the current specifications, and remembers what was hard" />
-        <div className="grid gap-8">
+    <section id="about" aria-labelledby="about-title" className="section scroll-mt-24">
+      <div className="container-x grid gap-12 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-16">
+        <div className="section-grid !gap-8">
+          <SectionHead head="About Preethi" id="about-title" title="A tutor who knows the current specifications, and remembers what was hard" />
           <div className="measure grid gap-[var(--space-item)] leading-relaxed text-ink-soft">
             <p>
-              I went to school in Norwich and took Biology, Chemistry and Maths at sixth form before starting Medicine at the University
-              of East Anglia in 2022. I&rsquo;m now in my final year, which means I sat the exams I teach recently and use the science
-              every week on placement.
+              I went to school in Norwich, took Biology, Chemistry and Maths at Sir Isaac Newton Sixth Form and got an A in each.
+              Before that I picked up grade 9s in GCSE Biology, Chemistry, Physics, Computer Science and Geography. I scored in the
+              top 10% on the UCAT and started Medicine at the University of East Anglia in 2022. I&rsquo;m now in my final year.
             </p>
+            <blockquote className="relative border-l-2 border-clay-600 pl-5">
+              <p className="font-display text-[1.35rem] leading-snug text-pine-900">
+                Most &ldquo;I&rsquo;m just bad at chemistry&rdquo; problems are really one or two missing ideas plus a lack of exam
+                practice. Both are fixable.
+              </p>
+            </blockquote>
             <p>
-              After my A-levels I spent a year as a student subject mentor at my old sixth form, running one-to-one and group sessions,
-              online and in person, and reporting back to teachers on progress. That is where I learned that most &ldquo;I&rsquo;m just
-              bad at chemistry&rdquo; problems are really one or two missing ideas plus a lack of exam practice. Both are fixable.
+              After my A-levels I spent a year as a student subject mentor at my old sixth form, running one-to-one and group
+              sessions, online and in person, and reporting back to teachers on progress. That is where I learned how to find the
+              missing idea quickly, and how to turn it into marks.
             </p>
             <p>
               Alongside my degree I work front-of-house in a private physiotherapy clinic and have spent more than eight years in
-              patient-facing roles, so I&rsquo;m used to explaining complicated things calmly to people of all ages. I hold an Enhanced
-              DBS check through the medical school, and parents are always welcome to sit in on sessions.
+              patient-facing roles, so I&rsquo;m used to explaining complicated things calmly to people of all ages. I hold an
+              Enhanced DBS check through the medical school, and parents are always welcome to sit in on sessions.
             </p>
           </div>
-          <dl className="rows text-sm">
+          <ul className="grid gap-2.5 sm:grid-cols-2">
+            {[
+              "Sessions planned around your exam board and specification",
+              "Clear notes on what to practise before the next session",
+              "Exam-style questions worked through together",
+              "Honest, current advice on medicine applications",
+            ].map((t) => (
+              <li key={t} className="flex items-start gap-2.5 text-[0.9375rem] text-ink-soft">
+                <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-pine-50 text-pine-700">
+                  <Icon.Check width={13} height={13} strokeWidth={2.4} aria-hidden />
+                </span>
+                <span>{t}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <aside aria-label="At a glance" className="card overflow-hidden self-start lg:sticky lg:top-24">
+          <div className="surface-dark relative p-6">
+            <p className="font-display font-display-xl text-[4rem] leading-none text-white/95">PA</p>
+            <p className="font-display mt-4 text-xl">Preethi Amudhan</p>
+            <p className="mt-1 text-sm text-pine-100">Final-year medical student and tutor</p>
+          </div>
+          <dl className="divide-y divide-cream-200 px-6">
             {facts.map(([k, v]) => (
-              <div key={k} className="grid grid-cols-[7rem_minmax(0,1fr)] gap-4 py-3">
-                <dt className="text-muted">{k}</dt>
+              <div key={k} className="grid grid-cols-[6rem_minmax(0,1fr)] gap-3 py-3 text-sm">
+                <dt className="font-medium text-muted">{k}</dt>
                 <dd className="text-ink">{v}</dd>
               </div>
             ))}
           </dl>
-        </div>
+          <div className="border-t border-cream-200 bg-cream-50 p-5">
+            <Link href="/book?service=intro-call" className="btn btn-primary w-full">
+              Book a free intro call
+            </Link>
+          </div>
+        </aside>
+      </div>
+    </section>
+  );
+}
+
+export function Pricing() {
+  const intro = SERVICES.find((s) => s.pricePence === 0);
+  const paid = SERVICES.filter((s) => s.pricePence > 0);
+  const cheapest = Math.min(...paid.map((s) => s.pricePence));
+  return (
+    <section id="pricing" aria-labelledby="pricing-title" className="section scroll-mt-24">
+      <div className="container-x section-grid">
+        <SectionHead head="Prices" id="pricing-title" title={`From ${formatPrice(cheapest)} an hour, paid per session`} align="center">
+          <p>
+            No packages and no minimum commitment. Reschedule free with {SITE.cancellationNoticeHours} hours&rsquo; notice. Prices
+            include everything: there are no booking fees.
+          </p>
+        </SectionHead>
+
+        {intro && (
+          <div className="card flex flex-col gap-5 border-pine-200 bg-pine-50/60 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+            <div className="flex items-start gap-4">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white text-pine-700 shadow-[var(--shadow-soft)] ring-1 ring-pine-100">
+                <Icon.Users width={24} height={24} aria-hidden />
+              </span>
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="font-display text-[length:var(--text-h3)] text-pine-900">{intro.name}</h3>
+                  <span className="chip chip-clay">Free · {intro.durationMinutes} min</span>
+                </div>
+                <p className="mt-1 max-w-[52ch] text-[0.9375rem] text-ink-soft">{intro.tagline} {intro.description}</p>
+              </div>
+            </div>
+            <Link href={`/book?service=${intro.id}`} className="btn btn-primary shrink-0">
+              Book the free call <Icon.Arrow width={16} height={16} aria-hidden />
+            </Link>
+          </div>
+        )}
+
+        <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {paid.map((s) => {
+            const featured = Boolean(s.badge);
+            return (
+              <li key={s.id} className={`card flex flex-col p-6 ${featured ? "card-featured" : ""}`}>
+                {featured && <span className="chip chip-clay absolute -top-3 left-6">{s.badge}</span>}
+                <h3 className="font-display text-[1.25rem] leading-tight text-pine-900">{s.name}</h3>
+                <p className="mt-1.5 min-h-[2.75rem] text-[0.9375rem] text-ink-soft">{s.tagline}</p>
+                <p className="mt-5 flex items-baseline gap-1.5">
+                  <span className="font-display text-[2.5rem] leading-none tabular-nums text-ink">{formatPrice(s.pricePence)}</span>
+                  <span className="text-sm text-muted">/ {s.durationMinutes} min</span>
+                </p>
+                <ul className="mt-5 grid gap-2 border-t border-cream-200 pt-5 text-sm text-ink-soft">
+                  {s.highlights.map((h) => (
+                    <li key={h} className="flex items-start gap-2">
+                      <Icon.Check width={16} height={16} strokeWidth={2.2} className="mt-0.5 shrink-0 text-pine-600" aria-hidden />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+                <Link href={`/book?service=${s.id}`} className={`btn mt-auto w-full pt-[0.85rem] ${featured ? "btn-primary" : "btn-secondary"}`}>
+                  Book and pay
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );
@@ -331,14 +380,16 @@ export const HOME_FAQS = [
 
 export function FaqList({ items }: { items: { q: string; a: string }[] }) {
   return (
-    <div className="rows">
+    <div className="grid gap-3">
       {items.map((f) => (
-        <details key={f.q} className="group">
-          <summary className="focus-ring flex cursor-pointer list-none items-baseline justify-between gap-6 py-4 text-left font-medium text-ink [&::-webkit-details-marker]:hidden">
+        <details key={f.q} className="card group open:border-pine-200">
+          <summary className="focus-ring flex cursor-pointer list-none items-center justify-between gap-4 rounded-[0.75rem] px-5 py-4 text-left font-medium text-pine-900 hover:bg-cream-50 [&::-webkit-details-marker]:hidden">
             {f.q}
-            <Icon.Chevron width={16} height={16} className="mt-1 shrink-0 self-start text-muted transition-transform group-open:rotate-180" aria-hidden />
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-pine-50 text-pine-700 transition-transform group-open:rotate-180" aria-hidden>
+              <Icon.Chevron width={16} height={16} />
+            </span>
           </summary>
-          <p className="measure pb-5 leading-relaxed text-ink-soft">{f.a}</p>
+          <p className="measure px-5 pb-5 leading-relaxed text-ink-soft">{f.a}</p>
         </details>
       ))}
     </div>
@@ -347,13 +398,13 @@ export function FaqList({ items }: { items: { q: string; a: string }[] }) {
 
 export function Faq() {
   return (
-    <section id="faq" aria-labelledby="faq-title" className="section scroll-mt-20">
-      <div className="container-x split">
+    <section id="faq" aria-labelledby="faq-title" className="section scroll-mt-24">
+      <div className="container-x grid gap-10 lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-16">
         <div className="lg:sticky lg:top-24 lg:self-start">
-          <SectionHead id="faq-title" title="Questions parents ask before booking">
+          <SectionHead head="Questions" id="faq-title" title="Questions parents ask before booking">
             <p>
               Anything else? Email{" "}
-              <a href={`mailto:${SITE.contactEmail}`} className="link font-medium">
+              <a href={`mailto:${SITE.contactEmail}`} className="focus-ring font-medium text-pine-700 underline underline-offset-4">
                 {SITE.contactEmail}
               </a>
               .
@@ -366,22 +417,25 @@ export function Faq() {
   );
 }
 
-export function CtaBand({ title, text }: { title?: string; text?: string } = {}) {
+export function CtaBand({ title, text }: { title?: React.ReactNode; text?: string } = {}) {
   return (
     <section aria-labelledby="cta-title" className="section !border-t-0 !pt-0">
       <div className="container-x">
-        <div className="surface-dark grid gap-8 rounded-xl px-6 py-12 sm:px-12 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
-            <h2 id="cta-title" className="font-display font-display-lg max-w-[20ch] text-[length:var(--text-h2)] leading-[1.15] text-balance">
-              {title ?? "Start with a free 20-minute intro call"}
-            </h2>
-            <p className="measure mt-4 text-[1.0625rem] leading-relaxed text-pine-100">
-              {text ?? "Pick a time on the live calendar. If it turns out I\u2019m not the right fit, you\u2019ve lost nothing."}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3 lg:col-span-5 lg:justify-end">
+        <div className="surface-dark rounded-xl px-7 py-14 sm:px-14 sm:py-16">
+          <p className="running-head !text-pine-200">Free to start</p>
+          <h2 id="cta-title" className="font-display font-display-lg mt-4 max-w-[20ch] text-[length:var(--text-h2)] leading-[1.1] text-balance">
+            {title ?? (
+              <>
+                Start with a free <span className="whitespace-nowrap">20-minute</span> intro call
+              </>
+            )}
+          </h2>
+          <p className="measure mt-4 text-[1.0625rem] text-pine-100">
+            {text ?? "Pick a time on the live calendar. If it turns out I\u2019m not the right fit, you\u2019ve lost nothing."}
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/book?service=intro-call" className="btn btn-invert">
-              Book the free call
+              Book the free call <Icon.Arrow width={16} height={16} aria-hidden />
             </Link>
             <Link href="/book" className="btn btn-ghost-dark">
               Book a paid session

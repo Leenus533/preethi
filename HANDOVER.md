@@ -106,7 +106,6 @@ page, but she should read them once.
 
 ## Photo
 
-The hero no longer shows a photograph. In its place it lists the next free intro-call times, read
-live from the calendar, so the first thing a visitor sees is that booking is real and quick. The
-photo that was briefly used is out of the repository but still in git history (commit `5453cfb`)
-if you want it back later. Adding it again is a small design change, not a file drop.
+The hero no longer shows a photograph; it shows an illustrated study board instead. The photo that
+was briefly used is out of the repository but still in git history (commit `5453cfb`) if you want
+it back later. Adding it again is a small design change, not a file drop.

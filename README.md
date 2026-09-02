@@ -20,9 +20,7 @@ Everything lives in `src/lib/config.ts`:
 - `AVAILABILITY.minNoticeHours`, `bufferMinutes`, `maxDaysAhead`, `slotIntervalMinutes`.
 - `SITE`: contact details and cancellation notice period.
 
-Home page copy is in `src/components/home/Sections.tsx`. The four subject landing pages (`/tutoring/gcse`, `/tutoring/a-level`, `/tutoring/ucat`, `/tutoring/medical-school-applications`) are generated from `src/lib/subjects.ts`; each entry holds the page's title, meta description, keywords, copy and FAQs. The hero shows the next free intro-call times read live from the calendar (`src/components/home/NextSlots.tsx`) rather than a photograph or illustration.
-
-The visual language follows the restraint principles Vercel publishes for its own report sites: hierarchy from typography and spacing, surfaces only where something is interactive, one action colour, no textures, gradients, decorative icons or motion. Subjects and prices share one table so nothing is listed twice.
+Home page copy is in `src/components/home/Sections.tsx`. The four subject landing pages (`/tutoring/gcse`, `/tutoring/a-level`, `/tutoring/ucat`, `/tutoring/medical-school-applications`) are generated from `src/lib/subjects.ts`; each entry holds the page's title, meta description, keywords, copy and FAQs. The hero shows an illustrated study board (`src/components/home/HeroVisual.tsx`) rather than a photograph.
 
 ## SEO
 
