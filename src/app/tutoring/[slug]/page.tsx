@@ -74,10 +74,9 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
 
           <div className="mt-8 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-16">
             <div>
-              <p className="running-head">{subject.title} tutoring</p>
               <h1
                 id="subject-title"
-                className="font-display font-display-xl mt-4 max-w-[18ch] text-[length:var(--text-display)] leading-[1.04] text-balance text-pine-900"
+                className="font-display font-display-xl max-w-[18ch] text-[length:var(--text-display)] leading-[1.04] text-balance text-pine-900"
               >
                 {subject.heading}
               </h1>
@@ -132,7 +131,7 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
       {/* What sessions cover */}
       <section aria-labelledby="covers-title" className="section bg-cream-100/60">
         <div className="container-x section-grid">
-          <SectionHead head="What we work on" id="covers-title" title="What sessions cover" />
+          <SectionHead id="covers-title" title="What sessions cover" />
           <ol className="grid gap-5 md:grid-cols-2">
             {subject.covers.map((c, i) => (
               <li key={c.title} className="card p-6 sm:p-7">
@@ -149,7 +148,7 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
       <section aria-labelledby="who-title" className="section">
         <div className="container-x grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="section-grid !gap-8">
-            <SectionHead head="Who it suits" id="who-title" title="Sessions are a good fit if" />
+            <SectionHead id="who-title" title="Sessions are a good fit if" />
             <ul className="grid gap-3">
               {subject.whoFor.map((t) => (
                 <li key={t} className="flex items-start gap-3 text-[1.0625rem] text-ink-soft">
@@ -162,14 +161,14 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
             </ul>
           </div>
           <div className="section-grid !gap-8">
-            <SectionHead head="The approach" title="How I teach it" />
+            <SectionHead title="How I teach it" />
             <div className="measure grid gap-[var(--space-item)] leading-relaxed text-ink-soft">
               {subject.approach.map((p) => (
                 <p key={p}>{p}</p>
               ))}
             </div>
             <div className="card border-pine-200 bg-pine-50/60 p-6">
-              <p className="running-head">Why Preethi</p>
+              <p className="font-display text-[length:var(--text-h3)] text-pine-900">Why Preethi</p>
               <ul className="mt-4 grid gap-2.5 text-[0.9375rem] text-ink-soft">
                 {subject.credentials.map((c) => (
                   <li key={c} className="flex items-start gap-2.5">
@@ -190,7 +189,7 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
       <section aria-labelledby="subject-faq-title" className="section">
         <div className="container-x grid gap-10 lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-16">
           <div className="lg:sticky lg:top-24 lg:self-start">
-            <SectionHead head="Questions" id="subject-faq-title" title={`${subject.title} questions`}>
+            <SectionHead id="subject-faq-title" title={`${subject.title} questions`}>
               <p>
                 Something else? Email{" "}
                 <a href={`mailto:${SITE.contactEmail}`} className="focus-ring font-medium text-pine-700 underline underline-offset-4">
@@ -207,7 +206,7 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
       {/* Other subjects */}
       <section aria-labelledby="others-title" className="section">
         <div className="container-x section-grid !gap-8">
-          <SectionHead head="Also available" id="others-title" title="Other subjects" />
+          <SectionHead id="others-title" title="Other subjects" />
           <ul className="grid gap-4 md:grid-cols-3">
             {others.map((s) => {
               const OM = MOTIF[s.motif];

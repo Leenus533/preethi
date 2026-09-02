@@ -100,11 +100,10 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-x flex flex-col gap-2 py-5 text-xs text-pine-200 sm:flex-row sm:items-center sm:justify-between">
+        <div className="container-x py-5 text-xs text-pine-200">
           <p>
             © {new Date().getFullYear()} {SITE.tutorName}. All rights reserved.
           </p>
-          <p>Secure payments by Stripe · Calendar invitations by Google</p>
         </div>
       </div>
     </footer>

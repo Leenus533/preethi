@@ -9,9 +9,8 @@ export default function NotFound() {
   return (
     <div>
       <div className="container-x py-24 text-center">
-        <p className="running-head justify-center">404</p>
-        <h1 className="font-display font-display-lg mt-4 text-[length:var(--text-h2)] text-pine-900">That page does not exist</h1>
-        <p className="mx-auto mt-3 max-w-md text-ink-soft">The link may be out of date. Everything on the site is one click away below.</p>
+        <h1 className="font-display font-display-lg text-[length:var(--text-h2)] text-pine-900">That page does not exist</h1>
+        <p className="mx-auto mt-3 max-w-md text-ink-soft">The link may be out of date. Try one of these instead.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href="/" className="btn btn-primary">
             Back to home

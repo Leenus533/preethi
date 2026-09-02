@@ -117,25 +117,6 @@ body {
     display: grid;
     gap: var(--space-group);
   }
-  /* A quiet running head with a short clay rule, marking the start of each section. */
-  .running-head {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    font-size: var(--text-meta);
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: 0.02em;
-    color: var(--color-pine-700);
-  }
-  .running-head::before {
-    content: "";
-    width: 1.25rem;
-    height: 2px;
-    border-radius: 1px;
-    background: var(--color-clay-600);
-    flex: none;
-  }
   .measure {
     max-width: var(--measure);
   }

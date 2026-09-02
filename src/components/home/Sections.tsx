@@ -5,15 +5,13 @@ import { Icon } from "@/components/ui/icons";
 import { MOTIF } from "@/components/ui/motif";
 import { HeroVisual } from "./HeroVisual";
 
-/** Section header: running head, claim, optional lead. */
+/** Section header: claim plus an optional lead. */
 export function SectionHead({
-  head,
   title,
   id,
   align = "left",
   children,
 }: {
-  head: string;
   title: React.ReactNode;
   id?: string;
   align?: "left" | "center";
@@ -22,7 +20,6 @@ export function SectionHead({
   const centered = align === "center";
   return (
     <div className={`grid gap-4 ${centered ? "justify-items-center text-center" : ""}`}>
-      <p className="running-head">{head}</p>
       <h2 id={id} className="font-display font-display-lg max-w-[24ch] text-[length:var(--text-h2)] leading-[1.1] text-balance text-pine-900">
         {title}
       </h2>
@@ -36,13 +33,9 @@ export function Hero() {
     <section aria-labelledby="hero-title">
       <div className="container-x grid items-center gap-12 pb-16 pt-12 md:pt-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:pb-24 lg:pt-20">
         <div>
-          <p className="chip">
-            <Icon.Pin width={14} height={14} aria-hidden />
-            Online tutoring from Norwich, for students anywhere in the UK
-          </p>
           <h1
             id="hero-title"
-            className="font-display font-display-xl mt-6 text-[length:var(--text-display)] leading-[1.02] text-balance text-pine-900"
+            className="font-display font-display-xl text-[length:var(--text-display)] leading-[1.02] text-balance text-pine-900"
           >
             GCSE, A-level and medicine tutoring that makes the hard parts click.
           </h1>
@@ -106,7 +99,7 @@ export function Subjects() {
   return (
     <section id="subjects" aria-labelledby="subjects-title" className="section scroll-mt-24">
       <div className="container-x section-grid">
-        <SectionHead head="Subjects" id="subjects-title" title="One-to-one, built around your exam board">
+        <SectionHead id="subjects-title" title="One-to-one, built around your exam board">
           <p>
             Any GCSE or A-level subject, plus UCAT and medical school applications. Every session is planned around the student&rsquo;s
             specification and target grade. Pick a level to see exactly what sessions cover.
@@ -172,7 +165,7 @@ export function HowItWorks() {
   return (
     <section id="how-it-works" aria-labelledby="how-title" className="section scroll-mt-24 bg-cream-100/60">
       <div className="container-x section-grid">
-        <SectionHead head="How it works" id="how-title" title="Three steps from first message to first session" align="center" />
+        <SectionHead id="how-title" title="Three steps from first message to first session" align="center" />
         <ol className="relative grid gap-6 md:grid-cols-3 md:gap-8">
           <span aria-hidden className="absolute left-[16.6%] right-[16.6%] top-9 hidden border-t-2 border-dashed border-pine-200 md:block" />
           {steps.map((s, i) => {
@@ -211,7 +204,7 @@ export function About() {
     <section id="about" aria-labelledby="about-title" className="section scroll-mt-24">
       <div className="container-x grid gap-12 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-16">
         <div className="section-grid !gap-8">
-          <SectionHead head="About Preethi" id="about-title" title="A tutor who knows the current specifications, and remembers what was hard" />
+          <SectionHead id="about-title" title="A tutor who knows the current specifications, and remembers what was hard" />
           <div className="measure grid gap-[var(--space-item)] leading-relaxed text-ink-soft">
             <p>
               I went to school in Norwich, took Biology, Chemistry and Maths at Sir Isaac Newton Sixth Form and got an A in each.
@@ -284,7 +277,7 @@ export function Pricing() {
   return (
     <section id="pricing" aria-labelledby="pricing-title" className="section scroll-mt-24">
       <div className="container-x section-grid">
-        <SectionHead head="Prices" id="pricing-title" title={`From ${formatPrice(cheapest)} an hour, paid per session`} align="center">
+        <SectionHead id="pricing-title" title={`From ${formatPrice(cheapest)} an hour, paid per session`} align="center">
           <p>
             No packages and no minimum commitment. Reschedule free with {SITE.cancellationNoticeHours} hours&rsquo; notice. Prices
             include everything: there are no booking fees.
@@ -401,7 +394,7 @@ export function Faq() {
     <section id="faq" aria-labelledby="faq-title" className="section scroll-mt-24">
       <div className="container-x grid gap-10 lg:grid-cols-[20rem_minmax(0,1fr)] lg:gap-16">
         <div className="lg:sticky lg:top-24 lg:self-start">
-          <SectionHead head="Questions" id="faq-title" title="Questions parents ask before booking">
+          <SectionHead id="faq-title" title="Questions parents ask before booking">
             <p>
               Anything else? Email{" "}
               <a href={`mailto:${SITE.contactEmail}`} className="focus-ring font-medium text-pine-700 underline underline-offset-4">
@@ -422,8 +415,7 @@ export function CtaBand({ title, text }: { title?: React.ReactNode; text?: strin
     <section aria-labelledby="cta-title" className="section !border-t-0 !pt-0">
       <div className="container-x">
         <div className="surface-dark rounded-xl px-7 py-14 sm:px-14 sm:py-16">
-          <p className="running-head !text-pine-200">Free to start</p>
-          <h2 id="cta-title" className="font-display font-display-lg mt-4 max-w-[20ch] text-[length:var(--text-h2)] leading-[1.1] text-balance">
+          <h2 id="cta-title" className="font-display font-display-lg max-w-[20ch] text-[length:var(--text-h2)] leading-[1.1] text-balance">
             {title ?? (
               <>
                 Start with a free <span className="whitespace-nowrap">20-minute</span> intro call
