@@ -395,7 +395,7 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
               </button>
             </div>
             <form onSubmit={submit} noValidate className="mt-5 grid gap-5 border-t border-cream-200 pt-6">
-              <div className="grid gap-5 sm:grid-cols-2">
+              <div className="grid items-start gap-5 sm:grid-cols-2">
                 <Field label="Student's name" error={fieldErrors.name}>
                   <input id="field-name" className="field" autoComplete="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} aria-invalid={Boolean(fieldErrors.name)} required />
                 </Field>
@@ -508,11 +508,11 @@ function StepHeader({ n, label, active, done }: { n: number; label: string; acti
 
 function Field({ label, hint, error, children }: { label: string; hint?: string; error?: string; children: React.ReactNode }) {
   return (
-    <label className="block">
-      <span className="text-sm font-medium text-ink">{label}</span>
-      {hint && <span className="mt-0.5 block text-xs text-muted">{hint}</span>}
+    <label className="flex flex-col">
+      <span className="text-sm font-medium leading-snug text-ink">{label}</span>
       <span className="mt-1.5 block">{children}</span>
-      {error && <span role="alert" className="mt-1 block text-sm text-red-700">{error}</span>}
+      {error && <span role="alert" className="mt-1.5 block text-sm text-red-700">{error}</span>}
+      {hint && <span className="mt-1.5 block text-xs leading-snug text-muted">{hint}</span>}
     </label>
   );
 }
