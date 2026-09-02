@@ -18,8 +18,6 @@ export type Service = {
   /** Price in pence. 0 means free (no Stripe checkout). */
   pricePence: number;
   highlights: string[];
-  /** Shown as a badge on the pricing card, e.g. "Most popular". */
-  badge?: string;
 };
 
 export const SERVICES: Service[] = [
@@ -58,7 +56,6 @@ export const SERVICES: Service[] = [
     durationMinutes: 60,
     pricePence: 3500,
     highlights: ["Any subject; Biology, Chemistry, Maths specialist", "Exam-board specific", "Weekly progress notes"],
-    badge: "Most popular",
   },
   {
     id: "ucat-60",

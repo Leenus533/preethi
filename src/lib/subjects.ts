@@ -5,8 +5,6 @@
  */
 import { getService } from "./config";
 
-export type SubjectMotif = "graph" | "helix" | "clock" | "stethoscope";
-
 export type SubjectFaq = { q: string; a: string };
 
 export type Subject = {
@@ -21,7 +19,6 @@ export type Subject = {
   metaDescription: string;
   keywords: string[];
   serviceId: string;
-  motif: SubjectMotif;
   /** One-line summary for the card. */
   blurb: string;
   /** Small print under the blurb on the card. */
@@ -49,7 +46,6 @@ export const SUBJECTS: Subject[] = [
       "One-to-one online GCSE tutoring in any subject, with Maths and the sciences as specialisms. AQA, Edexcel and OCR. Grade 9 tutor, £30 an hour, book online.",
     keywords: ["GCSE tutor", "GCSE tutor online", "GCSE maths tutor online", "GCSE science tutor", "GCSE chemistry tutor", "GCSE biology tutor", "GCSE physics tutor", "Norwich GCSE tutor"],
     serviceId: "gcse-60",
-    motif: "graph",
     blurb: "Build the foundations properly and learn how to score the marks on the paper.",
     detail: "Any GCSE subject. Maths and the sciences are specialisms. AQA, Edexcel and OCR.",
     lead:
@@ -91,7 +87,6 @@ export const SUBJECTS: Subject[] = [
       "One-to-one online A-level tutoring in any subject. Biology, Chemistry and Maths specialist with A, A, A, now a final-year medic. AQA, Edexcel, OCR. £35/hr.",
     keywords: ["A-level tutor", "A-level tutor online", "A-level chemistry tutor", "A-level biology tutor online", "A-level maths tutor", "A level tutor Norwich", "online A-level tutoring"],
     serviceId: "alevel-60",
-    motif: "helix",
     blurb: "Topic-by-topic depth, plus the exam technique that separates a B from an A.",
     detail: "Any A-level subject. Biology, Chemistry and Maths are specialisms, with an A in each.",
     lead:
@@ -133,7 +128,6 @@ export const SUBJECTS: Subject[] = [
       "One-to-one online UCAT tutoring across all four sections, with timed drills and a personal strategy, from a top 10% scorer now a final-year medic. £40/hr.",
     keywords: ["UCAT tutor", "UCAT tutoring online", "UCAT preparation", "UCAT coaching", "UCAT verbal reasoning help", "medicine entrance exam tutor"],
     serviceId: "ucat-60",
-    motif: "clock",
     blurb: "Strategy and timing for every section, from someone who scored in the top 10%.",
     detail: "Verbal Reasoning, Decision Making, Quantitative Reasoning and Situational Judgement.",
     lead:
@@ -175,7 +169,6 @@ export const SUBJECTS: Subject[] = [
       "Personal statement reviews, MMI and panel interview practice and honest advice on where to apply, from a final-year UEA medical student. Online, £40/hr.",
     keywords: ["medical school application help", "medicine personal statement review", "MMI interview practice", "medicine interview coaching", "how to get into medical school UK"],
     serviceId: "medicine-60",
-    motif: "stethoscope",
     blurb: "Personal statement reviews, mock interviews and honest advice on where to apply.",
     detail: "Personal statements, MMI and panel practice, and the UCAS timeline.",
     lead:
