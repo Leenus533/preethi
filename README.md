@@ -60,7 +60,8 @@ Abuse limits (all enforced by counting calendar events, so they survive redeploy
 1. Add the secret key to the environment.
 2. Create a webhook endpoint for `https://<your-domain>/api/webhooks/stripe` listening to `checkout.session.completed`, `checkout.session.expired`, `checkout.session.async_payment_succeeded` and `checkout.session.async_payment_failed`. Put its signing secret in `STRIPE_WEBHOOK_SECRET`. The deploy script below does this for you.
 3. Test with card `4242 4242 4242 4242`, any future expiry, any CVC.
-4. Optional: in Stripe → Settings → Emails, turn on "Successful payments" so students get receipts; and under Public details set the business name that appears on the checkout page.
+4. Optional but recommended: create one product per paid service with `serviceId` metadata matching the ids in `src/lib/config.ts` (`gcse-60`, `alevel-60`, `ucat-60`, `medicine-60`). Checkout attaches payments to these so reporting groups per service; without them it falls back to ad-hoc products. The live and test accounts both have them.
+5. Optional: in Stripe → Settings → Emails, turn on "Successful payments" so students get receipts; and under Public details set the business name that appears on the checkout page.
 
 ## Local development
 

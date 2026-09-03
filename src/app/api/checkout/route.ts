@@ -4,7 +4,7 @@ import type Stripe from "stripe";
 import { AVAILABILITY, SITE, TIMEZONE, getService } from "@/lib/config";
 import { computeSlots, dateRangeToInstants, isSlotOffered, type Interval } from "@/lib/availability";
 import { GoogleError, confirmBooking, countActiveHolds, countBookings, createHold, getBusyIntervals, isGoogleConfigured, releaseHold } from "@/lib/google";
-import { isStripeConfigured, stripe } from "@/lib/stripe";
+import { catalogueProductId, isStripeConfigured, stripe } from "@/lib/stripe";
 import { siteOrigin } from "@/lib/site-url";
 import { validateBookingInput } from "@/lib/booking-schema";
 import { formatDateTime, ymdOf } from "@/lib/time";
@@ -150,6 +150,7 @@ export async function POST(req: NextRequest) {
   };
 
   try {
+    const productId = await catalogueProductId(service.id);
     const session = await stripe().checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
@@ -161,10 +162,14 @@ export async function POST(req: NextRequest) {
           price_data: {
             currency: "gbp",
             unit_amount: service.pricePence,
-            product_data: {
-              name: service.name,
-              description: `${service.durationMinutes}-minute online session on ${when} (UK time)`,
-            },
+            ...(productId
+              ? { product: productId }
+              : {
+                  product_data: {
+                    name: service.name,
+                    description: `${service.durationMinutes}-minute session on ${when} (UK time)`,
+                  },
+                }),
           },
         },
       ],
