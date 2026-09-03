@@ -55,8 +55,8 @@ export default function OpenGraphImage() {
               One-to-one GCSE, A-level and medicine tutoring from a final-year medical student.
             </div>
             <div style={{ fontSize: 22, color: ink, lineHeight: 1.4 }}>
-              Any GCSE or A-level subject, UCAT preparation and medical school applications. Online, one-to-one, from a final-year UEA
-              medical student.
+              Any GCSE or A-level subject, UCAT preparation and medical school applications. Online over Google Meet, or in person
+              in Norwich.
             </div>
           </div>
 

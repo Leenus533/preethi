@@ -41,9 +41,9 @@ export function Hero() {
             <span className="whitespace-nowrap">final-year</span> <span className="whitespace-nowrap">medical student.</span>
           </h1>
           <p className="mt-6 max-w-[var(--measure-lead)] text-[length:var(--text-lead)] leading-relaxed text-ink-soft">
-            I&rsquo;m Preethi, a final-year medical student at the University of East Anglia. I help GCSE and A-level students in
-            any subject turn &ldquo;I don&rsquo;t get it&rdquo; into confident exam answers, with maths and the sciences as my
-            specialisms, and coach future medics through the UCAT and their applications.
+            I&rsquo;m Preethi, studying medicine at the University of East Anglia. I help GCSE and A-level students in any subject
+            turn &ldquo;I don&rsquo;t get it&rdquo; into confident exam answers, with maths and the sciences as my specialisms, and
+            coach future medics through the UCAT and their applications.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link href="/book?service=intro-call" className="btn btn-primary">
