@@ -271,23 +271,29 @@ export function BookingWizard({ services, timezone, contactEmail, phone, phoneE1
                   </button>
                 </li>
               ))}
+              <li>
+                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 gap-y-1 border-b border-cream-200 py-5">
+                  <span className="font-display text-lg text-pine-700">Not what you&rsquo;re looking for?</span>
+                  <span className="shrink-0 font-display text-xl text-ink">Ask</span>
+                  <span className="col-start-1 text-sm text-ink-soft">
+                    Preethi is flexible. Bulk sessions ({blockDiscountPercent}% off), a regular weekly slot, a different subject or length, in-person in
+                    Norwich: get in touch directly and she will arrange it around you.
+                  </span>
+                  <span className="col-start-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+                    <a href={`mailto:${contactEmail}`} className="focus-ring inline-flex items-center gap-1.5 rounded-sm font-medium text-pine-800 underline-offset-4 hover:underline">
+                      <Icon.Mail width={15} height={15} className="shrink-0 text-pine-600" aria-hidden />
+                      <span className="break-all">{contactEmail}</span>
+                    </a>
+                    {phone && phoneE164 && (
+                      <a href={`tel:${phoneE164}`} className="focus-ring inline-flex items-center gap-1.5 rounded-sm font-medium text-pine-800 underline-offset-4 hover:underline">
+                        <Icon.Phone width={15} height={15} className="shrink-0 text-pine-600" aria-hidden />
+                        {phone}
+                      </a>
+                    )}
+                  </span>
+                </div>
+              </li>
             </ul>
-            <p className="mt-5 text-sm text-ink-soft">
-              <strong className="text-ink">Bulk sessions are {blockDiscountPercent}% off.</strong> Online booking takes one session at a time, so for bulk
-              sessions or a regular weekly slot{" "}
-              <a href={`mailto:${contactEmail}`} className="focus-ring font-medium text-pine-800 underline underline-offset-4">
-                email {contactEmail}
-              </a>
-              {phone && phoneE164 && (
-                <>
-                  {" "}or{" "}
-                  <a href={`tel:${phoneE164}`} className="focus-ring font-medium text-pine-800 underline underline-offset-4">
-                    call {phone}
-                  </a>
-                </>
-              )}
-              , or raise it on the free intro call, and Preethi will tailor the sessions and price to you.
-            </p>
           </section>
         )}
 
