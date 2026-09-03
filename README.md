@@ -17,7 +17,7 @@ Everything lives in `src/lib/config.ts`:
 
 - `SERVICES`: name, description, duration and price in pence for each session type. Set `pricePence: 0` for a free session.
 - `AVAILABILITY.weekly`: bookable windows per weekday in London time. Blocking a date is done by putting a normal event in the Google Calendar; anything marked "Busy" removes those slots automatically.
-- `AVAILABILITY.minNoticeHours`, `bufferMinutes`, `maxDaysAhead`, `slotIntervalMinutes`.
+- `AVAILABILITY.minNoticeHours` (default, 24), `bufferMinutes`, `maxDaysAhead`, `slotIntervalMinutes`. A service can set its own `minNoticeHours`; the free intro call uses 8.
 - `SITE`: contact details and cancellation notice period.
 
 Home page copy is in `src/components/home/Sections.tsx`. The four subject landing pages (`/tutoring/gcse`, `/tutoring/a-level`, `/tutoring/ucat`, `/tutoring/medical-school-applications`) are generated from `src/lib/subjects.ts`; each entry holds the page's title, meta description, keywords, copy and FAQs. The hero shows an illustrated study board (`src/components/home/HeroVisual.tsx`) rather than a photograph.

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { Service } from "@/lib/config";
-import { formatPrice } from "@/lib/config";
+import { AVAILABILITY, formatPrice } from "@/lib/config";
 import { validateBookingInput } from "@/lib/booking-schema";
 import { Icon } from "@/components/ui/icons";
 
@@ -264,7 +264,10 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
                     <span className="font-display text-lg text-pine-700 underline-offset-4 group-hover:underline">{s.name}</span>
                     <span className="shrink-0 font-display text-xl tabular-nums text-ink">{formatPrice(s.pricePence)}</span>
                     <span className="col-start-1 text-sm text-ink-soft">{s.tagline}</span>
-                    <span className="col-start-1 text-[length:var(--text-meta)] text-muted">{s.durationMinutes} minutes · one-to-one</span>
+                    <span className="col-start-1 text-[length:var(--text-meta)] text-muted">
+                      {s.durationMinutes} minutes · one-to-one
+                      {s.minNoticeHours !== undefined && s.minNoticeHours < AVAILABILITY.minNoticeHours && ` · book with just ${s.minNoticeHours} hours' notice`}
+                    </span>
                   </button>
                 </li>
               ))}

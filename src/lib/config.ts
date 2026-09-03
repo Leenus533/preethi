@@ -20,6 +20,8 @@ export type Service = {
   highlights: string[];
   /** Shown as a badge on the pricing card, e.g. "Most popular". */
   badge?: string;
+  /** Earliest bookable time for this session type, in hours from now. Overrides AVAILABILITY.minNoticeHours. */
+  minNoticeHours?: number;
 };
 
 export const SERVICES: Service[] = [
@@ -34,6 +36,8 @@ export const SERVICES: Service[] = [
     durationMinutes: 20,
     pricePence: 0,
     highlights: ["Meet before you commit", "Discuss goals and exam boards", "Agree a plan and schedule"],
+    // A free call needs no preparation, so it can be booked at much shorter notice than a paid session.
+    minNoticeHours: 8,
   },
   {
     id: "gcse-60",
@@ -80,6 +84,11 @@ export function getService(id: string): Service | undefined {
   return SERVICES.find((s) => s.id === id);
 }
 
+/** Minimum booking notice for a service: its own override, else the site-wide default. */
+export function serviceMinNoticeHours(service: Pick<Service, "minNoticeHours">): number {
+  return service.minNoticeHours ?? AVAILABILITY.minNoticeHours;
+}
+
 /** "HH:MM" local London time windows per weekday. 0 = Sunday ... 6 = Saturday. */
 export type TimeWindow = [string, string];
 
@@ -98,7 +107,7 @@ export const AVAILABILITY = {
   slotIntervalMinutes: 30,
   /** Gap kept free before and after any existing calendar event. */
   bufferMinutes: 15,
-  /** Earliest bookable time is now + this many hours. */
+  /** Default earliest bookable time, now + this many hours. A service can override it (see Service.minNoticeHours). */
   minNoticeHours: 24,
   /** Latest bookable date is today + this many days. */
   maxDaysAhead: 60,

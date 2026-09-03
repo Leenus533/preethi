@@ -30,12 +30,14 @@ export function computeSlots(opts: {
   busy: Interval[];
   now: number;
   config?: AvailabilityConfig;
+  /** Per-service override of config.minNoticeHours. */
+  minNoticeHours?: number;
 }): SlotMap {
   const cfg = opts.config ?? AVAILABILITY;
   const { from, to, durationMinutes, busy, now } = opts;
   const durationMs = durationMinutes * 60_000;
   const bufferMs = cfg.bufferMinutes * 60_000;
-  const earliest = now + cfg.minNoticeHours * 3_600_000;
+  const earliest = now + (opts.minNoticeHours ?? cfg.minNoticeHours) * 3_600_000;
   const lastDate = addDays(ymdOf(now, cfg.timezone), cfg.maxDaysAhead);
 
   // Pre-expand busy intervals by the buffer so a slot cannot touch an existing event.

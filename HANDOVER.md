@@ -155,7 +155,7 @@ All in `src/lib/config.ts`, then `./scripts/deploy.sh`:
 - Bulk sessions: 20% off, their own pricing card plus a note on the booking page (`blockDiscountPercent` in `src/lib/config.ts`).
 - Free intro call: 20 minutes.
 - Hours: weekdays 17:00–21:00, weekends 09:00–17:00, UK time.
-- 24 hours' minimum notice, 15-minute gap around existing events, bookable 60 days ahead.
+- 24 hours' minimum notice for paid sessions and 8 hours for the free intro call (`minNoticeHours` on the service), 15-minute gap around existing events, bookable 60 days ahead.
 - Her mobile number (07448 609 094) is shown in the footer and in the structured data. To hide it, set `showPhone: false` in `src/lib/config.ts`.
 
 To block time off, just put an ordinary event in her Google Calendar. Anything marked Busy removes

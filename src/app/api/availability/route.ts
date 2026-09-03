@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { AVAILABILITY, TIMEZONE, getService } from "@/lib/config";
+import { AVAILABILITY, TIMEZONE, getService, serviceMinNoticeHours } from "@/lib/config";
 import { computeSlots, dateRangeToInstants, parseDateParam, type Interval } from "@/lib/availability";
 import { getBusyIntervals, isGoogleConfigured } from "@/lib/google";
 import { diffDays } from "@/lib/time";
@@ -39,14 +39,15 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  const slots = computeSlots({ from, to, durationMinutes: service.durationMinutes, busy, now });
+  const minNoticeHours = serviceMinNoticeHours(service);
+  const slots = computeSlots({ from, to, durationMinutes: service.durationMinutes, busy, now, minNoticeHours });
   return NextResponse.json(
     {
       timezone: TIMEZONE,
       source,
       serviceId: service.id,
       durationMinutes: service.durationMinutes,
-      minNoticeHours: AVAILABILITY.minNoticeHours,
+      minNoticeHours,
       maxDaysAhead: AVAILABILITY.maxDaysAhead,
       generatedAt: new Date(now).toISOString(),
       slots,

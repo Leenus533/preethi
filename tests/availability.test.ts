@@ -47,6 +47,19 @@ test("20-minute sessions fit more slots and never run past the window end", () =
   assert.equal(day[day.length - 1], new Date(at(9, 20, 30)).toISOString());
 });
 
+test("a per-service notice override opens same-day slots without touching the horizon", () => {
+  // Mon 7th at 10:00 with 8 hours' notice: the evening window (17:00 to 21:00) offers from 18:00.
+  const today = computeSlots({ from: { y: 2026, m: 9, d: 7 }, to: { y: 2026, m: 9, d: 7 }, durationMinutes: 20, busy: [], now: NOW, config: cfg, minNoticeHours: 8 });
+  assert.equal(today["2026-09-07"][0], new Date(at(7, 18)).toISOString());
+  assert.ok(!today["2026-09-07"].includes(new Date(at(7, 17, 30)).toISOString()), "17:30 is inside 8 hours");
+  // The same call at the default notice still has nothing today.
+  const strict = computeSlots({ from: { y: 2026, m: 9, d: 7 }, to: { y: 2026, m: 9, d: 7 }, durationMinutes: 20, busy: [], now: NOW, config: cfg });
+  assert.equal(strict["2026-09-07"], undefined);
+  // maxDaysAhead is unaffected: day 61 is still out of range.
+  const far = computeSlots({ from: { y: 2026, m: 11, d: 7 }, to: { y: 2026, m: 11, d: 7 }, durationMinutes: 20, busy: [], now: NOW, config: cfg, minNoticeHours: 8 });
+  assert.equal(far["2026-11-07"], undefined);
+});
+
 test("minimum notice removes slots inside 24 hours", () => {
   // Today (Mon 7th) evening: all slots are within 24h of 10:00 -> none.
   const today = computeSlots({ from: { y: 2026, m: 9, d: 7 }, to: { y: 2026, m: 9, d: 7 }, durationMinutes: 60, busy: [], now: NOW, config: cfg });

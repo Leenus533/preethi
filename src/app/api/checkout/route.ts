@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { AVAILABILITY, SITE, TIMEZONE, getService } from "@/lib/config";
+import { AVAILABILITY, SITE, TIMEZONE, getService, serviceMinNoticeHours } from "@/lib/config";
 import { computeSlots, dateRangeToInstants, isSlotOffered, type Interval } from "@/lib/availability";
 import { GoogleError, confirmBooking, countActiveHolds, countBookings, createHold, getBusyIntervals, isGoogleConfigured, releaseHold } from "@/lib/google";
 import { notifyBookingConfirmed } from "@/lib/notify";
@@ -64,7 +64,8 @@ export async function POST(req: NextRequest) {
     console.error("checkout: calendar lookup failed", e);
     return NextResponse.json({ error: "Live availability is temporarily unavailable. Please try again in a minute." }, { status: 503 });
   }
-  const slots = computeSlots({ from: day, to: day, durationMinutes: service.durationMinutes, busy, now });
+  // Same per-service notice as the calendar the student chose from, so the two can never disagree.
+  const slots = computeSlots({ from: day, to: day, durationMinutes: service.durationMinutes, busy, now, minNoticeHours: serviceMinNoticeHours(service) });
   if (!isSlotOffered(slots, input.start, TIMEZONE)) {
     return NextResponse.json({ error: "That time is no longer available. Please choose another slot.", code: "slot_taken" }, { status: 409 });
   }

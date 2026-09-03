@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { AVAILABILITY, SERVICES, formatPrice } from "../src/lib/config";
+import { AVAILABILITY, SERVICES, formatPrice, serviceMinNoticeHours } from "../src/lib/config";
 import { escapeHtml } from "../src/lib/google";
 import { NOTES_MAX, validateBookingInput } from "../src/lib/booking-schema";
 import { parseHm } from "../src/lib/time";
@@ -21,6 +21,14 @@ test("every service has a sane duration, price and unique id", () => {
     assert.ok(s.name.length > 0 && s.highlights.length > 0);
   }
   assert.equal(SERVICES.filter((s) => s.pricePence === 0).length, 1, "exactly one free session type");
+});
+
+test("only the free session may shorten the booking notice, and never below one hour", () => {
+  for (const s of SERVICES) {
+    const notice = serviceMinNoticeHours(s);
+    assert.ok(notice >= 1 && notice <= AVAILABILITY.minNoticeHours, `${s.id}: notice ${notice}h out of range`);
+    if (s.pricePence > 0) assert.equal(s.minNoticeHours, undefined, `${s.id}: paid sessions use the site-wide notice`);
+  }
 });
 
 test("configured weekly windows are valid and non-inverted", () => {
