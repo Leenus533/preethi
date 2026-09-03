@@ -16,6 +16,9 @@ type Props = {
   cancelled?: boolean;
   cancelledRef?: string;
   contactEmail: string;
+  phone?: string;
+  phoneE164?: string;
+  blockDiscountPercent: number;
   cancellationNoticeHours: number;
 };
 
@@ -81,7 +84,7 @@ function fmtDayHeading(key: string) {
   return new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", weekday: "long", day: "numeric", month: "long" }).format(new Date(Date.UTC(y, m - 1, d)));
 }
 
-export function BookingWizard({ services, timezone, initialServiceId, cancelled, cancelledRef, contactEmail, cancellationNoticeHours }: Props) {
+export function BookingWizard({ services, timezone, initialServiceId, cancelled, cancelledRef, contactEmail, phone, phoneE164, blockDiscountPercent, cancellationNoticeHours }: Props) {
   const initialService = services.find((s) => s.id === initialServiceId);
   const [step, setStep] = useState<1 | 2 | 3>(initialService ? 2 : 1);
   const [serviceId, setServiceId] = useState<string | undefined>(initialService?.id);
@@ -266,6 +269,22 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
                 </li>
               ))}
             </ul>
+            <p className="mt-5 text-sm text-ink-soft">
+              <strong className="text-ink">Bulk sessions are {blockDiscountPercent}% off.</strong> Online booking takes one session at a time, so for bulk
+              sessions or a regular weekly slot{" "}
+              <a href={`mailto:${contactEmail}`} className="focus-ring font-medium text-pine-800 underline underline-offset-4">
+                email {contactEmail}
+              </a>
+              {phone && phoneE164 && (
+                <>
+                  {" "}or{" "}
+                  <a href={`tel:${phoneE164}`} className="focus-ring font-medium text-pine-800 underline underline-offset-4">
+                    call {phone}
+                  </a>
+                </>
+              )}
+              , or raise it on the free intro call, and Preethi will tailor the sessions and price to you.
+            </p>
           </section>
         )}
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE, TIMEZONE, getService } from "@/lib/config";
+import { isEmailConfigured } from "@/lib/email";
 import { findBookingByRef, isGoogleConfigured, meetLinkOf, pricePenceOf, serviceNameOf } from "@/lib/google";
 import { isStripeConfigured, stripe } from "@/lib/stripe";
 import { formatDate, formatTime, tzAbbreviation } from "@/lib/time";
@@ -78,6 +79,8 @@ export default async function SuccessPage({ searchParams }: PageProps<"/book/suc
 
   const title = details?.pending ? "Payment is still processing" : "You're booked in";
   const tz = details ? tzAbbreviation(details.start, TIMEZONE) : "";
+  const emailOn = isEmailConfigured();
+  const isFree = ref.startsWith("free_");
 
   return (
     <div className="container-x py-12 sm:py-16">
@@ -134,11 +137,14 @@ export default async function SuccessPage({ searchParams }: PageProps<"/book/suc
 
         <div className="measure mt-8 space-y-3 text-sm text-ink-soft">
           <p>
-            <strong className="text-ink">What happens next.</strong> A Google Calendar invitation with the Google Meet link is sent to the email address you gave.
-            Accept it and it will sit in your own calendar with reminders. A payment receipt is emailed separately.
+            <strong className="text-ink">What happens next.</strong>{" "}
+            {emailOn
+              ? "A confirmation email with the details and the Google Meet link is on its way to the address you gave, along with a Google Calendar invitation."
+              : "A Google Calendar invitation with the Google Meet link is sent to the email address you gave."}{" "}
+            Accept the invitation and the session will sit in your own calendar with reminders.{!isFree && " A payment receipt is emailed separately."}
           </p>
           <p>
-            <strong className="text-ink">Need to change the time?</strong> Reply to the invitation or email{" "}
+            <strong className="text-ink">Need to change the time?</strong> Reply to the {emailOn ? "confirmation email" : "invitation"} or write to{" "}
             <a href={`mailto:${SITE.contactEmail}`} className="font-medium text-pine-800 underline underline-offset-4">{SITE.contactEmail}</a> with at least{" "}
             {SITE.cancellationNoticeHours} hours&rsquo; notice.
           </p>

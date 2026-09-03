@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { TIMEZONE } from "@/lib/config";
+import { isEmailConfigured } from "@/lib/email";
 import { calendarHealth, isGoogleConfigured } from "@/lib/google";
 import { isLiveMode, isStripeConfigured } from "@/lib/stripe";
 
@@ -20,6 +21,7 @@ export async function GET(req: NextRequest) {
       timezone: TIMEZONE,
       stripe: { configured: stripeOk, mode: stripeOk ? (isLiveMode() ? "live" : "test") : null, webhookSecret: webhookOk },
       google: { configured: googleOk, calendar },
+      email: { configured: isEmailConfigured() },
     },
     { status: ok ? 200 : 503, headers: { "Cache-Control": "no-store" } },
   );

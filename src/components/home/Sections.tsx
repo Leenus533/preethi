@@ -279,9 +279,10 @@ export function Pricing() {
       <div className="container-x section-grid">
         <SectionHead id="pricing-title" title={`From ${formatPrice(cheapest)} an hour, paid per session`} align="center">
           <p>
-            No packages and no minimum commitment. Reschedule free with {SITE.cancellationNoticeHours} hours&rsquo; notice. Prices
-            include everything: there are no booking fees.
+            No minimum commitment. Reschedule free with {SITE.cancellationNoticeHours} hours&rsquo; notice. Prices include everything: there are
+            no booking fees.
           </p>
+          <p>Bulk sessions are {SITE.blockDiscountPercent}% off and arranged by email or phone.</p>
         </SectionHead>
 
         {intro && (
@@ -330,6 +331,35 @@ export function Pricing() {
               </li>
             );
           })}
+          <li className="card price-card p-6">
+            <span className="chip chip-sale absolute -top-3 left-6">{SITE.blockDiscountPercent}% off</span>
+            <h3 className="font-display text-[1.25rem] leading-tight text-pine-900">Bulk sessions</h3>
+            <p className="mt-1.5 text-[0.9375rem] text-ink-soft">Tailored to what the student needs, flexible on timing, and priced to match.</p>
+            <p className="mt-5 flex items-baseline gap-1.5">
+              <span className="font-display text-[2.5rem] leading-none text-ink">{SITE.blockDiscountPercent}%</span>
+              <span className="text-sm text-muted">off the session rate</span>
+            </p>
+            <ul className="mt-5 grid gap-2 border-t border-cream-200 pt-5 text-sm text-ink-soft">
+              {["Any mix of session types", "A regular weekly slot or an exam run-up", "Schedule agreed around you"].map((h) => (
+                <li key={h} className="flex items-start gap-2">
+                  <Icon.Check width={16} height={16} strokeWidth={2.2} className="mt-0.5 shrink-0 text-pine-600" aria-hidden />
+                  {h}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-5 grid gap-2 self-end text-sm">
+              <a href={`mailto:${SITE.contactEmail}`} className="focus-ring inline-flex items-center gap-2 rounded-sm font-medium text-pine-800 underline-offset-4 hover:underline">
+                <Icon.Mail width={16} height={16} className="shrink-0 text-pine-600" aria-hidden />
+                <span className="break-all">{SITE.contactEmail}</span>
+              </a>
+              {SITE.showPhone && (
+                <a href={`tel:${SITE.phoneE164}`} className="focus-ring inline-flex items-center gap-2 rounded-sm font-medium text-pine-800 underline-offset-4 hover:underline">
+                  <Icon.Phone width={16} height={16} className="shrink-0 text-pine-600" aria-hidden />
+                  {SITE.phone}
+                </a>
+              )}
+            </div>
+          </li>
         </ul>
       </div>
     </section>
@@ -366,8 +396,12 @@ export const HOME_FAQS = [
     a: "Preethi holds an Enhanced DBS check through UEA Medical School. Parents and guardians are welcome to sit in on any session. For students under 18, please add a parent or guardian's name at booking and use an email address a parent can see.",
   },
   {
-    q: "Do you offer group sessions or packages?",
-    a: "Not at the moment. Every session is one-to-one and paid per session, so you only ever pay for what you use.",
+    q: "Is there a discount for bulk sessions?",
+    a: `Yes. Bulk sessions are ${SITE.blockDiscountPercent}% off the session rate and are tailored to the student: any mix of session types, a regular weekly slot or an intensive run-up to exams, with the schedule agreed around you. Online booking takes one session at a time, so for bulk sessions email ${SITE.contactEmail}${SITE.showPhone ? ` or call ${SITE.phone}` : ""}, or raise it on the free intro call.`,
+  },
+  {
+    q: "Do you offer group sessions?",
+    a: "Not at the moment. Every session is one-to-one. Single sessions are paid as you go, so you only ever pay for what you use; bulk sessions are discounted and arranged directly.",
   },
 ];
 

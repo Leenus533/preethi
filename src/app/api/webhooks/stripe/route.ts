@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getService } from "@/lib/config";
-import { confirmBooking, isGoogleConfigured, releaseHold } from "@/lib/google";
-import { stripe } from "@/lib/stripe";
+import { confirmBooking, isGoogleConfigured, releaseHold, type BookingDetails } from "@/lib/google";
+import { notifyBookingConfirmed } from "@/lib/notify";
+import { siteOrigin } from "@/lib/site-url";
+import { isLiveMode, stripe } from "@/lib/stripe";
 
 export const dynamic = "force-dynamic";
 
@@ -57,24 +59,27 @@ async function fulfil(session: Stripe.Checkout.Session) {
   }
   const service = getService(md.serviceId);
   const paymentRef = typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id;
-  const result = await confirmBooking(
-    {
-      bookingRef: md.bookingRef,
-      serviceId: md.serviceId || service?.id || "unknown",
-      serviceName: md.serviceName || service?.name || "Tutoring session",
-      start: new Date(md.start),
-      end: new Date(md.end),
-      studentName: md.studentName || session.customer_details?.name || "Student",
-      studentEmail: md.studentEmail || session.customer_details?.email || session.customer_email || "",
-      parentName: md.parentName || undefined,
-      yearGroup: md.yearGroup || undefined,
-      notes: md.notes || undefined,
-      pricePence: session.amount_total ?? service?.pricePence ?? 0,
-      paymentRef: paymentRef ?? session.id,
-    },
-    md.holdEventId || undefined,
-  );
+  const booking: BookingDetails = {
+    bookingRef: md.bookingRef,
+    serviceId: md.serviceId || service?.id || "unknown",
+    serviceName: md.serviceName || service?.name || "Tutoring session",
+    start: new Date(md.start),
+    end: new Date(md.end),
+    studentName: md.studentName || session.customer_details?.name || "Student",
+    studentEmail: md.studentEmail || session.customer_details?.email || session.customer_email || "",
+    parentName: md.parentName || undefined,
+    yearGroup: md.yearGroup || undefined,
+    notes: md.notes || undefined,
+    pricePence: session.amount_total ?? service?.pricePence ?? 0,
+    paymentRef: paymentRef ?? session.id,
+  };
+  const result = await confirmBooking(booking, md.holdEventId || undefined);
   console.log(`webhook: booking ${md.bookingRef} ${result.alreadyExisted ? "already confirmed" : "confirmed"} as event ${result.eventId}`);
+
+  // Emails are a courtesy on top of the calendar. Idempotency keys make this safe on Stripe retries,
+  // and notifyBookingConfirmed never throws, so email can never turn a recorded booking into a 500.
+  const paymentUrl = paymentRef ? `https://dashboard.stripe.com/${isLiveMode() ? "" : "test/"}payments/${paymentRef}` : undefined;
+  await notifyBookingConfirmed(booking, result, { origin: siteOrigin(), paymentUrl });
 }
 
 async function release(session: Stripe.Checkout.Session) {

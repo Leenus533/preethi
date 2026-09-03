@@ -34,6 +34,9 @@ export default async function BookPage({ searchParams }: PageProps<"/book">) {
           cancelled={cancelled}
           cancelledRef={cancelledRef}
           contactEmail={SITE.contactEmail}
+          phone={SITE.showPhone ? SITE.phone : undefined}
+          phoneE164={SITE.showPhone ? SITE.phoneE164 : undefined}
+          blockDiscountPercent={SITE.blockDiscountPercent}
           cancellationNoticeHours={SITE.cancellationNoticeHours}
         />
       </div>

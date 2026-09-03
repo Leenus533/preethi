@@ -5,7 +5,7 @@
 
 export const TIMEZONE = "Europe/London";
 
-export type ServiceLevel = "intro" | "gcse" | "alevel" | "ucat" | "medicine";
+export type ServiceLevel = "intro" | "gcse" | "alevel" | "medicine";
 
 export type Service = {
   id: string;
@@ -61,28 +61,18 @@ export const SERVICES: Service[] = [
     badge: "Most popular",
   },
   {
-    id: "ucat-60",
-    name: "UCAT preparation",
-    shortName: "UCAT",
-    level: "ucat",
-    tagline: "Timed practice across all four sections, with strategy and mock review.",
-    description:
-      "Section-by-section coaching for Verbal Reasoning, Decision Making, Quantitative Reasoning and Situational Judgement, with timed practice and review.",
-    durationMinutes: 60,
-    pricePence: 4000,
-    highlights: ["Timing and triage strategy", "Question-type drills", "Mock review and score tracking"],
-  },
-  {
+    // One session type covers the whole medicine application. The Stripe product for it keeps this id;
+    // the former "ucat-60" product is archived and its calendar bookings still count under their old id.
     id: "medicine-60",
-    name: "Medical school application coaching",
-    shortName: "Med school",
+    name: "UCAT and medical school coaching",
+    shortName: "Medicine",
     level: "medicine",
-    tagline: "Personal statements, mock interviews and choosing the right schools.",
+    tagline: "UCAT strategy, personal statements, mock interviews and choosing where to apply.",
     description:
-      "Personal statement reviews, MMI and panel interview practice, school selection and a UCAS timeline, including how to write about work experience.",
+      "Everything in a medicine application, in whichever order you need it: UCAT strategy with timed practice across all four sections, personal statement reviews, MMI and panel interview practice, school selection and the UCAS timeline.",
     durationMinutes: 60,
-    pricePence: 4000,
-    highlights: ["Personal statement feedback", "MMI and panel mock interviews", "School selection and UCAS timeline"],
+    pricePence: 3000,
+    highlights: ["UCAT strategy and timed drills", "Personal statement feedback", "MMI and panel mock interviews"],
   },
 ];
 
@@ -129,6 +119,8 @@ export const SITE = {
   showPhone: true,
   location: "Norwich, UK",
   cancellationNoticeHours: 24,
+  /** Discount on the session rate for bulk sessions arranged directly by email or phone (not bookable online). */
+  blockDiscountPercent: 20,
 };
 
 export function formatPrice(pence: number): string {

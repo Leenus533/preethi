@@ -57,9 +57,23 @@ PROD_HOST=$(vapi "https://api.vercel.com/v9/projects/$PROJECT_ID/domains$TEAM_QS
 PROD_URL="https://$PROD_HOST"
 echo "    production host: $PROD_HOST"
 
+# --- Stripe: only live keys ever reach production ------------------------------------------
+# Production holds the live secret key and the live webhook's signing secret. Unless .env.local
+# holds a live key (sk_live_ or rk_live_), the two Stripe variables are left untouched and the
+# webhook step is skipped, so a local test setup, a missing key, or a stale test webhook secret
+# can never downgrade the live site. FORCE_STRIPE_ENV=1 overrides this deliberately.
+SKIP_STRIPE=yes
+case "${STRIPE_SECRET_KEY:-}" in sk_live_*|rk_live_*) SKIP_STRIPE=no;; esac
+if [ "${FORCE_STRIPE_ENV:-}" = "1" ]; then
+  SKIP_STRIPE=no
+  echo "==> FORCE_STRIPE_ENV=1: Stripe variables from .env.local WILL be pushed to production"
+elif [ "$SKIP_STRIPE" = "yes" ]; then
+  echo "==> .env.local has no live Stripe key; leaving production's STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET untouched"
+  echo "    (put the live key and the live webhook's signing secret in .env.local to change them)"
+fi
+
 # --- Stripe webhook (before the deploy, so the secret is part of the same build) ------------
-if [ -n "${STRIPE_SECRET_KEY:-}" ]; then
-  case "$STRIPE_SECRET_KEY" in sk_test_*) echo "    NOTE: Stripe is in TEST mode. Swap to sk_live_ in .env.local and re-run to take real payments.";; esac
+if [ -n "${STRIPE_SECRET_KEY:-}" ] && [ "$SKIP_STRIPE" = "no" ]; then
   WEBHOOK_URL="$PROD_URL/api/webhooks/stripe"
   echo "==> Ensuring Stripe webhook endpoint for $WEBHOOK_URL"
   EXISTING=$(sapi "https://api.stripe.com/v1/webhook_endpoints?limit=100" \
@@ -115,9 +129,11 @@ export NEXT_PUBLIC_SITE_URL
 # --- environment variables -----------------------------------------------------------------
 echo "==> Syncing environment variables to production"
 for key in STRIPE_SECRET_KEY STRIPE_WEBHOOK_SECRET GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET GOOGLE_REFRESH_TOKEN \
-           GOOGLE_CALENDAR_ID GOOGLE_BUSY_CALENDAR_IDS NEXT_PUBLIC_SITE_URL CUSTOM_DOMAIN SITE_NAME CONTACT_EMAIL; do
+           GOOGLE_CALENDAR_ID GOOGLE_BUSY_CALENDAR_IDS NEXT_PUBLIC_SITE_URL CUSTOM_DOMAIN SITE_NAME CONTACT_EMAIL \
+           RESEND_API_KEY EMAIL_FROM NOTIFY_EMAIL; do
   val="${!key:-}"
   [ -z "$val" ] && continue
+  if [ "$SKIP_STRIPE" = "yes" ]; then case "$key" in STRIPE_SECRET_KEY|STRIPE_WEBHOOK_SECRET) continue;; esac; fi
   vc env rm "$key" production --yes >/dev/null 2>&1 || true
   printf '%s' "$val" | vc env add "$key" production >/dev/null
   echo "    $key"
@@ -125,7 +141,7 @@ done
 
 # --- deploy --------------------------------------------------------------------------------
 echo "==> Deploying to production"
-DEPLOY_URL=$(vc deploy --prod --yes 2>/dev/null | grep -oE 'https://[a-z0-9.-]+\.vercel\.app' | tail -n1)
+DEPLOY_URL=$( (vc deploy --prod --yes 2>/dev/null | grep -oE 'https://[a-z0-9.-]+\.vercel\.app' | tail -n1) || true)
 echo "    deployment: ${DEPLOY_URL:-(see output above)}"
 
 # --- custom domain -------------------------------------------------------------------------

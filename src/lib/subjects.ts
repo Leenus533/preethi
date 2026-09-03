@@ -130,9 +130,9 @@ export const SUBJECTS: Subject[] = [
     heading: "UCAT tutoring from a top 10% scorer",
     metaTitle: "UCAT Tutor Online, Top 10% Scorer | Preethi Amudhan",
     metaDescription:
-      "One-to-one online UCAT tutoring across all four sections, with timed drills and a personal strategy, from a top 10% scorer now a final-year medic. £40/hr.",
+      "One-to-one online UCAT tutoring across all four sections, with timed drills and a personal strategy, from a top 10% scorer now a final-year medic. £30/hr.",
     keywords: ["UCAT tutor", "UCAT tutoring online", "UCAT preparation", "UCAT coaching", "UCAT verbal reasoning help", "medicine entrance exam tutor"],
-    serviceId: "ucat-60",
+    serviceId: "medicine-60",
     motif: "clock",
     blurb: "Strategy and timing for every section, from someone who scored in the top 10%.",
     detail: "Verbal Reasoning, Decision Making, Quantitative Reasoning and Situational Judgement.",
@@ -163,7 +163,7 @@ export const SUBJECTS: Subject[] = [
       { q: "When should I start UCAT preparation?", a: "Six to eight weeks of focused practice before your test date is enough for most students. Starting earlier is fine, but the technique work needs to be close to the test to stick." },
       { q: "Do you provide question banks?", a: "No. Sessions work alongside the official UCAT practice materials and whichever question bank you are using, and I will recommend how to use them well." },
       { q: "Which section is worth the most time?", a: "It depends on your diagnostic. Quantitative and Decision Making usually respond fastest to technique. Verbal Reasoning is the hardest to move, so we set realistic targets there." },
-      { q: "Can we also cover the medicine application?", a: "Yes. Personal statements, work experience reflection and interviews are covered in the medical school application coaching sessions, and the two are designed to be booked alongside each other." },
+      { q: "Can we also cover the medicine application?", a: "Yes. UCAT preparation and medical school application coaching are one session type, so the same booking can be spent on the test, the personal statement or interview practice, whichever is most useful at the time." },
     ],
   },
   {
@@ -172,7 +172,7 @@ export const SUBJECTS: Subject[] = [
     heading: "Medical school application coaching from a final-year medic",
     metaTitle: "Medical School Application Coaching | Preethi Amudhan",
     metaDescription:
-      "Personal statement reviews, MMI and panel interview practice and honest advice on where to apply, from a final-year UEA medical student. Online, £40/hr.",
+      "Personal statement reviews, MMI and panel interview practice and honest advice on where to apply, from a final-year UEA medical student. Online, £30/hr.",
     keywords: ["medical school application help", "medicine personal statement review", "MMI interview practice", "medicine interview coaching", "how to get into medical school UK"],
     serviceId: "medicine-60",
     motif: "stethoscope",

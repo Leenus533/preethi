@@ -6,7 +6,7 @@ Marketing site plus self-service booking and payment for one-to-one tutoring. Bu
 
 1. The student picks a session type and a time on `/book`. Free slots come from `GET /api/availability`, which combines the weekly hours in `src/lib/config.ts` with busy times read live from Preethi's Google Calendar.
 2. `POST /api/checkout` re-validates the slot, writes a **HOLD** event into the calendar (so nobody else can take the slot while the student pays) and creates a Stripe Checkout Session. Free intro calls skip Stripe and are confirmed immediately.
-3. Stripe calls `POST /api/webhooks/stripe`. On `checkout.session.completed` the hold becomes the real booking: the student is added as an attendee, a Google Meet link is generated and Google emails the invitation. On `checkout.session.expired` the hold is deleted. Holds also expire on their own after 35 minutes, so a missed webhook can never block a slot for good.
+3. Stripe calls `POST /api/webhooks/stripe`. On `checkout.session.completed` the hold becomes the real booking: the student is added as an attendee, a Google Meet link is generated and Google emails the invitation. The site then sends two emails through Resend: a confirmation to the student (session details, Meet link, how to reschedule) and a new-booking notification to Preethi (student details, notes, links to the calendar event and the Stripe payment). Free intro calls send the same pair straight from checkout. On `checkout.session.expired` the hold is deleted. Holds also expire on their own after 35 minutes, so a missed webhook can never block a slot for good.
 4. `/book/success` shows the confirmation and polls `GET /api/booking/[ref]` until the Meet link exists.
 
 There is no database. The calendar is the single source of truth, and every booking carries an unguessable `bookingRef` in the event's private extended properties so webhook retries are idempotent.
@@ -42,6 +42,9 @@ See `.env.local.example`. Locally, copy it to `.env.local`. On Vercel, set the s
 | `GOOGLE_BUSY_CALENDAR_IDS` | Optional comma-separated extra calendars whose busy times also block slots |
 | `NEXT_PUBLIC_SITE_URL` | Public origin, e.g. `https://preethi.co.uk`, used in Stripe redirect URLs |
 | `SITE_NAME`, `CONTACT_EMAIL` | Content overrides |
+| `RESEND_API_KEY` | Resend key for booking emails. Blank switches email off; bookings still work and Google still sends the invitation. |
+| `EMAIL_FROM` | Sender, e.g. `Preethi Amudhan Tutoring <bookings@preethi.co.uk>`. The mailbox must be on the domain verified in Resend. |
+| `NOTIFY_EMAIL` | Where new-booking notifications go. Defaults to `CONTACT_EMAIL`. |
 
 Without Google credentials the site still runs but bookings are switched off: the calendar shows the weekly hours only, and both paid and free bookings return a friendly "email Preethi" message. That is deliberate. The calendar is the only record of bookings, so taking money before it is connected would lose the booking. If a webhook ever arrives while the calendar is unreachable, the handler returns 500 so Stripe retries for up to three days.
 
@@ -77,7 +80,7 @@ npm run lint
 
 ## Deploying to Vercel
 
-`scripts/deploy.sh` links the project, finds the production `*.vercel.app` host, creates the Stripe webhook endpoint for it (recreating it if the local signing secret is missing), pushes every variable from `.env.local` to Vercel and deploys to production. It needs `VERCEL_TOKEN` in `.env.local`, or a logged-in Vercel CLI (`npx vercel login`), whose token it reads from the CLI auth file. Re-run it whenever `.env.local` changes, for example after `npm run google:auth`.
+`scripts/deploy.sh` links the project, finds the production `*.vercel.app` host, creates the Stripe webhook endpoint for it (recreating it if the local signing secret is missing), pushes a fixed list of variables from `.env.local` to Vercel and deploys to production. One rule: production's `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` are only touched when `.env.local` holds a live key (`sk_live_` or `rk_live_`); with a test key, no key, or a stale test webhook secret they are left alone, so a local test setup can never downgrade the live site. Set `FORCE_STRIPE_ENV=1` to override that on purpose. It needs `VERCEL_TOKEN` in `.env.local`, or a logged-in Vercel CLI (`npx vercel login`), whose token it reads from the CLI auth file. Re-run it whenever `.env.local` changes, for example after `npm run google:auth`.
 
 ```bash
 ./scripts/deploy.sh

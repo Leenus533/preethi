@@ -81,7 +81,7 @@ export function organisation() {
     employee: { "@id": PERSON_ID() },
     address: { "@type": "PostalAddress", addressLocality: "Norwich", addressRegion: "Norfolk", addressCountry: "GB" },
     areaServed: { "@type": "Country", name: "United Kingdom" },
-    priceRange: "£30 - £40 per hour",
+    priceRange: "£30 - £35 per hour",
     currenciesAccepted: "GBP",
     paymentAccepted: "Credit card, Debit card",
     openingHoursSpecification: [

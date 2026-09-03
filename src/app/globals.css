@@ -254,6 +254,12 @@ body {
     color: var(--color-clay-700);
     border-color: var(--color-clay-200);
   }
+  /* Discount tag. Danger red on its surface is 6.4:1. */
+  .chip-sale {
+    background: var(--color-danger-surface);
+    color: var(--color-danger);
+    border-color: #f1c9c4;
+  }
 
   /* Reversed surface. Pine-100 on pine-900 is 9.6:1. */
   .surface-dark {

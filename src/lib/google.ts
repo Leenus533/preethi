@@ -254,6 +254,8 @@ export type ConfirmedBooking = {
   meetLink?: string;
   htmlLink?: string;
   alreadyExisted: boolean;
+  /** The slot overlapped another event when the booking was written (payment landed after the hold expired). */
+  clash: boolean;
 };
 
 /**
@@ -444,7 +446,7 @@ export async function confirmBooking(b: BookingDetails, holdEventId?: string): P
   const c = cfg();
   const existing = await findBookingByRef(b.bookingRef);
   if (existing) {
-    return { eventId: existing.id, meetLink: meetLinkOf(existing), htmlLink: existing.htmlLink, alreadyExisted: true };
+    return { eventId: existing.id, meetLink: meetLinkOf(existing), htmlLink: existing.htmlLink, alreadyExisted: true, clash: (existing.summary ?? "").startsWith("CLASH:") };
   }
 
   // If payment landed after the hold expired, someone else may have taken the slot in between.
@@ -492,7 +494,7 @@ export async function confirmBooking(b: BookingDetails, holdEventId?: string): P
   if (!ev) {
     ev = await gfetch<GEvent>(base, { method: "POST", query, body: JSON.stringify(body) });
   }
-  return { eventId: ev.id, meetLink: meetLinkOf(ev), htmlLink: ev.htmlLink, alreadyExisted: false };
+  return { eventId: ev.id, meetLink: meetLinkOf(ev), htmlLink: ev.htmlLink, alreadyExisted: false, clash: Boolean(clash) };
 }
 
 /** Light connectivity check used by /api/health. Deliberately returns no identifying details. */

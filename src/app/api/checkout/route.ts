@@ -4,6 +4,7 @@ import type Stripe from "stripe";
 import { AVAILABILITY, SITE, TIMEZONE, getService } from "@/lib/config";
 import { computeSlots, dateRangeToInstants, isSlotOffered, type Interval } from "@/lib/availability";
 import { GoogleError, confirmBooking, countActiveHolds, countBookings, createHold, getBusyIntervals, isGoogleConfigured, releaseHold } from "@/lib/google";
+import { notifyBookingConfirmed } from "@/lib/notify";
 import { catalogueProductId, isStripeConfigured, stripe } from "@/lib/stripe";
 import { siteOrigin } from "@/lib/site-url";
 import { validateBookingInput } from "@/lib/booking-schema";
@@ -109,28 +110,29 @@ export async function POST(req: NextRequest) {
   }
 
   if (isFree) {
+    const booking = {
+      bookingRef,
+      serviceId: service.id,
+      serviceName: service.name,
+      start,
+      end,
+      studentName: input.name,
+      studentEmail: input.email,
+      parentName: input.parentName,
+      yearGroup: input.yearGroup,
+      notes: input.notes,
+      pricePence: 0,
+    };
+    let confirmed;
     try {
-      await confirmBooking(
-        {
-          bookingRef,
-          serviceId: service.id,
-          serviceName: service.name,
-          start,
-          end,
-          studentName: input.name,
-          studentEmail: input.email,
-          parentName: input.parentName,
-          yearGroup: input.yearGroup,
-          notes: input.notes,
-          pricePence: 0,
-        },
-        holdEventId,
-      );
+      confirmed = await confirmBooking(booking, holdEventId);
     } catch (e) {
       console.error("checkout: free booking failed", e);
       await releaseHold(holdEventId).catch(() => undefined);
       return NextResponse.json({ error: "Could not confirm the booking. Please try again or email Preethi." }, { status: 503 });
     }
+    // Awaited so the serverless function is not frozen mid-send; never throws.
+    await notifyBookingConfirmed(booking, confirmed, { origin });
     return NextResponse.json({ url: `${origin}/book/success?ref=${bookingRef}` });
   }
 
