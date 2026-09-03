@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { useSearchParams } from "next/navigation";
 import type { Service } from "@/lib/config";
 import { formatPrice } from "@/lib/config";
 import { validateBookingInput } from "@/lib/booking-schema";
@@ -13,6 +12,9 @@ type AvailabilityResponse = { timezone: string; source: "calendar" | "hours-only
 type Props = {
   services: Service[];
   timezone: string;
+  initialServiceId?: string;
+  cancelled?: boolean;
+  cancelledRef?: string;
   contactEmail: string;
   phone?: string;
   phoneE164?: string;
@@ -82,12 +84,7 @@ function fmtDayHeading(key: string) {
   return new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", weekday: "long", day: "numeric", month: "long" }).format(new Date(Date.UTC(y, m - 1, d)));
 }
 
-export function BookingWizard({ services, timezone, contactEmail, phone, phoneE164, blockDiscountPercent, cancellationNoticeHours }: Props) {
-  // Query string: ?service= preselects a session type; ?cancelled=1&ref= means the student backed out of Stripe Checkout.
-  const query = useSearchParams();
-  const initialServiceId = query.get("service") ?? undefined;
-  const cancelled = query.get("cancelled") === "1";
-  const cancelledRef = query.get("ref") ?? undefined;
+export function BookingWizard({ services, timezone, initialServiceId, cancelled, cancelledRef, contactEmail, phone, phoneE164, blockDiscountPercent, cancellationNoticeHours }: Props) {
   const initialService = services.find((s) => s.id === initialServiceId);
   const [step, setStep] = useState<1 | 2 | 3>(initialService ? 2 : 1);
   const [serviceId, setServiceId] = useState<string | undefined>(initialService?.id);
@@ -276,8 +273,8 @@ export function BookingWizard({ services, timezone, contactEmail, phone, phoneE1
                   <span className="font-display text-lg text-pine-700">Not what you&rsquo;re looking for?</span>
                   <span className="shrink-0 font-display text-xl text-ink">Ask</span>
                   <span className="col-start-1 text-sm text-ink-soft">
-                    Preethi is flexible. Bulk sessions ({blockDiscountPercent}% off), a regular weekly slot, a different subject or length, in-person in
-                    Norwich: get in touch directly and she will arrange it around you.
+                    Bulk sessions at {blockDiscountPercent}% off, a regular weekly slot, another subject or session length, or meeting in person in Norwich.
+                    Email or call, and Preethi will arrange it around you.
                   </span>
                   <span className="col-start-1 flex flex-wrap gap-x-5 gap-y-1 text-sm">
                     <a href={`mailto:${contactEmail}`} className="focus-ring inline-flex items-center gap-1.5 rounded-sm font-medium text-pine-800 underline-offset-4 hover:underline">

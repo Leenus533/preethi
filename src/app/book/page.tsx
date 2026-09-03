@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { SERVICES, SITE, TIMEZONE } from "@/lib/config";
 import { BookingWizard } from "@/components/booking/BookingWizard";
 import { JsonLd } from "@/components/JsonLd";
@@ -15,10 +14,15 @@ export const metadata: Metadata = {
 };
 
 /**
- * Statically rendered. The wizard reads `?service=`, `?cancelled=` and `?ref=` on the client, which keeps
- * the page cacheable at the edge instead of rendering on every request.
+ * Rendered on the server per request. Reading the query string here (rather than in the client wizard)
+ * keeps the session list and prices in the HTML for crawlers; a client-side read would make Next render
+ * the whole wizard in the browser only.
  */
-export default function BookPage() {
+export default async function BookPage({ searchParams }: PageProps<"/book">) {
+  const sp = await searchParams;
+  const service = typeof sp.service === "string" ? sp.service : undefined;
+  const cancelled = sp.cancelled === "1";
+  const cancelledRef = typeof sp.ref === "string" ? sp.ref : undefined;
   return (
     <div>
       <div className="container-x py-10 sm:py-14">
@@ -28,17 +32,18 @@ export default function BookPage() {
             Pick a session type, choose a time that suits you, and pay by card. It takes about two minutes.
           </p>
         </div>
-        <Suspense fallback={<div className="card p-6 text-sm text-ink-soft" aria-busy>Loading the booking form…</div>}>
-          <BookingWizard
+        <BookingWizard
           services={SERVICES}
           timezone={TIMEZONE}
+          initialServiceId={service}
+          cancelled={cancelled}
+          cancelledRef={cancelledRef}
           contactEmail={SITE.contactEmail}
           phone={SITE.showPhone ? SITE.phone : undefined}
           phoneE164={SITE.showPhone ? SITE.phoneE164 : undefined}
           blockDiscountPercent={SITE.blockDiscountPercent}
           cancellationNoticeHours={SITE.cancellationNoticeHours}
-          />
-        </Suspense>
+        />
       </div>
       <JsonLd data={graph(webPage("/book", `Book a session | ${SITE.name}`, description))} />
     </div>
