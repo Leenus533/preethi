@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/config";
 import { LegalPage } from "@/components/LegalPage";
+import { pageSocial } from "@/lib/seo";
+
+const description = `Booking terms, rescheduling and cancellation policy for tutoring sessions with ${SITE.tutorName}. Free rescheduling with ${SITE.cancellationNoticeHours} hours' notice.`;
 
 export const metadata: Metadata = {
   title: "Terms and cancellation policy",
-  description: `Booking terms, rescheduling and cancellation policy for tutoring sessions with ${SITE.tutorName}. Free rescheduling with ${SITE.cancellationNoticeHours} hours' notice.`,
+  description,
   alternates: { canonical: "/terms" },
+  ...pageSocial("/terms", `Terms and cancellation policy | ${SITE.name}`, description),
 };
 
 export default function TermsPage() {

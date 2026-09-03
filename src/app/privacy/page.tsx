@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/config";
 import { LegalPage } from "@/components/LegalPage";
+import { pageSocial } from "@/lib/seo";
+
+const description = `How ${SITE.name} collects and uses booking details, who they are shared with (Stripe, Google, Resend and Cloudflare), how long they are kept and your rights.`;
 
 export const metadata: Metadata = {
   title: "Privacy notice",
-  description: `How ${SITE.name} collects and uses booking details, who they are shared with (Stripe, Google, Resend and Cloudflare), how long they are kept and your rights.`,
+  description,
   alternates: { canonical: "/privacy" },
+  ...pageSocial("/privacy", `Privacy notice | ${SITE.name}`, description),
 };
 
 export default function PrivacyPage() {
