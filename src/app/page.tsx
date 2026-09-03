@@ -18,7 +18,7 @@ export default function Home() {
       <Pricing />
       <Faq />
       <CtaBand />
-      <JsonLd data={graph(webPage("/", SEO.homeTitle, SEO.homeDescription), faqPage(HOME_FAQS))} />
+      <JsonLd data={graph(webPage("/", SEO.homeTitle, SEO.homeDescription, { faq: true }), faqPage(HOME_FAQS, "/"))} />
     </>
   );
 }

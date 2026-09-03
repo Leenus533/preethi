@@ -248,7 +248,7 @@ export function About() {
         <aside aria-label="At a glance" className="card overflow-hidden self-start lg:sticky lg:top-24">
           <div className="surface-dark relative p-6">
             <p className="font-display font-display-xl text-[4rem] leading-none text-white/95">PA</p>
-            <p className="font-display mt-4 text-xl">Preethi Amudhan</p>
+            <h3 className="font-display mt-4 text-xl">Preethi Amudhan</h3>
             <p className="mt-1 text-sm text-pine-100">Final-year medical student and tutor</p>
           </div>
           <dl className="divide-y divide-cream-200 px-6">
@@ -373,7 +373,7 @@ export const HOME_FAQS = [
   },
   {
     q: "Which subjects do you tutor?",
-    a: "Any GCSE or A-level subject. Maths, Biology, Chemistry and Physics are the specialisms, where Preethi's own results are strongest, but if a student needs help in another subject just say so at booking or on the free intro call. UCAT preparation and medical school application coaching are separate sessions.",
+    a: "Any GCSE or A-level subject. Maths, Biology and Chemistry are the specialisms at both levels, and Physics at GCSE, where Preethi's own results are strongest, but if a student needs help in another subject just say so at booking or on the free intro call. UCAT preparation and medical school application coaching are one session type, so the same booking covers either.",
   },
   {
     q: "Which exam boards do you cover?",

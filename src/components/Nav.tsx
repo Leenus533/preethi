@@ -36,6 +36,7 @@ export function Nav() {
           <div className="group relative">
             <Link
               href="/#subjects"
+              aria-haspopup="true"
               className="focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-ink-soft hover:bg-cream-100 hover:text-pine-900"
             >
               Subjects

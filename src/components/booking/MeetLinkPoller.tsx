@@ -50,7 +50,7 @@ export function MeetLinkPoller({ bookingRef, initialMeetLink, email, contactEmai
       <div className="rounded-2xl border border-pine-300 bg-pine-50 p-5">
         <p className="font-semibold text-pine-900">Your Google Meet link is ready</p>
         <a href={status.meetLink} className="btn btn-primary mt-3" target="_blank" rel="noreferrer">
-          Open Google Meet
+          Open Google Meet<span className="sr-only"> (opens in a new tab)</span>
         </a>
         <p className="mt-3 text-sm text-ink-soft">The same link is in the calendar invitation{email ? ` sent to ${email}` : ""}. Keep it for the day of the session.</p>
       </div>

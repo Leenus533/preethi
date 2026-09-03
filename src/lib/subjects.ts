@@ -115,6 +115,7 @@ export const SUBJECTS: Subject[] = [
     credentials: [
       "A in A-level Biology, A in Chemistry, A in Maths",
       "Final-year Medicine MBBS at the University of East Anglia",
+      "Enhanced DBS check held through UEA Medical School",
       "A year as a student subject mentor at her former sixth form, reporting progress back to teachers",
     ],
     faqs: [
@@ -157,6 +158,7 @@ export const SUBJECTS: Subject[] = [
     credentials: [
       "Top 10% UCAT score",
       "Final-year medical student at the University of East Anglia",
+      "Enhanced DBS check held through UEA Medical School",
       "Sessions include a score-tracking sheet so you can see each section moving",
     ],
     faqs: [
@@ -199,6 +201,7 @@ export const SUBJECTS: Subject[] = [
     credentials: [
       "Final-year Medicine MBBS at the University of East Anglia, started in 2022",
       "Top 10% UCAT score and A, A, A at A-level",
+      "Enhanced DBS check held through UEA Medical School",
       "More than eight years in patient-facing roles, so the reflection advice comes from real experience",
     ],
     faqs: [
@@ -206,6 +209,7 @@ export const SUBJECTS: Subject[] = [
       { q: "Do you run MMI practice?", a: "Yes. Each interview session covers several timed stations with feedback after each, matched to the formats of the schools you have applied to." },
       { q: "Can you tell me which medical schools to apply to?", a: "I can show you how each school scores applicants and help you weigh your options honestly, then the decision is yours. Choosing well is often the single biggest thing an applicant can do." },
       { q: "Do you guarantee an offer?", a: "No one honestly can. What I can promise is clear feedback, realistic practice and the current picture from inside a medical school." },
+      { q: "Can we also work on the UCAT?", a: "Yes. Medical school application coaching and UCAT preparation are one session type, so the same booking can be spent on the personal statement, interview practice or the UCAT, whichever is most useful at the time." },
     ],
   },
 ];

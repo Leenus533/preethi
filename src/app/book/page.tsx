@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { SERVICES, SITE, TIMEZONE } from "@/lib/config";
 import { BookingWizard } from "@/components/booking/BookingWizard";
 import { JsonLd } from "@/components/JsonLd";
-import { graph, webPage } from "@/lib/seo";
+import { graph, pageSocial, webPage } from "@/lib/seo";
 
 const description = "Pick a session, choose a time from Preethi's live calendar and pay online. GCSE, A-level, UCAT and medicine coaching, or a free 20-minute intro call.";
 
@@ -10,14 +11,14 @@ export const metadata: Metadata = {
   title: "Book a tutoring session",
   description,
   alternates: { canonical: "/book" },
-  openGraph: { title: `Book a session | ${SITE.name}`, description, url: "/book" },
+  ...pageSocial("/book", `Book a session | ${SITE.name}`, description),
 };
 
-export default async function BookPage({ searchParams }: PageProps<"/book">) {
-  const sp = await searchParams;
-  const service = typeof sp.service === "string" ? sp.service : undefined;
-  const cancelled = sp.cancelled === "1";
-  const cancelledRef = typeof sp.ref === "string" ? sp.ref : undefined;
+/**
+ * Statically rendered. The wizard reads `?service=`, `?cancelled=` and `?ref=` on the client, which keeps
+ * the page cacheable at the edge instead of rendering on every request.
+ */
+export default function BookPage() {
   return (
     <div>
       <div className="container-x py-10 sm:py-14">
@@ -27,18 +28,17 @@ export default async function BookPage({ searchParams }: PageProps<"/book">) {
             Pick a session type, choose a time that suits you, and pay by card. It takes about two minutes.
           </p>
         </div>
-        <BookingWizard
+        <Suspense fallback={<div className="card p-6 text-sm text-ink-soft" aria-busy>Loading the booking form…</div>}>
+          <BookingWizard
           services={SERVICES}
           timezone={TIMEZONE}
-          initialServiceId={service}
-          cancelled={cancelled}
-          cancelledRef={cancelledRef}
           contactEmail={SITE.contactEmail}
           phone={SITE.showPhone ? SITE.phone : undefined}
           phoneE164={SITE.showPhone ? SITE.phoneE164 : undefined}
           blockDiscountPercent={SITE.blockDiscountPercent}
           cancellationNoticeHours={SITE.cancellationNoticeHours}
-        />
+          />
+        </Suspense>
       </div>
       <JsonLd data={graph(webPage("/book", `Book a session | ${SITE.name}`, description))} />
     </div>

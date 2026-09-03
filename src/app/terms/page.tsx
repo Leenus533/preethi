@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   const h = SITE.cancellationNoticeHours;
   return (
-    <LegalPage title="Terms and cancellation policy" updated="2 September 2026">
+    <LegalPage title="Terms and cancellation policy" updated="3 September 2026">
       <section>
         <h2>1. Who you are booking with</h2>
         <p>
@@ -23,7 +23,9 @@ export default function TermsPage() {
         <h2>2. Booking and payment</h2>
         <p>
           A session is confirmed when payment is completed and a calendar invitation has been sent. Prices are shown in pounds sterling and
-          include everything; there are no extra fees. Free introductory calls are confirmed on booking.
+          include everything; there are no extra fees. Free introductory calls are confirmed on booking. Bulk sessions and regular weekly slots are
+          arranged and priced directly by email or phone rather than through online checkout, and are covered by the same cancellation terms in
+          section 3 unless agreed otherwise in writing.
         </p>
       </section>
       <section>

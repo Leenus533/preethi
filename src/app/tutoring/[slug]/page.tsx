@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SITE, formatPrice } from "@/lib/config";
 import { SUBJECTS, getSubject, subjectBookingHref, subjectPath, subjectService } from "@/lib/subjects";
-import { breadcrumbs, faqPage, graph, subjectServiceSchema, webPage } from "@/lib/seo";
+import { breadcrumbs, faqPage, graph, pageSocial, subjectServiceSchema, webPage } from "@/lib/seo";
 import { CtaBand, FaqList, SectionHead } from "@/components/home/Sections";
 import { JsonLd } from "@/components/JsonLd";
 import { Icon } from "@/components/ui/icons";
@@ -23,17 +23,8 @@ export async function generateMetadata({ params }: PageProps<"/tutoring/[slug]">
   return {
     title: { absolute: subject.metaTitle },
     description: subject.metaDescription,
-    keywords: subject.keywords,
     alternates: { canonical: path },
-    openGraph: {
-      type: "website",
-      url: path,
-      title: subject.metaTitle,
-      description: subject.metaDescription,
-      siteName: SITE.name,
-      locale: "en_GB",
-    },
-    twitter: { card: "summary_large_image", title: subject.metaTitle, description: subject.metaDescription },
+    ...pageSocial(path, subject.metaTitle, subject.metaDescription),
   };
 }
 
@@ -106,7 +97,7 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
                   ["Price", `${formatPrice(service.pricePence)} per ${service.durationMinutes} minutes`],
                   ["Format", "One-to-one, online over Google Meet or in person in Norwich"],
                   ["Availability", "Weekday evenings and weekends, UK time"],
-                  ["Booking", "Live calendar, pay by card, invite sent instantly"],
+                  ["Booking", "Live calendar, pay by card, invite sent within minutes"],
                   ["Cancellation", `Free with ${SITE.cancellationNoticeHours} hours' notice`],
                 ].map(([k, v]) => (
                   <div key={k} className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-3 py-3 text-sm">
@@ -168,7 +159,7 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
               ))}
             </div>
             <div className="card border-pine-200 bg-pine-50/60 p-6">
-              <p className="font-display text-[length:var(--text-h3)] text-pine-900">Why Preethi</p>
+              <h3 className="font-display text-[length:var(--text-h3)] text-pine-900">Why Preethi</h3>
               <ul className="mt-4 grid gap-2.5 text-[0.9375rem] text-ink-soft">
                 {subject.credentials.map((c) => (
                   <li key={c} className="flex items-start gap-2.5">
@@ -238,14 +229,14 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
 
       <JsonLd
         data={graph(
-          webPage(path, subject.metaTitle, subject.metaDescription),
+          webPage(path, subject.metaTitle, subject.metaDescription, { faq: true }),
           subjectServiceSchema(subject),
+          // Two levels only: a "Subjects" crumb would resolve to the home URL and repeat position 1.
           breadcrumbs([
             { name: "Home", path: "/" },
-            { name: "Subjects", path: "/#subjects" },
             { name: subject.title, path },
           ]),
-          faqPage(subject.faqs),
+          faqPage(subject.faqs, path),
         )}
       />
     </>

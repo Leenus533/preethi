@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useSearchParams } from "next/navigation";
 import type { Service } from "@/lib/config";
 import { formatPrice } from "@/lib/config";
 import { validateBookingInput } from "@/lib/booking-schema";
@@ -12,9 +13,6 @@ type AvailabilityResponse = { timezone: string; source: "calendar" | "hours-only
 type Props = {
   services: Service[];
   timezone: string;
-  initialServiceId?: string;
-  cancelled?: boolean;
-  cancelledRef?: string;
   contactEmail: string;
   phone?: string;
   phoneE164?: string;
@@ -84,7 +82,12 @@ function fmtDayHeading(key: string) {
   return new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", weekday: "long", day: "numeric", month: "long" }).format(new Date(Date.UTC(y, m - 1, d)));
 }
 
-export function BookingWizard({ services, timezone, initialServiceId, cancelled, cancelledRef, contactEmail, phone, phoneE164, blockDiscountPercent, cancellationNoticeHours }: Props) {
+export function BookingWizard({ services, timezone, contactEmail, phone, phoneE164, blockDiscountPercent, cancellationNoticeHours }: Props) {
+  // Query string: ?service= preselects a session type; ?cancelled=1&ref= means the student backed out of Stripe Checkout.
+  const query = useSearchParams();
+  const initialServiceId = query.get("service") ?? undefined;
+  const cancelled = query.get("cancelled") === "1";
+  const cancelledRef = query.get("ref") ?? undefined;
   const initialService = services.find((s) => s.id === initialServiceId);
   const [step, setStep] = useState<1 | 2 | 3>(initialService ? 2 : 1);
   const [serviceId, setServiceId] = useState<string | undefined>(initialService?.id);
@@ -292,7 +295,7 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
           <section aria-labelledby="step2">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <h2 id="step2" ref={headingRef} tabIndex={-1} className="font-display text-2xl text-pine-900 outline-none">Choose a date and time</h2>
-              <button type="button" onClick={() => setStep(1)} className="text-sm font-medium text-pine-700 underline underline-offset-4">
+              <button type="button" onClick={() => setStep(1)} className="focus-ring rounded-sm text-sm font-medium text-pine-700 underline underline-offset-4">
                 Change session type
               </button>
             </div>
@@ -300,7 +303,7 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
               Times are shown in UK time ({timezone}).{showViewerTz && ` Your device is on ${viewerTz}, so your local time is shown next to each slot.`}
             </p>
             {submitError && (
-              <p role="alert" className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+              <p role="alert" className="mt-4 rounded-xl border border-danger/30 bg-danger-surface px-4 py-3 text-sm text-danger">
                 {submitError}
               </p>
             )}
@@ -357,7 +360,7 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
                   })}
                 </div>
                 <p className="mt-3 min-h-5 text-xs text-muted" aria-live="polite">
-                  {loading ? "Checking the calendar…" : loadError ? <span className="text-red-700">{loadError}</span> : slots && !Object.keys(slots).length ? "No free times this month." : source === "calendar" ? "Live availability from Preethi's calendar." : ""}
+                  {loading ? "Checking the calendar…" : loadError ? <span className="text-danger">{loadError}</span> : slots && !Object.keys(slots).length ? "No free times this month." : source === "calendar" ? "Live availability from Preethi's calendar." : ""}
                 </p>
                 {loadError && (
                   <button type="button" onClick={() => setLoadError(null)} className="btn btn-secondary mt-2 !py-2 text-sm">
@@ -396,7 +399,7 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
                       })}
                     </ul>
                     <button type="button" disabled={!selectedSlot} onClick={() => setStep(3)} className="btn btn-primary mt-5 w-full">
-                      Continue <Icon.Arrow width={16} height={16} />
+                      Continue <Icon.Arrow width={16} height={16} aria-hidden />
                     </button>
                   </>
                 )}
@@ -409,22 +412,26 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
           <section aria-labelledby="step3">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <h2 id="step3" ref={headingRef} tabIndex={-1} className="font-display text-2xl text-pine-900 outline-none">Your details</h2>
-              <button type="button" onClick={() => setStep(2)} className="text-sm font-medium text-pine-700 underline underline-offset-4">
+              <button type="button" onClick={() => setStep(2)} className="focus-ring rounded-sm text-sm font-medium text-pine-700 underline underline-offset-4">
                 Change time
               </button>
             </div>
             <form onSubmit={submit} noValidate className="mt-5 grid gap-5 border-t border-cream-200 pt-6">
+              <p className="text-xs text-muted">
+                Fields marked <span aria-hidden className="text-danger">*</span>
+                <span className="sr-only">with an asterisk</span> are required.
+              </p>
               <div className="grid items-start gap-5 sm:grid-cols-2">
-                <Field label="Student's name" error={fieldErrors.name}>
-                  <input id="field-name" className="field" autoComplete="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} aria-invalid={Boolean(fieldErrors.name)} required />
+                <Field id="field-name" label="Student's name" required error={fieldErrors.name}>
+                  <input id="field-name" className="field" autoComplete="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} aria-invalid={Boolean(fieldErrors.name)} aria-describedby="field-name-desc" required />
                 </Field>
-                <Field label="Email for the invitation" error={fieldErrors.email} hint="The Google Meet link goes here.">
-                  <input id="field-email" className="field" type="email" autoComplete="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} aria-invalid={Boolean(fieldErrors.email)} required />
+                <Field id="field-email" label="Email for the invitation" required error={fieldErrors.email} hint="The Google Meet link goes here.">
+                  <input id="field-email" className="field" type="email" autoComplete="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} aria-invalid={Boolean(fieldErrors.email)} aria-describedby="field-email-desc" required />
                 </Field>
-                <Field label="Parent or guardian's name" hint="Required if the student is under 18. Use an email address a parent can see.">
-                  <input id="field-parentName" className="field" autoComplete="off" value={form.parentName} onChange={(e) => setForm({ ...form, parentName: e.target.value })} />
+                <Field id="field-parentName" label="Parent or guardian's name" hint="Please add this if the student is under 18, and use an email address a parent can see.">
+                  <input id="field-parentName" className="field" autoComplete="off" value={form.parentName} onChange={(e) => setForm({ ...form, parentName: e.target.value })} aria-describedby="field-parentName-desc" />
                 </Field>
-                <Field label="Year group or stage">
+                <Field id="field-yearGroup" label="Year group or stage">
                   <select id="field-yearGroup" className="field" value={form.yearGroup} onChange={(e) => setForm({ ...form, yearGroup: e.target.value })}>
                     <option value="">Choose…</option>
                     {["Year 9", "Year 10", "Year 11", "Year 12", "Year 13", "Gap year", "Other"].map((y) => (
@@ -433,8 +440,8 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
                   </select>
                 </Field>
               </div>
-              <Field label="Anything Preethi should know?" hint="Exam board, topics you are stuck on, target grade, upcoming deadlines. Say if you would prefer to meet in person in Norwich.">
-                <textarea id="field-notes" className="field min-h-24" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} maxLength={800} />
+              <Field id="field-notes" label="Anything Preethi should know?" hint="Exam board, topics you are stuck on, target grade, upcoming deadlines. Say if you would prefer to meet in person in Norwich.">
+                <textarea id="field-notes" className="field min-h-24" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} maxLength={800} aria-describedby="field-notes-desc" />
               </Field>
               <div className="hidden" aria-hidden>
                 <label>
@@ -442,28 +449,28 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
                 </label>
               </div>
               <label className="flex items-start gap-3 text-sm text-ink-soft">
-                <input id="field-agree" type="checkbox" className="mt-1 h-4 w-4 accent-pine-700" checked={form.agree} aria-invalid={Boolean(fieldErrors.agree)} onChange={(e) => setForm({ ...form, agree: e.target.checked })} />
+                <input id="field-agree" type="checkbox" className="focus-ring mt-1 h-4 w-4 accent-pine-700" checked={form.agree} aria-invalid={Boolean(fieldErrors.agree)} onChange={(e) => setForm({ ...form, agree: e.target.checked })} />
                 <span>
-                  I have read the{" "}
-                  <a href="/terms" target="_blank" className="font-medium text-pine-800 underline underline-offset-4">
-                    terms and cancellation policy
+                  I agree to the{" "}
+                  <a href="/terms" target="_blank" rel="noreferrer" className="focus-ring rounded-sm font-medium text-pine-800 underline underline-offset-4">
+                    terms and cancellation policy<span className="sr-only"> (opens in a new tab)</span>
                   </a>{" "}
-                  ({cancellationNoticeHours} hours&rsquo; notice to reschedule) and the{" "}
-                  <a href="/privacy" target="_blank" className="font-medium text-pine-800 underline underline-offset-4">
-                    privacy notice
+                  ({cancellationNoticeHours} hours&rsquo; notice to reschedule) and have read the{" "}
+                  <a href="/privacy" target="_blank" rel="noreferrer" className="focus-ring rounded-sm font-medium text-pine-800 underline underline-offset-4">
+                    privacy notice<span className="sr-only"> (opens in a new tab)</span>
                   </a>
                   .
                 </span>
               </label>
-              {fieldErrors.agree && <p role="alert" className="-mt-3 text-sm text-red-700">{fieldErrors.agree}</p>}
+              {fieldErrors.agree && <p role="alert" className="-mt-3 text-sm text-danger">{fieldErrors.agree}</p>}
               {submitError && (
-                <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                <p role="alert" className="rounded-xl border border-danger/30 bg-danger-surface px-4 py-3 text-sm text-danger">
                   {submitError}
                 </p>
               )}
               <button type="submit" disabled={submitting} className="btn btn-primary w-full sm:w-auto sm:justify-self-end">
                 {submitting ? "One moment…" : service.pricePence === 0 ? "Confirm free call" : `Pay ${formatPrice(service.pricePence)} and book`}
-                {!submitting && <Icon.Arrow width={16} height={16} />}
+                {!submitting && <Icon.Arrow width={16} height={16} aria-hidden />}
               </button>
               <p className="text-xs text-muted">
                 {service.pricePence === 0
@@ -504,8 +511,8 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
             <p className="mt-2 text-sm text-muted">Choose a session type to get started.</p>
           )}
           <ul className="mt-5 space-y-2 border-t border-cream-200 pt-4 text-xs text-muted">
-            <li className="flex gap-2"><Icon.Calendar width={14} height={14} className="mt-0.5 shrink-0 text-pine-600" /> Calendar invite with Meet link sent automatically</li>
-            <li className="flex gap-2"><Icon.Clock width={14} height={14} className="mt-0.5 shrink-0 text-pine-600" /> Reschedule free with {cancellationNoticeHours} hours&rsquo; notice</li>
+            <li className="flex gap-2"><Icon.Calendar width={14} height={14} className="mt-0.5 shrink-0 text-pine-600" aria-hidden /> Calendar invite with Meet link sent automatically</li>
+            <li className="flex gap-2"><Icon.Clock width={14} height={14} className="mt-0.5 shrink-0 text-pine-600" aria-hidden /> Reschedule free with {cancellationNoticeHours} hours&rsquo; notice</li>
           </ul>
         </div>
       </aside>
@@ -517,20 +524,34 @@ function StepHeader({ n, label, active, done }: { n: number; label: string; acti
   return (
     <li className={`flex items-center gap-2 text-sm ${active ? "text-pine-900 font-semibold" : "text-muted"}`}>
       <span className={`grid h-6 w-6 place-items-center rounded-full text-xs ${done ? "bg-pine-600 text-white" : active ? "bg-pine-100 text-pine-800" : "bg-cream-200 text-ink-soft"}`}>
-        {done ? <Icon.Check width={14} height={14} /> : n}
+        {done ? <Icon.Check width={14} height={14} aria-hidden /> : n}
       </span>
       {label}
     </li>
   );
 }
 
-function Field({ label, hint, error, children }: { label: string; hint?: string; error?: string; children: React.ReactNode }) {
+/**
+ * Label, control, and a description slot (`<id>-desc`) holding the error and hint, so the control can
+ * point at it with aria-describedby and a screen reader hears the error when focus lands on the field.
+ */
+function Field({ id, label, hint, error, required, children }: { id: string; label: string; hint?: string; error?: string; required?: boolean; children: React.ReactNode }) {
   return (
-    <label className="flex flex-col">
-      <span className="text-sm font-medium leading-snug text-ink">{label}</span>
+    <div className="flex flex-col">
+      <label htmlFor={id} className="text-sm font-medium leading-snug text-ink">
+        {label}
+        {required && (
+          <>
+            <span aria-hidden className="text-danger"> *</span>
+            <span className="sr-only"> (required)</span>
+          </>
+        )}
+      </label>
       <span className="mt-1.5 block">{children}</span>
-      {error && <span role="alert" className="mt-1.5 block text-sm text-red-700">{error}</span>}
-      {hint && <span className="mt-1.5 block text-xs leading-snug text-muted">{hint}</span>}
-    </label>
+      <span id={`${id}-desc`}>
+        {error && <span role="alert" className="mt-1.5 block text-sm text-danger">{error}</span>}
+        {hint && <span className="mt-1.5 block text-xs leading-snug text-muted">{hint}</span>}
+      </span>
+    </div>
   );
 }

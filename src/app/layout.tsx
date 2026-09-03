@@ -18,25 +18,26 @@ export const metadata: Metadata = {
   },
   description: SEO.homeDescription,
   applicationName: SITE.name,
-  keywords: [...SEO.keywords],
   authors: [{ name: SITE.tutorName, url: siteOrigin() }],
   creator: SITE.tutorName,
   publisher: SITE.name,
   category: "education",
   referrer: "origin-when-cross-origin",
   formatDetection: { email: false, address: false, telephone: false },
+  // No `url` here: Next derives og:url per route from metadataBase + canonical, so legal pages stop claiming to be the home page.
   openGraph: {
     type: "website",
     siteName: SITE.name,
     title: SEO.homeTitle,
     description: SEO.homeDescription,
     locale: "en_GB",
-    url: "/",
+    images: [SEO.shareImage],
   },
   twitter: {
     card: "summary_large_image",
     title: SEO.homeTitle,
     description: SEO.homeDescription,
+    images: [SEO.shareImage],
   },
   robots: {
     index: true,
