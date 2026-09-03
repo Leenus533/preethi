@@ -274,17 +274,10 @@ export function About() {
 export function Pricing() {
   const intro = SERVICES.find((s) => s.pricePence === 0);
   const paid = SERVICES.filter((s) => s.pricePence > 0);
-  const cheapest = Math.min(...paid.map((s) => s.pricePence));
   return (
     <section id="pricing" aria-labelledby="pricing-title" className="section scroll-mt-24">
       <div className="container-x section-grid">
-        <SectionHead id="pricing-title" title={`From ${formatPrice(cheapest)} an hour, paid per session`} align="center">
-          <p>
-            No minimum commitment. Reschedule free with {SITE.cancellationNoticeHours} hours&rsquo; notice. Prices include everything: there are
-            no booking fees.
-          </p>
-          <p>Bulk sessions are {SITE.blockDiscountPercent}% off and arranged by email or phone.</p>
-        </SectionHead>
+        <SectionHead id="pricing-title" title="Sessions and prices" align="center" />
 
         {intro && (
           <div className="card flex flex-col gap-5 border-pine-200 bg-pine-50/60 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
