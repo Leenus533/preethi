@@ -104,7 +104,7 @@ export default async function SubjectPage({ params }: PageProps<"/tutoring/[slug
               <dl className="divide-y divide-cream-200 px-5">
                 {[
                   ["Price", `${formatPrice(service.pricePence)} per ${service.durationMinutes} minutes`],
-                  ["Format", "One-to-one, online over Google Meet"],
+                  ["Format", "One-to-one, online over Google Meet or in person in Norwich"],
                   ["Availability", "Weekday evenings and weekends, UK time"],
                   ["Booking", "Live calendar, pay by card, invite sent instantly"],
                   ["Cancellation", `Free with ${SITE.cancellationNoticeHours} hours' notice`],

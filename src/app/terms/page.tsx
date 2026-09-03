@@ -47,8 +47,10 @@ export default function TermsPage() {
       <section>
         <h2>5. Sessions</h2>
         <p>
-          Sessions run online over Google Meet at the booked time and last for the booked duration. If a student arrives late the session still ends at the
-          scheduled time. If nobody joins within 15 minutes the session is treated as a late cancellation.
+          Sessions run online over Google Meet at the booked time and last for the booked duration, unless an in-person session in Norwich has been agreed
+          in advance. In-person sessions take place in a public setting, such as a university library or a booked study room, agreed before the session. If a
+          student arrives late the session still ends at the scheduled time. If nobody joins or arrives within 15 minutes the session is treated as a late
+          cancellation.
         </p>
       </section>
       <section>

@@ -414,7 +414,7 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
                   </select>
                 </Field>
               </div>
-              <Field label="Anything Preethi should know?" hint="Exam board, topics you are stuck on, target grade, upcoming deadlines.">
+              <Field label="Anything Preethi should know?" hint="Exam board, topics you are stuck on, target grade, upcoming deadlines. Say if you would prefer to meet in person in Norwich.">
                 <textarea id="field-notes" className="field min-h-24" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} maxLength={800} />
               </Field>
               <div className="hidden" aria-hidden>
@@ -463,7 +463,7 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
           {service ? (
             <>
               <p className="mt-2 font-display text-xl text-pine-900">{service.name}</p>
-              <p className="text-sm text-muted">{service.durationMinutes} minutes · online via Google Meet</p>
+              <p className="text-sm text-muted">{service.durationMinutes} minutes · online via Google Meet, or in person in Norwich</p>
               <dl className="mt-4 space-y-2 border-t border-cream-200 pt-4 text-sm">
                 <div className="flex justify-between gap-3">
                   <dt className="text-muted">When</dt>

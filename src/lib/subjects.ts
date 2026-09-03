@@ -121,7 +121,7 @@ export const SUBJECTS: Subject[] = [
       { q: "Which A-level subjects do you tutor?", a: "Any A-level subject. Biology, Chemistry and Maths are the specialisms, where Preethi has an A in each and uses the content daily in medical school. For any other subject, mention it at booking or on the free intro call so sessions can be planned from your specification." },
       { q: "Do you help with Year 12 as well as Year 13?", a: "Yes. Year 12 is the best time to start: the habits and foundations built then are what make Year 13 manageable." },
       { q: "Can you help with predicted grades and UCAS?", a: "Sessions focus on the subject, but because I have been through a medicine application I am happy to talk about how grades and predictions affect applications, and the medical school coaching sessions cover that in depth." },
-      { q: "How long is a session?", a: "Sixty minutes, one-to-one, online over Google Meet. Longer blocks can be arranged by booking consecutive slots." },
+      { q: "How long is a session?", a: "Sixty minutes, one-to-one, online over Google Meet or in person in Norwich. Longer blocks can be arranged by booking consecutive slots." },
     ],
   },
   {

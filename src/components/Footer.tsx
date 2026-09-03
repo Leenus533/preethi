@@ -81,15 +81,15 @@ export function Footer() {
             </li>
             {SITE.showPhone && (
               <li className="flex items-start gap-2.5">
-                <Icon.Card width={16} height={16} className="mt-0.5 shrink-0 text-pine-300" aria-hidden />
-                <a href={`tel:${SITE.phone.replace(/\s+/g, "")}`} className={linkClass}>
+                <Icon.Phone width={16} height={16} className="mt-0.5 shrink-0 text-pine-300" aria-hidden />
+                <a href={`tel:${SITE.phoneE164}`} className={linkClass}>
                   {SITE.phone}
                 </a>
               </li>
             )}
             <li className="flex items-start gap-2.5">
               <Icon.Pin width={16} height={16} className="mt-0.5 shrink-0 text-pine-300" aria-hidden />
-              <span>{SITE.location}, sessions online via Google Meet</span>
+              <span>{SITE.location}. Online via Google Meet, or in person locally</span>
             </li>
             <li className="flex items-start gap-2.5">
               <Icon.Clock width={16} height={16} className="mt-0.5 shrink-0 text-pine-300" aria-hidden />
