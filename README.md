@@ -41,7 +41,7 @@ See `.env.local.example`. Locally, copy it to `.env.local`. On Vercel, set the s
 | `GOOGLE_CALENDAR_ID` | `primary`, or the id of a dedicated calendar |
 | `GOOGLE_BUSY_CALENDAR_IDS` | Optional comma-separated extra calendars whose busy times also block slots |
 | `NEXT_PUBLIC_SITE_URL` | Public origin, e.g. `https://preethi.co.uk`, used in Stripe redirect URLs |
-| `SITE_NAME`, `CONTACT_EMAIL`, `SHOW_PHONE` | Content overrides |
+| `SITE_NAME`, `CONTACT_EMAIL` | Content overrides |
 
 Without Google credentials the site still runs but bookings are switched off: the calendar shows the weekly hours only, and both paid and free bookings return a friendly "email Preethi" message. That is deliberate. The calendar is the only record of bookings, so taking money before it is connected would lose the booking. If a webhook ever arrives while the calendar is unreachable, the handler returns 500 so Stripe retries for up to three days.
 

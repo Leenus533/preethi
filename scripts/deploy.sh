@@ -115,7 +115,7 @@ export NEXT_PUBLIC_SITE_URL
 # --- environment variables -----------------------------------------------------------------
 echo "==> Syncing environment variables to production"
 for key in STRIPE_SECRET_KEY STRIPE_WEBHOOK_SECRET GOOGLE_CLIENT_ID GOOGLE_CLIENT_SECRET GOOGLE_REFRESH_TOKEN \
-           GOOGLE_CALENDAR_ID GOOGLE_BUSY_CALENDAR_IDS NEXT_PUBLIC_SITE_URL CUSTOM_DOMAIN SITE_NAME CONTACT_EMAIL SHOW_PHONE; do
+           GOOGLE_CALENDAR_ID GOOGLE_BUSY_CALENDAR_IDS NEXT_PUBLIC_SITE_URL CUSTOM_DOMAIN SITE_NAME CONTACT_EMAIL; do
   val="${!key:-}"
   [ -z "$val" ] && continue
   vc env rm "$key" production --yes >/dev/null 2>&1 || true

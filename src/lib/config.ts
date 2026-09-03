@@ -126,7 +126,7 @@ export const SITE = {
   phone: "07448 609 094",
   /** E.164 form for tel: links and structured data. */
   phoneE164: "+447448609094",
-  showPhone: (process.env.SHOW_PHONE || "yes").toLowerCase() !== "no",
+  showPhone: true,
   location: "Norwich, UK",
   cancellationNoticeHours: 24,
 };
