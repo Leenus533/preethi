@@ -431,7 +431,7 @@ function bookingDescription(b: BookingDetails): string {
   if (b.parentName) lines.push(`Parent/guardian: ${e(b.parentName)}`);
   if (b.yearGroup) lines.push(`Year group / stage: ${e(b.yearGroup)}`);
   if (b.notes) lines.push("", "Notes from the student:", e(b.notes));
-  lines.push("", b.pricePence ? `Paid: £${(b.pricePence / 100).toFixed(2)}` : "Free session");
+  lines.push("", b.pricePence ? `Paid: £${(b.pricePence / 100).toFixed(2)}` : "No charge");
   if (b.paymentRef) lines.push(`Payment reference: ${e(b.paymentRef)}`);
   lines.push(`Booking reference: ${b.bookingRef}`);
   lines.push("", `Join with the Google Meet link on this event. Please give at least ${SITE.cancellationNoticeHours} hours' notice to reschedule.`);

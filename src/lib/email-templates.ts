@@ -71,7 +71,8 @@ function whenLines(b: BookingDetails) {
 }
 
 function paymentLine(b: BookingDetails): string {
-  return b.pricePence > 0 ? `${pounds(b.pricePence)} paid` : "Free, nothing to pay";
+  // "No charge" rather than "Free": the latter is a classic promotion-filter trigger in email.
+  return b.pricePence > 0 ? `${pounds(b.pricePence)} paid` : "No charge";
 }
 
 function successUrl(origin: string, ref: string): string {

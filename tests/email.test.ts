@@ -50,10 +50,11 @@ test("student confirmation without a Meet link points at the booking page instea
 });
 
 test("free intro call reads as free", () => {
-  const m = studentConfirmationEmail({ ...booking, pricePence: 0, serviceName: "Free introductory call", bookingRef: "free_00000000-0000-0000-0000-000000000000" }, ctx);
+  const m = studentConfirmationEmail({ ...booking, pricePence: 0, serviceName: "Introductory call", bookingRef: "free_00000000-0000-0000-0000-000000000000" }, ctx);
   assert.match(m.html, /Your intro call is booked/);
-  assert.match(m.html, /Free, nothing to pay/);
+  assert.match(m.html, /No charge/);
   assert.doesNotMatch(m.html, /£/);
+  assert.doesNotMatch(m.subject, /free/i, "the word 'free' in a subject invites promotion filtering");
 });
 
 test("tutor notification carries student details, notes and links, and flags clashes", () => {

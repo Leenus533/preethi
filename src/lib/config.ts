@@ -27,7 +27,8 @@ export type Service = {
 export const SERVICES: Service[] = [
   {
     id: "intro-call",
-    name: "Free introductory call",
+    // Deliberately not "Free introductory call": that word in a calendar invitation or email subject gets it filed as promotion or spam.
+    name: "Introductory call",
     shortName: "Intro call",
     level: "intro",
     tagline: "Talk through goals, exam boards and how sessions would work. Nothing to pay.",
