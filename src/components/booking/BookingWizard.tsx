@@ -261,7 +261,7 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
                     <span className="font-display text-lg text-pine-700 underline-offset-4 group-hover:underline">{s.name}</span>
                     <span className="shrink-0 font-display text-xl tabular-nums text-ink">{formatPrice(s.pricePence)}</span>
                     <span className="col-start-1 text-sm text-ink-soft">{s.tagline}</span>
-                    <span className="col-start-1 text-[length:var(--text-meta)] text-muted">{s.durationMinutes} minutes · online</span>
+                    <span className="col-start-1 text-[length:var(--text-meta)] text-muted">{s.durationMinutes} minutes · one-to-one</span>
                   </button>
                 </li>
               ))}

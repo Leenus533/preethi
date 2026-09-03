@@ -208,6 +208,33 @@ body {
     box-shadow: 0 0 0 1px var(--color-pine-500), var(--shadow-soft);
   }
 
+  /* Four pricing cards share row tracks so the rule under the price lines up. */
+  .price-cards {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .price-card {
+    display: flex;
+    flex-direction: column;
+  }
+  @supports (grid-template-rows: subgrid) {
+    .price-card {
+      display: grid;
+      grid-template-rows: subgrid;
+      grid-row: span 5;
+    }
+  }
+  @media (min-width: 768px) {
+    .price-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 80rem) {
+    .price-cards {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
   /* Small label chips. Pine-800 on pine-50 is 8.9:1; clay-700 on clay-100 is 5.2:1. */
   .chip {
     display: inline-flex;
