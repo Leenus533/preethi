@@ -135,7 +135,7 @@ export default async function SuccessPage({ searchParams }: PageProps<"/book/suc
         <div className="measure mt-8 space-y-3 text-sm text-ink-soft">
           <p>
             <strong className="text-ink">What happens next.</strong> A Google Calendar invitation with the Google Meet link is sent to the email address you gave.
-            Accept it and it will sit in your own calendar with reminders. A payment receipt comes separately from Stripe.
+            Accept it and it will sit in your own calendar with reminders. A payment receipt is emailed separately.
           </p>
           <p>
             <strong className="text-ink">Need to change the time?</strong> Reply to the invitation or email{" "}

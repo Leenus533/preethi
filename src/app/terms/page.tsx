@@ -22,7 +22,7 @@ export default function TermsPage() {
       <section>
         <h2>2. Booking and payment</h2>
         <p>
-          A session is confirmed when payment is completed through Stripe and a calendar invitation has been sent. Prices are shown in pounds sterling and
+          A session is confirmed when payment is completed and a calendar invitation has been sent. Prices are shown in pounds sterling and
           include everything; there are no extra fees. Free introductory calls are confirmed on booking.
         </p>
       </section>
