@@ -304,14 +304,14 @@ export function Pricing() {
           </div>
         )}
 
-        <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <ul className="price-cards">
           {paid.map((s) => {
             const featured = Boolean(s.badge);
             return (
-              <li key={s.id} className={`card flex flex-col p-6 ${featured ? "card-featured" : ""}`}>
+              <li key={s.id} className={`card price-card p-6 ${featured ? "card-featured" : ""}`}>
                 {featured && <span className="chip chip-clay absolute -top-3 left-6">{s.badge}</span>}
                 <h3 className="font-display text-[1.25rem] leading-tight text-pine-900">{s.name}</h3>
-                <p className="mt-1.5 min-h-[2.75rem] text-[0.9375rem] text-ink-soft">{s.tagline}</p>
+                <p className="mt-1.5 text-[0.9375rem] text-ink-soft">{s.tagline}</p>
                 <p className="mt-5 flex items-baseline gap-1.5">
                   <span className="font-display text-[2.5rem] leading-none tabular-nums text-ink">{formatPrice(s.pricePence)}</span>
                   <span className="text-sm text-muted">/ {s.durationMinutes} min</span>
@@ -324,7 +324,7 @@ export function Pricing() {
                     </li>
                   ))}
                 </ul>
-                <Link href={`/book?service=${s.id}`} className={`btn mt-auto w-full pt-[0.85rem] ${featured ? "btn-primary" : "btn-secondary"}`}>
+                <Link href={`/book?service=${s.id}`} className={`btn mt-5 w-full pt-[0.85rem] ${featured ? "btn-primary" : "btn-secondary"}`}>
                   Book and pay
                 </Link>
               </li>
