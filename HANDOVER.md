@@ -94,7 +94,7 @@ All in `src/lib/config.ts`, then `./scripts/deploy.sh`:
 - Free intro call: 20 minutes.
 - Hours: weekdays 17:00–21:00, weekends 09:00–17:00, UK time.
 - 24 hours' minimum notice, 15-minute gap around existing events, bookable 60 days ahead.
-- `SHOW_PHONE=yes` in `.env.local` puts her mobile number on the site. It is currently hidden.
+- Her mobile number (07448 609 094) is shown in the footer and in the structured data. Set `SHOW_PHONE=no` to hide it.
 
 To block time off, just put an ordinary event in her Google Calendar. Anything marked Busy removes
 those slots from the site automatically.

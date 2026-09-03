@@ -22,6 +22,7 @@ export const SEO = {
     "medical school application help",
     "medicine interview coaching",
     "Norwich tutor",
+    "tutor in Norwich",
     "medical student tutor",
   ],
   /** Date the content was last materially revised. Used in the sitemap instead of the build time. */
@@ -75,7 +76,7 @@ export function organisation() {
     logo: absoluteUrl("/icon.svg"),
     description: SEO.homeDescription,
     email: SITE.contactEmail,
-    ...(SITE.showPhone ? { telephone: SITE.phone } : {}),
+    ...(SITE.showPhone ? { telephone: SITE.phoneE164 } : {}),
     founder: { "@id": PERSON_ID() },
     employee: { "@id": PERSON_ID() },
     address: { "@type": "PostalAddress", addressLocality: "Norwich", addressRegion: "Norfolk", addressCountry: "GB" },

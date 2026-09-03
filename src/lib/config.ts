@@ -124,7 +124,9 @@ export const SITE = {
   tagline: "GCSE, A-level, UCAT and medicine tutoring from a final-year medical student",
   contactEmail: process.env.CONTACT_EMAIL || "preethinorwich@gmail.com",
   phone: "07448 609 094",
-  showPhone: (process.env.SHOW_PHONE || "no").toLowerCase() === "yes",
+  /** E.164 form for tel: links and structured data. */
+  phoneE164: "+447448609094",
+  showPhone: (process.env.SHOW_PHONE || "yes").toLowerCase() !== "no",
   location: "Norwich, UK",
   cancellationNoticeHours: 24,
 };
