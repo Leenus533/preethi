@@ -35,9 +35,10 @@ export function Hero() {
         <div>
           <h1
             id="hero-title"
-            className="font-display font-display-xl text-[length:var(--text-display)] leading-[1.02] text-balance text-pine-900"
+            className="font-display font-display-xl text-[length:clamp(2.375rem,1.35rem+2.8vw,3.375rem)] leading-[1.04] text-balance text-pine-900"
           >
-            GCSE, A-level and medicine tutoring that makes the hard parts click.
+            One-to-one GCSE, <span className="whitespace-nowrap">A-level</span> and medicine tutoring from a{" "}
+            <span className="whitespace-nowrap">final-year</span> <span className="whitespace-nowrap">medical student.</span>
           </h1>
           <p className="mt-6 max-w-[var(--measure-lead)] text-[length:var(--text-lead)] leading-relaxed text-ink-soft">
             I&rsquo;m Preethi, a final-year medical student at the University of East Anglia. I help GCSE and A-level students in

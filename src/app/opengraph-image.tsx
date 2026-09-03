@@ -52,7 +52,7 @@ export default function OpenGraphImage() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <div style={{ fontSize: 50, lineHeight: 1.08, fontWeight: 700, letterSpacing: -1.2, display: "flex" }}>
-              GCSE, A-level and medicine tutoring that makes the hard parts click.
+              One-to-one GCSE, A-level and medicine tutoring from a final-year medical student.
             </div>
             <div style={{ fontSize: 22, color: ink, lineHeight: 1.4 }}>
               Any GCSE or A-level subject, UCAT preparation and medical school applications. Online, one-to-one, from a final-year UEA
