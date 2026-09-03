@@ -449,7 +449,7 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
               <p className="text-xs text-muted">
                 {service.pricePence === 0
                   ? "You will get a calendar invitation with a Google Meet link straight away."
-                  : "You will be taken to Stripe's secure checkout. Card details never touch this site."}{" "}
+                  : "You will be taken to the card payment page next."}{" "}
                 Problems? Email <a href={`mailto:${contactEmail}`} className="underline underline-offset-4">{contactEmail}</a>.
               </p>
             </form>
@@ -485,7 +485,6 @@ export function BookingWizard({ services, timezone, initialServiceId, cancelled,
             <p className="mt-2 text-sm text-muted">Choose a session type to get started.</p>
           )}
           <ul className="mt-5 space-y-2 border-t border-cream-200 pt-4 text-xs text-muted">
-            <li className="flex gap-2"><Icon.Shield width={14} height={14} className="mt-0.5 shrink-0 text-pine-600" /> Secure card payment by Stripe</li>
             <li className="flex gap-2"><Icon.Calendar width={14} height={14} className="mt-0.5 shrink-0 text-pine-600" /> Calendar invite with Meet link sent automatically</li>
             <li className="flex gap-2"><Icon.Clock width={14} height={14} className="mt-0.5 shrink-0 text-pine-600" /> Reschedule free with {cancellationNoticeHours} hours&rsquo; notice</li>
           </ul>

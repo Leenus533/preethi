@@ -155,8 +155,8 @@ const steps = [
     icon: Icon.Calendar,
   },
   {
-    title: "Pay securely, get your invite",
-    text: "Card payment through Stripe. A Google Calendar invitation with the Meet link lands in your inbox straight away.",
+    title: "Pay by card, get your invite",
+    text: "A Google Calendar invitation with the Meet link lands in your inbox straight away.",
     icon: Icon.Video,
   },
 ];
@@ -351,7 +351,7 @@ export const HOME_FAQS = [
   },
   {
     q: "How does payment work?",
-    a: "You pay by card when you book, through Stripe. Preethi never sees your card details. You get an emailed receipt and a calendar invitation with the Google Meet link.",
+    a: "You pay by card when you book. You get an emailed receipt and a calendar invitation with the Google Meet link.",
   },
   {
     q: "What if we need to cancel or move a session?",
