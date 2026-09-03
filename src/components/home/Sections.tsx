@@ -75,7 +75,7 @@ const trust = [
   { icon: Icon.Cap, text: "Final-year Medicine MBBS, University of East Anglia" },
   { icon: Icon.Shield, text: "Enhanced DBS check held through UEA Medical School" },
   { icon: Icon.Users, text: "A full academic year as a sixth-form subject mentor" },
-  { icon: Icon.Video, text: "Online over Google Meet, calendar invite sent automatically" },
+  { icon: Icon.Video, text: "Online over Google Meet, or in person in Norwich" },
 ];
 
 export function TrustStrip() {
@@ -196,7 +196,7 @@ const facts: [string, string][] = [
   ["UCAT", "Top 10% nationally"],
   ["Experience", "A year as a sixth-form subject mentor; 8+ years in patient-facing roles"],
   ["Safeguarding", "Enhanced DBS check through UEA Medical School"],
-  ["Based in", "Norwich, teaching online across the UK"],
+  ["Based in", "Norwich. Online across the UK, or in person locally"],
 ];
 
 export function About() {
@@ -339,7 +339,7 @@ export function Pricing() {
 export const HOME_FAQS = [
   {
     q: "Are sessions online or in person?",
-    a: "Online by default, over Google Meet, so students anywhere in the UK can book. If you are in Norwich and would prefer in-person sessions, mention it on the intro call and we can see what works.",
+    a: "Either. Online sessions run over Google Meet, so students anywhere in the UK can book. If you are in or near Norwich, in-person sessions are available in a public setting such as the UEA library or a booked study room on campus. Mention it on the intro call or in the notes when you book and Preethi will arrange the place.",
   },
   {
     q: "Which subjects do you tutor?",
