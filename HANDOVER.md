@@ -13,17 +13,31 @@ is left to wire up.
 
 The site is running on Stripe **test** keys. Card `4242 4242 4242 4242` works, real cards do not.
 
-To take real payments:
+The live Stripe account (`acct_1T7txmPnTu25YBhc`) is already prepared:
 
-1. In the Stripe dashboard, complete the business profile for the account. Stripe will ask Preethi
-   for identity documents and bank details before it releases payouts. This is the slow part and
-   only she can do it.
-2. Copy the live secret key (`sk_live_…`) from <https://dashboard.stripe.com/apikeys>.
-3. Replace `STRIPE_SECRET_KEY` in `.env.local`, delete the `STRIPE_WEBHOOK_SECRET` line entirely,
-   then run `./scripts/deploy.sh`. It creates a fresh live-mode webhook and redeploys.
+- Four products with £30/£35/£40/£40 default prices, one per paid service, each tagged with a
+  `serviceId` in its metadata. Checkout looks products up by that tag so payments group per
+  service in Stripe reporting; the amount charged always comes from `src/lib/config.ts`.
+- A live webhook endpoint for `https://preethi.co.uk/api/webhooks/stripe` listening to the four
+  `checkout.session.*` events the handler uses. Its signing secret is under Developers → Webhooks
+  (Reveal).
+- Checkout branding set to the site's colours (pine buttons, cream background, Inter).
 
-Also worth doing in Stripe: Settings → Public details, so the checkout page shows a sensible
-business name. Right now it says "acupuncture.preethi.co.uk".
+Still to do, in order:
+
+1. Preethi activates the account at <https://dashboard.stripe.com/account/onboarding>: accept the
+   terms, set business type, website `https://preethi.co.uk`, support phone, a one-line product
+   description, identity check and bank account. Until then `charges_enabled` is false and every
+   live payment is refused. Suggested public business name and statement descriptor:
+   `Preethi Amudhan Tutoring` / `PREETHI TUTORING`.
+2. Upload the icon in Settings → Branding (use <https://preethi.co.uk/apple-icon>). The API
+   refused the upload.
+3. In Vercel → Project → Settings → Environment Variables (Production), set `STRIPE_SECRET_KEY`
+   to the live key from <https://dashboard.stripe.com/apikeys> and `STRIPE_WEBHOOK_SECRET` to
+   the live webhook's signing secret, then redeploy. `/api/health` should then report
+   `"mode":"live"`.
+4. Optional: Settings → Emails → turn on "Successful payments" so students get receipts from
+   Stripe as well as the calendar invitation.
 
 ## Domains
 
@@ -34,7 +48,7 @@ Everything is done. No further DNS work is needed.
 | `preethi.co.uk` | Serves the tutoring site. This is the canonical address. |
 | `www.preethi.co.uk` | 308-redirects to the apex. |
 | `tuition.preethi.co.uk` | 308-redirects to the apex, so the old address still works. |
-| `preethi-tutoring.vercel.app` | Still works. The Stripe webhook points here, which is deliberate: it keeps working even if the custom domain changes. |
+| `preethi-tutoring.vercel.app` | Still works. The test-mode Stripe webhook points here; the live one points at `preethi.co.uk`. |
 | `acupuncture.preethi.co.uk` | Untouched, still serving the old acupuncture site. |
 
 The old `preethi-tuition` Vercel project no longer owns any domain, so its brochure site is off the
