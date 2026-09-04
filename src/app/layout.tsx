@@ -7,6 +7,7 @@ import { SEO, graph, organisation, tutorPerson, website } from "@/lib/seo";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
+import { Analytics } from "@vercel/analytics/next";
 
 const geist = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
 
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <Footer />
         <JsonLd data={graph(organisation(), tutorPerson(), website())} />
+        <Analytics />
       </body>
     </html>
   );
